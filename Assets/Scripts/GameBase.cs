@@ -16,24 +16,46 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] suitSymbols = {"♦", "♠", "♥", "♣"};
     protected static readonly string[] valueNames = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     protected static readonly string[] colorNames = { "Red", "Black"};
-    
-    public enum suits {Diamond, Spades, Heart, Club};
-    public enum values {A = 0, J = 11, Q = 12, K = 13};
-    public enum colors {Red, Black};
+
+    // Check if this is useful
+    public enum Suits {Diamond, Spades, Heart, Club};
+    public enum Values {A = 0, J = 11, Q = 12, K = 13};
+    public enum Colors {Red, Black};
 
     #endregion
 
     #region Card design informations
-    static protected float charSize = 0.03f;
-    static protected int fontSize = 100;
-    static protected float refSize = charSize * fontSize;
+    protected static readonly float refSize = 3f;   // Ratio between charSize and fontSize to keep global size
+    protected static int fontSize_M = 100;          // fontSize and charSize for Medium size
+    protected static float charSize_M = refSize / fontSize_M;
+    protected static int fontSize_S = 60;           // fontSize and charSize for Small size
+    protected static float charSize_S =  refSize / fontSize_S;
     #endregion
 
     #region Position, rotation and scale of cards on screen
+    static protected float cardThick = 0.01f;       // Card's thickness
     #endregion
 
     #region Other informations
+    protected const float move_M = 0.75f;      // Medium delta time to move
+    protected const float delay_M = 0.25f;     // Medium delay to move between cards
     #endregion
+
+    #region Public Variables    // Variables to be changed realtime
+    public int fontSizeAdjust_S = 60;
+    public int fontSizeAdjust_M = 100;
+    #endregion
+
+    /// <summary>
+    /// It is only used to update static variable from Unity's Inspector
+    /// </summary>
+    void Update()
+    {
+        fontSize_M = fontSizeAdjust_M;
+        charSize_M = refSize / fontSize_M;
+        fontSize_S = fontSizeAdjust_S;
+        charSize_S = refSize / fontSize_S;
+    }
 
     /// <summary>
     /// Sorts a deck.

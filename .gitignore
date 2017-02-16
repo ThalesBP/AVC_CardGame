@@ -1,0 +1,9 @@
+*.meta
+*.TTF
+*.stamp
+*.bin
+*.info
+*.bakert
+*.backup
+Library/metadata/
+Temp/
