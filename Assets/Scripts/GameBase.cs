@@ -34,6 +34,7 @@ public class GameBase : MonoBehaviour {
 
     #region Position, rotation and scale of cards on screen
     static protected float cardThick = 0.01f;       // Card's thickness
+    static protected float spreadRadius = 3f;       // The radius that cards are spread
     #endregion
 
     #region Other informations

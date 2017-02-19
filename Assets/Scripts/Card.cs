@@ -29,17 +29,10 @@ public class Card : GameBase {
         scale = gameObject.AddComponent<Motion>();
         suit = value = color = 0;
 
-        position.Value = transform.position;
-        rotation.Value = transform.rotation.eulerAngles;
-        scale.Value = transform.localScale;
-    }
+        position.MoveTo(transform.position);
+        rotation.MoveTo(transform.rotation.eulerAngles);
+        scale.MoveTo(transform.localScale);
 
-    void Update()
-    {
-        transform.position = position;
-        transform.rotation = Quaternion.Euler(rotation);
-        transform.localScale = scale;
-    
         // Set visual text quality
         foreach (TextMesh value in valueTexts)
         {
@@ -53,6 +46,13 @@ public class Card : GameBase {
         }
         suitTexts[2].characterSize = charSize_M;    // Central suit has different size
         suitTexts[2].fontSize = fontSize_M;
+    }
+
+    void Update()
+    {
+        transform.position = position;
+        transform.rotation = Quaternion.Euler(rotation);
+        transform.localScale = scale;
     }
 
     #region Update Infos functions
@@ -144,7 +144,12 @@ public class Card : GameBase {
     public static bool operator ==(Card cardA, Card cardB)
     {
         if ((((object)cardA) == null) || (((object)cardB) == null))
-            return false;
+        {
+            if ((((object)cardA) == null) && (((object)cardB) == null))
+                return true;
+            else
+                return false;
+        }
 
         if ((cardA.suit == cardB.suit) && (cardA.value == cardB.value) && (cardA.color == cardB.color))
             return true;
@@ -155,7 +160,12 @@ public class Card : GameBase {
     public static bool operator !=(Card cardA, Card cardB)
     {
         if ((((object)cardA) == null) || (((object)cardB) == null))
-            return false;
+        {
+            if ((((object)cardA) == null) && (((object)cardB) == null))
+                return false;
+            else
+                return true;
+        }
 
         if ((cardA.suit != cardB.suit) || (cardA.value != cardB.value) || (cardA.color == cardB.color))
             return true;

@@ -13,6 +13,9 @@ public class Dealer : GameBase {
     // Aux variables
     private Card cardAux;
     private int packCounter;
+    private Card aimedCard;
+    [SerializeField]
+    private bool onCard;
 
     // Cards in the game    
     [SerializeField]
@@ -22,31 +25,30 @@ public class Dealer : GameBase {
 
     private LayerMask cardMask;
 
-    [Space]
-    public int timeDelay, screenRadius;
 
     // Use this for initialization
 	void Start () 
     {
         cardMask = LayerMask.GetMask("Card");
 
-//      Obtain challenge cards from a full deck
-//        cardsInGame = CreateDeck(suitNames.Length, valueNames.Length);
-//        challengeCards = PickCards(cardsInGame, challengeNumber);
-
         challengeCards = CreateDeck(challengeNumber);
+        onCard = false;
 
-        PackCards(challengeCards);
+        PackCards(challengeCards, 0f, 0f);
+        HideCards(challengeCards, 0f, 0f);
 
         cardAux = ChooseCard(challengeCards);
         objectiveCard = CreateCard(cardAux);
 
-        PackCard(objectiveCard);
-        SpreadCards(challengeCards);
+        PackCard(objectiveCard, 0f);
+        HideCard(objectiveCard, 0f);
 
-        objectiveCard.position.MoveTo(new Vector3(0f, 0f, -1.5f), move_M, challengeCards.Count * delay_M);
-        objectiveCard.rotation.MoveTo(new Vector3(0f, 0f, 0f), move_M, challengeCards.Count * delay_M + move_M);
-	}
+        SpreadCards(challengeCards);
+        ShowCards(challengeCards, delay_M, move_M);
+
+        objectiveCard.position.MoveTo(1.5f * Vector3.back, move_M, challengeCards.Count * delay_M);
+        ShowCard(objectiveCard, challengeCards.Count * delay_M + move_M);
+    }
 	
 	// Update is called once per frame
 	void Update () 
@@ -65,18 +67,36 @@ public class Dealer : GameBase {
 
         if (Physics.Raycast(camRay, out cardHit, 50f, cardMask))
         {
-            foreach (Card challange in challengeCards)
+            if (!onCard)
             {
-                if (cardHit.transform.parent.transform == challange.transform)
+                onCard = true;
+                foreach (Card challange in challengeCards)
                 {
-                    objectiveCard.UpdateInfos(challange);
+                    if (cardHit.transform.parent.transform == challange.transform)
+                    {
+                        aimedCard = challange;
+                        aimedCard.scale.MoveTo(Vector3.one * 1.1f, 0.2f);
+
+                        // Only for test
+                        objectiveCard.UpdateInfos(aimedCard);
+                    }
+  //                  else
+ //                       challange.scale.MoveTo(Vector3.one, 0.1f);
                 }
+
+                //          if (underMouse != null)
+                //                objective.UpdateInfos(underMouse.suit, underMouse.value);
+                //          if (!Input.GetMouseButton(0))
             }
-
-
-            //          if (underMouse != null)
-            //                objective.UpdateInfos(underMouse.suit, underMouse.value);
-            //          if (!Input.GetMouseButton(0))
+        }
+        else
+        {
+            onCard = false;
+            if (aimedCard != null)
+            {
+                aimedCard.scale.MoveTo(Vector3.one, 0.1f);
+                aimedCard = null;
+            }
         }
     }
 
@@ -207,16 +227,63 @@ public class Dealer : GameBase {
     }*/
     #endregion
 
-    #region Deck manager
+    #region Movements manager
+    /// <summary>
+    /// Hides the card after delay time.
+    /// </summary>
+    /// <param name="card">Card to be hidden.</param>
+    /// <param name="delay">Delay time to be hidden.</param>
+    void HideCard(Card card, float delay)
+    {
+        card.rotation.MoveTo(new Vector3(0f, 180f, 0f), delay);
+    }
+
+    /// <summary>
+    /// Shows the card after delay time.
+    /// </summary>
+    /// <param name="card">Card to be showed.</param>
+    /// <param name="delay">Delay time to be showed.</param>
+    void ShowCard(Card card, float delay)
+    {
+        card.rotation.MoveTo(Vector3.zero, move_M, delay);
+    }
+
+    /// <summary>
+    /// Hides a pack of cards.
+    /// </summary>
+    /// <param name="deck">Deck to be hidden.</param>
+    /// <param name="delayStep">Delay step between each hidden movement.</param>
+    /// <param name="delay">Delay before start to hidden.</param>
+    void HideCards(List<Card> deck, float delayStep, float delay)
+    {
+        foreach (Card card in deck)
+        {
+            HideCard(card, deck.IndexOf(card) * delayStep + delay);
+        }
+    }
+
+    /// <summary>
+    /// Shows a pack of cards.
+    /// </summary>
+    /// <param name="deck">Deck to be showed.</param>
+    /// <param name="delayStep">Delay step between each showed movement.</param>
+    /// <param name="delay">Delay before start to showed.</param>
+    void ShowCards(List<Card> deck, float delayStep, float delay)
+    {
+        foreach (Card card in deck)
+        {
+            ShowCard(card, deck.IndexOf(card) * delayStep + delay);
+        }
+    }
+
 
     /// <summary>
     /// Adds a card to the pack.
     /// </summary>
     /// <param name="card">Card to be added.</param>
-    void PackCard(Card card)
+    void PackCard(Card card, float delay)
     {
-        card.position.MoveTo(cardThick * packCounter * Vector3.back);
-        card.rotation.MoveTo(new Vector3(0f, 180f, 0f));
+        card.position.MoveTo(cardThick * packCounter * Vector3.back, delay);
         packCounter++;
     }
 
@@ -224,14 +291,10 @@ public class Dealer : GameBase {
     /// Packs the cards of a deck.
     /// </summary>
     /// <param name="deck">Deck to be packed.</param>
-    void PackCards(List<Card> deck)
+    void PackCards(List<Card> deck, float delayStep, float delay)
     {
         foreach (Card card in deck)
-        {
-            card.position.MoveTo(cardThick * packCounter * Vector3.back);
-            card.rotation.MoveTo(new Vector3(0f, 180f, 0f));
-            packCounter++;
-        }
+            PackCard(card, deck.IndexOf(card) * delayStep + delay);
     }
 
     /// <summary>
@@ -245,11 +308,12 @@ public class Dealer : GameBase {
         angShare = 2f * Mathf.PI / deck.Count;
         foreach (Card card in deck)
         {
-            card.position.MoveTo(new Vector3(3f * Mathf.Sin(angShare * deck.IndexOf(card)), 3f * Mathf.Cos(angShare * deck.IndexOf(card)), 0), move_M, deck.IndexOf(card) * delay_M);
-            card.rotation.MoveTo(new Vector3(0f, 0f, 0f), move_M, deck.IndexOf(card) * delay_M + move_M);
+            card.position.MoveTo(new Vector3(spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card)), spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card)), 0), move_M, deck.IndexOf(card) * delay_M);
         }
     }
+    #endregion
 
+    #region Deck manager
     /// <summary>
     /// Chooses a random card from a deck (does not remove from it).
     /// </summary>

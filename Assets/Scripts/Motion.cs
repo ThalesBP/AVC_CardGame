@@ -12,6 +12,10 @@ public class Motion : GameBase {
 
     public Vector3 Value
     {
+        get
+        {
+            return value;
+        }
         set
         {
             this.value = value; 
@@ -90,10 +94,15 @@ public class Motion : GameBase {
     /// <param name="deltaTime">Time it takes to reach it.</param>
     public void MoveTo(Vector3 destiny, float deltaTime)
     {
-        counter = 0f;
-        delta = deltaTime;
-        final = destiny;
-        status = Status.moving;
+        if (deltaTime > 0)
+        {
+            counter = 0f;
+            delta = deltaTime;
+            final = destiny;
+            status = Status.moving;
+        }
+        else
+            MoveTo(destiny);
     }
 
     /// <summary>
