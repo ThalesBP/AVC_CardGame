@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Card : GameBase {
 
-    enum status {idle, waiting, moving, updating};
+    public enum Status {free, right, wrong};
 
     #region Card Infos
     public string suitName, suitSymbol, valueName, colorName;   // This may be useless
@@ -15,7 +15,16 @@ public class Card : GameBase {
     public Color colorRGB;
     #endregion
 
+    #region Design Infos
+    [HideInInspector]
     public List<TextMesh> valueTexts, suitTexts;    // Text in 3D cards
+    [HideInInspector]
+    public GameObject highlight;
+    [HideInInspector]
+    public Material wrongCardMat, rightCardMat;
+    public Status status;
+    private MeshRenderer cardMeshRender;
+    #endregion
 
     #region Motion's variables
     public Motion position, rotation, scale;
@@ -32,6 +41,10 @@ public class Card : GameBase {
         position.MoveTo(transform.position);
         rotation.MoveTo(transform.rotation.eulerAngles);
         scale.MoveTo(transform.localScale);
+
+        status = Status.free;
+        cardMeshRender = highlight.GetComponent<MeshRenderer>();
+        highlight.SetActive(false);
 
         // Set visual text quality
         foreach (TextMesh value in valueTexts)
@@ -53,6 +66,21 @@ public class Card : GameBase {
         transform.position = position;
         transform.rotation = Quaternion.Euler(rotation);
         transform.localScale = scale;
+
+        switch (status)
+        {
+            case Status.free:
+                highlight.SetActive(false);
+                break;
+            case Status.right:
+                highlight.SetActive(true);
+                cardMeshRender.material = rightCardMat;
+                break;
+            case Status.wrong:
+                highlight.SetActive(true);
+                cardMeshRender.material = wrongCardMat;
+                break;
+        }
     }
 
     #region Update Infos functions

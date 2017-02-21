@@ -8,7 +8,7 @@ public class Motion : GameBase {
 
     private Vector3 initial, value, final;
     private float counter, delay, delta;
-    Status status;
+    private Status status;
 
     public Vector3 Value
     {

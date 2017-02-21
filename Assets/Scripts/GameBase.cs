@@ -32,14 +32,21 @@ public class GameBase : MonoBehaviour {
     protected static float charSize_S =  refSize / fontSize_S;
     #endregion
 
+    #region Delta time informations
+    protected static readonly float[] DeltaTime = { 0.1f, 0.25f, 0.5f, 0.75f, 1f };
+    protected static readonly int VeryShort = 0;
+    protected static readonly int Short = 1;
+    protected static readonly int Medium = 2;
+    protected static readonly int Long = 3;
+    protected static readonly int VeryLong = 4;
+    #endregion
+
     #region Position, rotation and scale of cards on screen
     static protected float cardThick = 0.01f;       // Card's thickness
     static protected float spreadRadius = 3f;       // The radius that cards are spread
     #endregion
 
     #region Other informations
-    protected const float move_M = 0.75f;      // Medium delta time to move
-    protected const float delay_M = 0.25f;     // Medium delay to move between cards
     #endregion
 
     #region Public Variables    // Variables to be changed realtime

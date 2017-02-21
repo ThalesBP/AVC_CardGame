@@ -7,15 +7,20 @@ using UnityEngine;
 /// </summary>
 public class Dealer : GameBase {
 
+    public enum Status {newGame, waitingPlayer, endGame, waitingMotion};
+
+    private Status gameStatus;      // Controls the game status
     public GameObject cardPrefab;   // Card prefab to be instantiated
     public int challengeNumber;     // Number of card in challange - It may be useless
 
     // Aux variables
     private Card cardAux;
     private int packCounter;
+    private float waitCounter, timeToWait;
+    private Status nextStatus;
     private Card aimedCard;
     [SerializeField]
-    private bool onCard;
+    private bool onCard;        // This variable may be useless
 
     // Cards in the game    
     [SerializeField]
@@ -29,37 +34,78 @@ public class Dealer : GameBase {
     // Use this for initialization
 	void Start () 
     {
+        gameStatus = Status.newGame;
         cardMask = LayerMask.GetMask("Card");
-
-        challengeCards = CreateDeck(challengeNumber);
         onCard = false;
-
-        PackCards(challengeCards, 0f, 0f);
-        HideCards(challengeCards, 0f, 0f);
-
-        cardAux = ChooseCard(challengeCards);
-        objectiveCard = CreateCard(cardAux);
-
-        PackCard(objectiveCard, 0f);
-        HideCard(objectiveCard, 0f);
-
-        SpreadCards(challengeCards);
-        ShowCards(challengeCards, delay_M, move_M);
-
-        objectiveCard.position.MoveTo(1.5f * Vector3.back, move_M, challengeCards.Count * delay_M);
-        ShowCard(objectiveCard, challengeCards.Count * delay_M + move_M);
-    }
+        waitCounter = 0f;
+        timeToWait = 0f;
+        }
 	
 	// Update is called once per frame
 	void Update () 
     {
-        ControlMouseInteraction();
-	}
+        switch (gameStatus)
+        {
+            case Status.newGame:
+                challengeCards = CreateDeck(challengeNumber);
+
+                PackCards(challengeCards, 0f, 0f);
+     //           HideCards(challengeCards, 0f, 0f);
+
+                cardAux = ChooseCard(challengeCards);
+                objectiveCard = CreateCard(cardAux);
+
+                PackCard(objectiveCard, 0f);
+     //           HideCard(objectiveCard, 0f);
+
+                SpreadCards(challengeCards);
+                ShowCards(challengeCards, DeltaTime[Short], DeltaTime[Long]);
+
+                objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);
+
+                timeToWait = ShowCard(objectiveCard, challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);
+                nextStatus = Status.waitingPlayer;
+                gameStatus = Status.waitingMotion;
+                break;
+            case Status.waitingPlayer:
+                if (!ControlMouseInteraction())
+                {
+                    timeToWait = 2f;
+                    nextStatus = Status.endGame;
+                    gameStatus = Status.waitingMotion;
+                }
+                break;
+            case Status.endGame:
+                if (Input.GetMouseButton(0))
+                {
+                    packCounter = 0;
+
+                    HideCard(objectiveCard, 0f);
+                    timeToWait = HideCards(challengeCards, 0f, 0f);
+
+                    PackCard(objectiveCard, 0f);
+
+                    timeToWait += PackCards(challengeCards, DeltaTime[Short], timeToWait);
+         //           nextStatus = Status.newGame;
+           //         gameStatus = Status.waitingMotion;
+                }
+                break;
+            case Status.waitingMotion:
+                if (waitCounter < timeToWait)
+                    waitCounter += Time.deltaTime;
+                else
+                {
+                    waitCounter = timeToWait = 0f;
+                    gameStatus = nextStatus;
+                }
+                break;
+        }
+    }
 
     /// <summary>
     /// Controls mouse interaction
     /// </summary>
-    private void ControlMouseInteraction()
+    private bool ControlMouseInteraction()
     {
         Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
 
@@ -77,16 +123,35 @@ public class Dealer : GameBase {
                         aimedCard = challange;
                         aimedCard.scale.MoveTo(Vector3.one * 1.1f, 0.2f);
 
+//                        aimedCard.status = Card.Status.right;
+
                         // Only for test
-                        objectiveCard.UpdateInfos(aimedCard);
+//                        objectiveCard.UpdateInfos(aimedCard);
                     }
-  //                  else
- //                       challange.scale.MoveTo(Vector3.one, 0.1f);
                 }
 
-                //          if (underMouse != null)
-                //                objective.UpdateInfos(underMouse.suit, underMouse.value);
-                //          if (!Input.GetMouseButton(0))
+            }
+            if (Input.GetMouseButton(0))
+            {
+                objectiveCard.status = Card.Status.right;
+                if (aimedCard == objectiveCard)
+                {
+                    aimedCard.status = Card.Status.right;
+                }
+                else
+                {
+                    aimedCard.status = Card.Status.wrong;
+
+                    foreach (Card challange in challengeCards)
+                    {
+                        if (challange == objectiveCard)
+                        {
+                            challange.status = Card.Status.right;
+                            break;
+                        }
+                    }
+                }
+                return false;
             }
         }
         else
@@ -94,10 +159,12 @@ public class Dealer : GameBase {
             onCard = false;
             if (aimedCard != null)
             {
+//                aimedCard.status = Card.Status.free;
                 aimedCard.scale.MoveTo(Vector3.one, 0.1f);
                 aimedCard = null;
             }
         }
+        return true;
     }
 
     #region Create card functions
@@ -123,16 +190,21 @@ public class Dealer : GameBase {
         Card cardAux;
 
         cardObjAux = Instantiate(cardPrefab);    // Creates a game object based on cardBody
-        cardObjAux.transform.parent = this.transform;
+        transform.SetParent(this.transform);
+//        cardObjAux.transform.parent = this.transform;
 //        cardObjAux.layer = this.gameObject.layer;
 
-        cardObjAux.transform.position = new Vector3(0f, 0f, 0f);
-        cardObjAux.transform.rotation = Quaternion.Euler(new Vector3(0f, 0f, 0f));
+//        cardObjAux.transform.position = new Vector3(0f, 0f, 0f);
+//        cardObjAux.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
 
         cardObjAux.name = "Card_" + valueNames[value] + "_" + suitNames[suit];
 //        cardObjAux.tag = "Card";
         cardAux = cardObjAux.GetComponent<Card>();
         cardAux.UpdateInfos(suit, value);
+        cardAux.position.MoveTo(Vector3.zero);
+        cardAux.rotation.MoveTo(180f * Vector3.up);
+        cardAux.scale.MoveTo(Vector3.one);
+
         return cardAux;
     }
 
@@ -231,85 +303,101 @@ public class Dealer : GameBase {
     /// <summary>
     /// Hides the card after delay time.
     /// </summary>
+    /// <returns>Total time to execute</returns>
     /// <param name="card">Card to be hidden.</param>
     /// <param name="delay">Delay time to be hidden.</param>
-    void HideCard(Card card, float delay)
+    float HideCard(Card card, float delay)
     {
-        card.rotation.MoveTo(new Vector3(0f, 180f, 0f), delay);
+        card.rotation.MoveTo(new Vector3(0f, 180f, 0f), DeltaTime[Long], delay);
+        return delay;
     }
 
     /// <summary>
     /// Shows the card after delay time.
     /// </summary>
+    /// <returns>Total time to execute</returns>
     /// <param name="card">Card to be showed.</param>
     /// <param name="delay">Delay time to be showed.</param>
-    void ShowCard(Card card, float delay)
+    float ShowCard(Card card, float delay)
     {
-        card.rotation.MoveTo(Vector3.zero, move_M, delay);
+        card.rotation.MoveTo(Vector3.zero, DeltaTime[Long], delay);
+        return delay;
     }
 
     /// <summary>
     /// Hides a pack of cards.
     /// </summary>
+    /// <returns>Total time to execute</returns>
     /// <param name="deck">Deck to be hidden.</param>
     /// <param name="delayStep">Delay step between each hidden movement.</param>
     /// <param name="delay">Delay before start to hidden.</param>
-    void HideCards(List<Card> deck, float delayStep, float delay)
+    float HideCards(List<Card> deck, float delayStep, float delay)
     {
         foreach (Card card in deck)
         {
             HideCard(card, deck.IndexOf(card) * delayStep + delay);
         }
+        return (DeltaTime[Long] + deck.Count * delayStep + delay);
     }
 
     /// <summary>
     /// Shows a pack of cards.
     /// </summary>
+    /// <returns>Total time to execute</returns>
     /// <param name="deck">Deck to be showed.</param>
     /// <param name="delayStep">Delay step between each showed movement.</param>
     /// <param name="delay">Delay before start to showed.</param>
-    void ShowCards(List<Card> deck, float delayStep, float delay)
+    float ShowCards(List<Card> deck, float delayStep, float delay)
     {
         foreach (Card card in deck)
         {
             ShowCard(card, deck.IndexOf(card) * delayStep + delay);
         }
+        return (DeltaTime[Long] + deck.Count * delayStep + delay);
     }
 
 
     /// <summary>
     /// Adds a card to the pack.
     /// </summary>
+    /// <returns>Total time to execute</returns>
     /// <param name="card">Card to be added.</param>
-    void PackCard(Card card, float delay)
+    float PackCard(Card card, float delay)
     {
-        card.position.MoveTo(cardThick * packCounter * Vector3.back, delay);
+        card.position.MoveTo(cardThick * packCounter * Vector3.back, DeltaTime[Long], delay);
         packCounter++;
+        return delay;
     }
 
     /// <summary>
     /// Packs the cards of a deck.
     /// </summary>
+    /// <returns>Total time to execute</returns>
     /// <param name="deck">Deck to be packed.</param>
-    void PackCards(List<Card> deck, float delayStep, float delay)
+    float PackCards(List<Card> deck, float delayStep, float delay)
     {
         foreach (Card card in deck)
+        {
             PackCard(card, deck.IndexOf(card) * delayStep + delay);
+        }
+        return (DeltaTime[Long] + deck.Count * delayStep + delay);
     }
 
     /// <summary>
     /// Spreads the cards in a circle around screen.
     /// </summary>
     /// <param name="deck">Deck to be spread</param>
-    void SpreadCards(List<Card> deck)
+    /// <returns>Total time to execute</returns>
+    float SpreadCards(List<Card> deck)
     {
         float angShare;
 
         angShare = 2f * Mathf.PI / deck.Count;
         foreach (Card card in deck)
         {
-            card.position.MoveTo(new Vector3(spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card)), spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card)), 0), move_M, deck.IndexOf(card) * delay_M);
+            card.position.MoveTo(new Vector3(spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card)), spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card)), 0), DeltaTime[Long], deck.IndexOf(card) * DeltaTime[Short]);
         }
+        return (deck.Count * DeltaTime[Short]);
     }
     #endregion
 
