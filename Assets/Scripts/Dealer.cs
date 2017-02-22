@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Dealer : GameBase {
 
-    public enum Status {newGame, waitingPlayer, endGame, waitingMotion};
+    public enum Status {newGame, playerPlay, playerChoice, rightCard, wrongCard, endGame, waitingMotion};
 
     private Status gameStatus;      // Controls the game status
     public GameObject cardPrefab;   // Card prefab to be instantiated
@@ -60,50 +60,64 @@ public class Dealer : GameBase {
 
                 challengeCards = CreateDeck(challengeNumber);
 
-                //PackCards(challengeCards, 0f, 0f);
-
                 cardAux = ChooseCard(challengeCards);
                 objectiveCard = CreateCard(cardAux);
-
-                //PackCard(objectiveCard, 0f);
-
-
-                SpreadCards(challengeCards);
-                ShowCards(challengeCards, DeltaTime[Short], DeltaTime[Long]);
-
-                objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);
-
-                timeToWait = ShowCard(objectiveCard, challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);
-                Wait(timeToWait, Status.waitingPlayer);
-
+                gameStatus = Status.playerPlay;
                 break;
-            case Status.waitingPlayer:
-                if (!ControlMouseInteraction())
+            case Status.playerPlay:
+                if ((FindCardPointed() != null) && (Input.GetMouseButton(0)))
+                    {
+                    SpreadCards(challengeCards);
+                    ShowCards(challengeCards, DeltaTime[Short], DeltaTime[Long]);
+
+                    objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);
+
+                    timeToWait = ShowCard(objectiveCard, challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);
+                    Wait(timeToWait, Status.playerChoice);
+                    }
+                break;
+            case Status.playerChoice:
+                gameStatus = WaitCardChoise();
+                break;
+            case Status.wrongCard:
+                aimedCard.status = Card.Status.wrong;
+                Wait(1.5f, Status.rightCard);
+                break;
+            case Status.rightCard:
+                foreach (Card card in challengeCards)
                 {
-                    Wait(DeltaTime[VeryLong], Status.endGame);
+                    if (card == objectiveCard)
+                    {
+                        card.status = Card.Status.right;
+                    }
+                    else
+                    {
+                        if (card.status == Card.Status.free)
+                            HideCard(card, 0f);
+                    }                   
                 }
+                objectiveCard.status = Card.Status.right;
+
+                Wait(2.5f, Status.endGame);
                 break;
             case Status.endGame:
-                if (Input.GetMouseButton(0))
+                packCounter = 0;
+
+                objectiveCard.status = Card.Status.free;
+                foreach (Card card in challengeCards)
                 {
-                    packCounter = 0;
-
-                    objectiveCard.status = Card.Status.free;
-                    foreach (Card card in challengeCards)
-                    {
-                        card.status = Card.Status.free;
-                        card.scale.MoveTo(Vector3.one);
-                    }
-
-                    HideCard(objectiveCard, 0f);
-                    timeToWait = HideCards(challengeCards, 0f, 0f);
-
-                    PackCard(objectiveCard, DeltaTime[Long]);
-
-                    timeToWait += PackCards(challengeCards, DeltaTime[Short], timeToWait);
-                    Wait(timeToWait, Status.newGame);
-                    challengeNumber++;
+                    card.status = Card.Status.free;
+                    card.scale.MoveTo(Vector3.one);
                 }
+
+                HideCard(objectiveCard, 0f);
+                timeToWait = HideCards(challengeCards, 0f, 0f);
+
+                PackCard(objectiveCard, DeltaTime[Long]);
+
+                timeToWait += PackCards(challengeCards, DeltaTime[Short], timeToWait);
+                Wait(timeToWait, Status.newGame);
+                challengeNumber++;
                 break;
             case Status.waitingMotion:
                 if (waitCounter < timeToWait)
@@ -118,50 +132,70 @@ public class Dealer : GameBase {
     }
 
     /// <summary>
-    /// Controls mouse interaction
+    /// Finds the card pointed by mouse or return null.
     /// </summary>
-    private bool ControlMouseInteraction()
+    /// <returns>The card pointed or null.</returns>
+    private Card FindCardPointed()
     {
         Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
-
         RaycastHit cardHit;
 
         if (Physics.Raycast(camRay, out cardHit, 50f, cardMask))
         {
+            if (cardHit.transform.parent.transform == objectiveCard.transform)
+                {
+                    return objectiveCard;
+                }
+        }
+        return FindCardPointed(challengeCards);
+    }
+
+    /// <summary>
+    /// Finds the card pointed by mouse in a deck or return null.
+    /// </summary>
+    /// <returns>The card pointed or null.</returns>
+    /// <param name="deck">Deck of card to be checked.</param>
+    private Card FindCardPointed(List<Card> deck)
+    {
+        Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
+        RaycastHit cardHit;
+
+        if (Physics.Raycast(camRay, out cardHit, 50f, cardMask))
+        {
+            foreach (Card card in deck)
+            {
+                if (cardHit.transform.parent.transform == card.transform)
+                {
+                    return card;
+                }
+            }
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Waits the card choise.
+    /// </summary>
+    /// <returns>WaitingPlayer if have no choice or the result: right / wrong card</returns>
+    private Status WaitCardChoise()
+    {
+        Card cardAux = FindCardPointed(challengeCards);
+
+        if (cardAux != null)
+        {
             if (!onCard)
             {
                 onCard = true;
-                foreach (Card challange in challengeCards)
-                {
-                    if (cardHit.transform.parent.transform == challange.transform)
-                    {
-                        aimedCard = challange;
-                        aimedCard.scale.MoveTo(1.1f * Vector3.one, DeltaTime[Short]);
-                    }
-                }
+                aimedCard = cardAux;
+                aimedCard.scale.MoveTo(1.1f * Vector3.one, DeltaTime[Short]);
 
             }
             if (Input.GetMouseButton(0))
             {
-                objectiveCard.status = Card.Status.right;
                 if (aimedCard == objectiveCard)
-                {
-                    aimedCard.status = Card.Status.right;
-                }
+                    return Status.rightCard;
                 else
-                {
-                    aimedCard.status = Card.Status.wrong;
-
-                    foreach (Card challange in challengeCards)
-                    {
-                        if (challange == objectiveCard)
-                        {
-                            challange.status = Card.Status.right;
-                            break;
-                        }
-                    }
-                }
-                return false;
+                    return Status.wrongCard;
             }
         }
         else
@@ -169,12 +203,11 @@ public class Dealer : GameBase {
             onCard = false;
             if (aimedCard != null)
             {
-//                aimedCard.status = Card.Status.free;
                 aimedCard.scale.MoveTo(Vector3.one, DeltaTime[VeryShort]);
                 aimedCard = null;
             }
         }
-        return true;
+        return Status.playerChoice;
     }
 
     /// <summary>
