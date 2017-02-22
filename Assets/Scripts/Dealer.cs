@@ -47,16 +47,26 @@ public class Dealer : GameBase {
         switch (gameStatus)
         {
             case Status.newGame:
+                if (challengeCards.Count > 0)
+                {
+                    foreach (Card card in challengeCards)
+                    {
+                        //challengeCards.Remove(card);
+                        Destroy(card.gameObject);
+                    }
+                    Destroy(objectiveCard.gameObject);
+                }
+                packCounter = 0;
+
                 challengeCards = CreateDeck(challengeNumber);
 
-                PackCards(challengeCards, 0f, 0f);
-     //           HideCards(challengeCards, 0f, 0f);
+                //PackCards(challengeCards, 0f, 0f);
 
                 cardAux = ChooseCard(challengeCards);
                 objectiveCard = CreateCard(cardAux);
 
-                PackCard(objectiveCard, 0f);
-     //           HideCard(objectiveCard, 0f);
+                //PackCard(objectiveCard, 0f);
+
 
                 SpreadCards(challengeCards);
                 ShowCards(challengeCards, DeltaTime[Short], DeltaTime[Long]);
@@ -64,15 +74,13 @@ public class Dealer : GameBase {
                 objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);
 
                 timeToWait = ShowCard(objectiveCard, challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);
-                nextStatus = Status.waitingPlayer;
-                gameStatus = Status.waitingMotion;
+                Wait(timeToWait, Status.waitingPlayer);
+
                 break;
             case Status.waitingPlayer:
                 if (!ControlMouseInteraction())
                 {
-                    timeToWait = 2f;
-                    nextStatus = Status.endGame;
-                    gameStatus = Status.waitingMotion;
+                    Wait(DeltaTime[VeryLong], Status.endGame);
                 }
                 break;
             case Status.endGame:
@@ -80,14 +88,21 @@ public class Dealer : GameBase {
                 {
                     packCounter = 0;
 
+                    objectiveCard.status = Card.Status.free;
+                    foreach (Card card in challengeCards)
+                    {
+                        card.status = Card.Status.free;
+                        card.scale.MoveTo(Vector3.one);
+                    }
+
                     HideCard(objectiveCard, 0f);
                     timeToWait = HideCards(challengeCards, 0f, 0f);
 
-                    PackCard(objectiveCard, 0f);
+                    PackCard(objectiveCard, DeltaTime[Long]);
 
                     timeToWait += PackCards(challengeCards, DeltaTime[Short], timeToWait);
-         //           nextStatus = Status.newGame;
-           //         gameStatus = Status.waitingMotion;
+                    Wait(timeToWait, Status.newGame);
+                    challengeNumber++;
                 }
                 break;
             case Status.waitingMotion:
@@ -121,12 +136,7 @@ public class Dealer : GameBase {
                     if (cardHit.transform.parent.transform == challange.transform)
                     {
                         aimedCard = challange;
-                        aimedCard.scale.MoveTo(Vector3.one * 1.1f, 0.2f);
-
-//                        aimedCard.status = Card.Status.right;
-
-                        // Only for test
-//                        objectiveCard.UpdateInfos(aimedCard);
+                        aimedCard.scale.MoveTo(1.1f * Vector3.one, DeltaTime[Short]);
                     }
                 }
 
@@ -160,11 +170,23 @@ public class Dealer : GameBase {
             if (aimedCard != null)
             {
 //                aimedCard.status = Card.Status.free;
-                aimedCard.scale.MoveTo(Vector3.one, 0.1f);
+                aimedCard.scale.MoveTo(Vector3.one, DeltaTime[VeryShort]);
                 aimedCard = null;
             }
         }
         return true;
+    }
+
+    /// <summary>
+    /// Wait the specified time and set status game after that.
+    /// </summary>
+    /// <param name="time">Time to wait.</param>
+    /// <param name="after">After status.</param>
+    private void Wait(float time, Status after)
+    {
+        timeToWait = time;
+        nextStatus = after;
+        gameStatus = Status.waitingMotion;
     }
 
     #region Create card functions
@@ -191,19 +213,14 @@ public class Dealer : GameBase {
 
         cardObjAux = Instantiate(cardPrefab);    // Creates a game object based on cardBody
         transform.SetParent(this.transform);
-//        cardObjAux.transform.parent = this.transform;
-//        cardObjAux.layer = this.gameObject.layer;
-
-//        cardObjAux.transform.position = new Vector3(0f, 0f, 0f);
-//        cardObjAux.transform.rotation = Quaternion.Euler(new Vector3(0f, 180f, 0f));
 
         cardObjAux.name = "Card_" + valueNames[value] + "_" + suitNames[suit];
-//        cardObjAux.tag = "Card";
         cardAux = cardObjAux.GetComponent<Card>();
         cardAux.UpdateInfos(suit, value);
-        cardAux.position.MoveTo(Vector3.zero);
+        cardAux.position.MoveTo((backgndDist - (challengeNumber - packCounter) * cardThick) * Vector3.forward);
         cardAux.rotation.MoveTo(180f * Vector3.up);
         cardAux.scale.MoveTo(Vector3.one);
+        packCounter++;
 
         return cardAux;
     }
@@ -265,38 +282,12 @@ public class Dealer : GameBase {
                 deckAux.Add(cardAux);
                 iCard++;
             }
+            else
+                Destroy(cardAux.gameObject);
         }
         return deckAux;
 
     }
-
-   /* List<Card> CreateDeck (List<int> suitsList, List<int> valuesList)
-    {
-        List<Card> deckAux;
-
-        deckAux = new List<Card>();
-
-        foreach (int iSuit in suitsList)
-        {
-            foreach (int iValue in valuesList)
-            {
-                deckAux.Add(CreateCard(iSuit, iValue));
-                deckAux[deckAux.Count - 1].position.MoveTo(new Vector3(-0.01f * iValue - 0.13f * iSuit, 0f, 0f));
-                deckAux[deckAux.Count - 1].rotation.MoveTo(new Vector3(0f, 180f, 0f));
-            }
-        }
-
-        for (int iSuit = 0; iSuit < nSuits; iSuit++)
-        {
-            for (int iValue = 0; iValue < nValues; iValue++)
-            {
-                deckAux.Add(CreateCard(iSuit, iValue));
-                deckAux[deckAux.Count - 1].position.MoveTo(new Vector3(-0.01f * iValue - 0.13f * iSuit, 0f, 0f));
-                deckAux[deckAux.Count - 1].rotation.MoveTo(new Vector3(0f, 180f, 0f));
-            }
-        }
-        return deckAux;
-    }*/
     #endregion
 
     #region Movements manager
@@ -364,7 +355,7 @@ public class Dealer : GameBase {
     /// <param name="card">Card to be added.</param>
     float PackCard(Card card, float delay)
     {
-        card.position.MoveTo(cardThick * packCounter * Vector3.back, DeltaTime[Long], delay);
+        card.position.MoveTo((backgndDist - cardThick * packCounter) * Vector3.forward, DeltaTime[Long], delay);
         packCounter++;
         return delay;
     }
