@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls the motion of a Vector3 element along the time.
+/// </summary>
 public class Motion : GameBase {
 
     enum Status {idle, waiting, moving, updating};

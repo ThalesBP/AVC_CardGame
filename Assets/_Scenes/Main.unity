@@ -122,8 +122,6 @@ MonoBehaviour:
   fontSizeAdjust_M: 100
   cardPrefab: {fileID: 1921799268104742, guid: 2fe6ed2b873708f4bac81311e93e7f0a, type: 2}
   challengeNumber: 5
-  onCard: 0
-  cardsInGame: []
   challengeCards: []
   objectiveCard: {fileID: 0}
 --- !u!4 &11826

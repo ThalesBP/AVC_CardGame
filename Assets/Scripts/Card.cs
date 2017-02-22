@@ -7,23 +7,26 @@ using UnityEngine;
 /// </summary>
 public class Card : GameBase {
 
+    /// <summary>
+    /// Card status used to highlight or not, for example.
+    /// </summary>
     public enum Status {free, right, wrong};
 
     #region Card Infos
-    public string suitName, suitSymbol, valueName, colorName;   // This may be useless
-    public int suit, value, color;  // This card infos
-    public Color colorRGB;
+    public string suitName, suitSymbol, valueName, colorName;   // This card textes and symbols
+    public int suit, value, color;  // This card ìndexes
+    public Color colorRGB;  // Color of this card
     #endregion
 
     #region Design Infos
     [HideInInspector]
     public List<TextMesh> valueTexts, suitTexts;    // Text in 3D cards
     [HideInInspector]
-    public GameObject highlight;
+    public GameObject highlight;    // Object that highlights the card as right or wrong
     [HideInInspector]
-    public Material wrongCardMat, rightCardMat;
-    public Status status;
-    private MeshRenderer cardMeshRender;
+    public Material wrongCardMat, rightCardMat; //  Materials for highlight object
+    public Status status;   // Highlight status
+    private MeshRenderer cardMeshRender;    // Mesh render of highlight object
     #endregion
 
     #region Motion's variables

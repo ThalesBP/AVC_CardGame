@@ -7,41 +7,45 @@ using UnityEngine;
 /// </summary>
 public class Dealer : GameBase {
 
+    /// <summary>
+    /// Game phases from new game to end game.
+    /// </summary>
     public enum Status {newGame, playerPlay, playerChoice, rightCard, wrongCard, endGame, waitingMotion};
 
-    private Status gameStatus;      // Controls the game status
+    private Status gameStatus;      // Controls the game phases
     public GameObject cardPrefab;   // Card prefab to be instantiated
     public int challengeNumber;     // Number of card in challange - It may be useless
 
-    // Aux variables
-    private Card cardAux;
-    private int packCounter;
-    private float waitCounter, timeToWait;
-    private Status nextStatus;
+    private float waitCounter;      // Counter for waiting function
+    private float timeToWait;       // Aux variable for sums time to wait
+    private int packCounter;        // Counter for positioning cards in a pack
+    private bool onCard;            // Checks if mouse is on a card
+    private Status nextStatus;      // Save the next status after wait moves
     private Card aimedCard;
-    [SerializeField]
-    private bool onCard;        // This variable may be useless
 
     // Cards in the game    
     [SerializeField]
-    private List<Card> cardsInGame, challengeCards;
+    private List<Card> cardsInGame;     // All card in the game
     [SerializeField]
-    private Card objectiveCard;
+    private List<Card> challengeCards;  // Challenge cards in the game
+    [SerializeField]
+    private Card objectiveCard;         // Objective card
 
     private LayerMask cardMask;
 
-
-    // Use this for initialization
-	void Start () 
+    // Start variables
+    void Start () 
     {
         gameStatus = Status.newGame;
         cardMask = LayerMask.GetMask("Card");
+        challengeCards = new List<Card>();
+        cardsInGame = new List<Card>();
         onCard = false;
         waitCounter = 0f;
         timeToWait = 0f;
-        }
-	
-	// Update is called once per frame
+        packCounter = 0;
+    }
+    // Update is called once per frame
 	void Update () 
     {
         switch (gameStatus)
@@ -51,36 +55,36 @@ public class Dealer : GameBase {
                 {
                     foreach (Card card in challengeCards)
                     {
-                        //challengeCards.Remove(card);
-                        Destroy(card.gameObject);
+                        DestroyCard(card);
                     }
-                    Destroy(objectiveCard.gameObject);
-                }
-                packCounter = 0;
+                    DestroyCard(objectiveCard);
+                    cardsInGame.Clear();
+                    challengeCards.Clear();
+                    packCounter = 0;
+                }   // Cards must be cleared after frist phase
 
-                challengeCards = CreateDeck(challengeNumber);
+                challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
 
-                cardAux = ChooseCard(challengeCards);
-                objectiveCard = CreateCard(cardAux);
+                objectiveCard = CreateCard(ChooseCard(challengeCards)); // Chose one card from challenge cards to be the objective card
                 gameStatus = Status.playerPlay;
                 break;
             case Status.playerPlay:
-                if ((FindCardPointed() != null) && (Input.GetMouseButton(0)))
+                if ((FindCardPointed(cardsInGame) != null) && (Input.GetMouseButton(0)))
                     {
-                    SpreadCards(challengeCards);
-                    ShowCards(challengeCards, DeltaTime[Short], DeltaTime[Long]);
+                    SpreadCards(challengeCards);    // Spread the cards on screen...
+                    timeToWait = ShowCards(challengeCards, DeltaTime[Short], DeltaTime[Long]);   // ... and show them
 
-                    objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);
+                    objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);   // Highlightes objective card in center
 
-                    timeToWait = ShowCard(objectiveCard, challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);
+                    timeToWait += ShowCard(objectiveCard, challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);   // Also shows objective card
                     Wait(timeToWait, Status.playerChoice);
-                    }
+                    }   // Waits player plays the game
                 break;
             case Status.playerChoice:
-                gameStatus = WaitCardChoise();
+                gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
             case Status.wrongCard:
-                aimedCard.status = Card.Status.wrong;
+                aimedCard.status = Card.Status.wrong;   // If chosen card is wrong, highlight it first
                 Wait(1.5f, Status.rightCard);
                 break;
             case Status.rightCard:
@@ -95,29 +99,25 @@ public class Dealer : GameBase {
                         if (card.status == Card.Status.free)
                             HideCard(card, 0f);
                     }                   
-                }
+                }   // Highlight the right cards and hides the cards not highlighted
                 objectiveCard.status = Card.Status.right;
 
                 Wait(2.5f, Status.endGame);
                 break;
             case Status.endGame:
-                packCounter = 0;
-
-                objectiveCard.status = Card.Status.free;
-                foreach (Card card in challengeCards)
+                foreach (Card card in cardsInGame)
                 {
                     card.status = Card.Status.free;
                     card.scale.MoveTo(Vector3.one);
-                }
+                }   // Removes all highlights
 
-                HideCard(objectiveCard, 0f);
-                timeToWait = HideCards(challengeCards, 0f, 0f);
+                // Hides and packs all the cards
+                packCounter = 0;
+                timeToWait = HideCards(cardsInGame, 0f, 0f);
+                timeToWait += PackCards(cardsInGame, DeltaTime[Short], timeToWait);
 
-                PackCard(objectiveCard, DeltaTime[Long]);
-
-                timeToWait += PackCards(challengeCards, DeltaTime[Short], timeToWait);
                 Wait(timeToWait, Status.newGame);
-                challengeNumber++;
+                challengeNumber++;  // Demonstrative only
                 break;
             case Status.waitingMotion:
                 if (waitCounter < timeToWait)
@@ -131,25 +131,7 @@ public class Dealer : GameBase {
         }
     }
 
-    /// <summary>
-    /// Finds the card pointed by mouse or return null.
-    /// </summary>
-    /// <returns>The card pointed or null.</returns>
-    private Card FindCardPointed()
-    {
-        Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
-        RaycastHit cardHit;
-
-        if (Physics.Raycast(camRay, out cardHit, 50f, cardMask))
-        {
-            if (cardHit.transform.parent.transform == objectiveCard.transform)
-                {
-                    return objectiveCard;
-                }
-        }
-        return FindCardPointed(challengeCards);
-    }
-
+    #region Generic functions
     /// <summary>
     /// Finds the card pointed by mouse in a deck or return null.
     /// </summary>
@@ -177,7 +159,7 @@ public class Dealer : GameBase {
     /// Waits the card choise.
     /// </summary>
     /// <returns>WaitingPlayer if have no choice or the result: right / wrong card</returns>
-    private Status WaitCardChoise()
+    private Status WaitCardChoice()
     {
         Card cardAux = FindCardPointed(challengeCards);
 
@@ -221,8 +203,9 @@ public class Dealer : GameBase {
         nextStatus = after;
         gameStatus = Status.waitingMotion;
     }
+    #endregion
 
-    #region Create card functions
+    #region Create and Destroy card functions
     /// <summary>
     /// Creates a random card.
     /// </summary>
@@ -244,16 +227,14 @@ public class Dealer : GameBase {
         GameObject cardObjAux;
         Card cardAux;
 
-        cardObjAux = Instantiate(cardPrefab);    // Creates a game object based on cardBody
+        cardObjAux = Instantiate(cardPrefab, PackPosition(), Quaternion.Euler(180f * Vector3.up));    // Creates a game object based on cardBody
         transform.SetParent(this.transform);
 
         cardObjAux.name = "Card_" + valueNames[value] + "_" + suitNames[suit];
         cardAux = cardObjAux.GetComponent<Card>();
         cardAux.UpdateInfos(suit, value);
-        cardAux.position.MoveTo((backgndDist - (challengeNumber - packCounter) * cardThick) * Vector3.forward);
-        cardAux.rotation.MoveTo(180f * Vector3.up);
-        cardAux.scale.MoveTo(Vector3.one);
-        packCounter++;
+
+        cardsInGame.Add(cardAux);
 
         return cardAux;
     }
@@ -268,6 +249,15 @@ public class Dealer : GameBase {
         return CreateCard(card.suit, card.value);
     }
 
+    /// <summary>
+    /// Destroies the card.
+    /// </summary>
+    /// <param name="card">Card to be destroyed.</param>
+    private void DestroyCard(Card card)
+    {
+        Destroy(card.gameObject);
+    }
+
     #endregion
 
     #region Create deck functions
@@ -277,7 +267,7 @@ public class Dealer : GameBase {
     /// <returns>The deck.</returns>
     /// <param name="nSuits">Number of suits.</param>
     /// <param name="nValues">Number of values.</param>
-    List<Card> CreateDeck (int nSuits, int nValues)
+    private List<Card> CreateDeck (int nSuits, int nValues)
     {
         List<Card> deckAux;
 
@@ -299,7 +289,7 @@ public class Dealer : GameBase {
     /// </summary>
     /// <returns>Random deck.</returns>
     /// <param name="nCards">Number of cards.</param>
-    List<Card> CreateDeck(int nCards)
+    private List<Card> CreateDeck(int nCards)
     {
         List<Card> deckAux;
         Card cardAux;
@@ -316,7 +306,7 @@ public class Dealer : GameBase {
                 iCard++;
             }
             else
-                Destroy(cardAux.gameObject);
+                DestroyCard(cardAux);
         }
         return deckAux;
 
@@ -380,6 +370,14 @@ public class Dealer : GameBase {
         return (DeltaTime[Long] + deck.Count * delayStep + delay);
     }
 
+    /// <summary>
+    /// Returns current packs the position.
+    /// </summary>
+    Vector3 PackPosition()
+    {
+        packCounter++;
+        return (backgndDist - cardThick * packCounter) * Vector3.forward;
+    }
 
     /// <summary>
     /// Adds a card to the pack.
@@ -388,8 +386,7 @@ public class Dealer : GameBase {
     /// <param name="card">Card to be added.</param>
     float PackCard(Card card, float delay)
     {
-        card.position.MoveTo((backgndDist - cardThick * packCounter) * Vector3.forward, DeltaTime[Long], delay);
-        packCounter++;
+        card.position.MoveTo(PackPosition(), DeltaTime[Long], delay);
         return delay;
     }
 
@@ -431,7 +428,7 @@ public class Dealer : GameBase {
     /// </summary>
     /// <returns>The random card.</returns>
     /// <param name="deck">Deck to have a random card picked.</param>
-    Card ChooseCard(List<Card> deck)
+    private Card ChooseCard(List<Card> deck)
     {
         Card randomCard;
 
@@ -445,7 +442,7 @@ public class Dealer : GameBase {
     /// </summary>
     /// <returns>The random card.</returns>
     /// <param name="deck">Deck to have a random card picked.</param>
-    Card PickCard(List<Card> deck)
+    private Card PickCard(List<Card> deck)
     {
         Card randomCard;
 
@@ -461,7 +458,7 @@ public class Dealer : GameBase {
     /// <returns>The random cards picked.</returns>
     /// <param name="deck">Deck to have random cards picked.</param>
     /// <param name="nCards">Number cards picked.</param>
-    List<Card> PickCards(List<Card> deck, int nCards)
+    private List<Card> PickCards(List<Card> deck, int nCards)
     {
         List<Card> pickedCards = new List<Card>();
 
