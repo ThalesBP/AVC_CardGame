@@ -11,17 +11,14 @@ using System.Collections.Generic;
 public class GameBase : MonoBehaviour {
 
     #region Suit of cards, cards and player's position
-
     protected static readonly string[] suitNames = {"Diamond", "Spades", "Heart", "Club"};
     protected static readonly string[] suitSymbols = {"♦", "♠", "♥", "♣"};
     protected static readonly string[] valueNames = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
     protected static readonly string[] colorNames = { "Red", "Black"};
 
-    // Check if this is useful
     public enum Suits {Diamond, Spades, Heart, Club};
     public enum Values {A = 0, J = 11, Q = 12, K = 13};
     public enum Colors {Red, Black};
-
     #endregion
 
     #region Card design informations
@@ -45,6 +42,10 @@ public class GameBase : MonoBehaviour {
     static protected float backgndDist = 0.4f;      // Background distance
     static protected float cardThick = 0.01f;       // Card's thickness
     static protected float spreadRadius = 3f;       // The radius that cards are spread
+    #endregion
+
+    #region Texts
+//    protected static readonly string 
     #endregion
 
     #region Other informations

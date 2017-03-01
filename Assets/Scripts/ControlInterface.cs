@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Controls interface between the game and player.
+/// </summary>
 public class ControlInterface : Singleton<ControlInterface> {
 
     [SerializeField]
@@ -34,11 +37,19 @@ public class ControlInterface : Singleton<ControlInterface> {
         }
     }
 
+    /// <summary>
+    /// Gets the player's position.
+    /// </summary>
+    /// <returns>The position.</returns>
     public Vector2 GetPosition()
     {
         return Position;
     }
 
+    /// <summary>
+    /// Gets the player's action.
+    /// </summary>
+    /// <returns><c>true</c>, if action was gotten, <c>false</c> otherwise.</returns>
     public bool GetAction()
     {
         ActionTrigger = true;

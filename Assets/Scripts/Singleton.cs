@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 
+/// <summary>
+/// Singleton works as a static class.
+/// </summary>
 public class Singleton<T> : MonoBehaviour where T : Singleton<T>
 {
     public static T Instance;
@@ -20,7 +23,7 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
                 Instance = this as T;
             else
                 DestroyObject(gameObject);
-            DontDestroyOnLoad(gameObject);
+//            DontDestroyOnLoad(gameObject);
         }
         else
         {
