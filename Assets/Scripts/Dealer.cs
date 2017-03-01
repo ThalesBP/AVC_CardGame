@@ -15,6 +15,7 @@ public class Dealer : GameBase {
     private Status gameStatus;      // Controls the game phases
     public GameObject cardPrefab;   // Card prefab to be instantiated
     public int challengeNumber;     // Number of card in challange - It may be useless
+    public ControlInterface player;  // Reads player's position
 
     private float waitCounter;      // Counter for waiting function
     private float timeToWait;       // Aux variable for sums time to wait
@@ -40,6 +41,7 @@ public class Dealer : GameBase {
         cardMask = LayerMask.GetMask("Card");
         challengeCards = new List<Card>();
         cardsInGame = new List<Card>();
+        player = gameObject.AddComponent<ControlInterface>();
         onCard = false;
         waitCounter = 0f;
         timeToWait = 0f;
@@ -69,14 +71,14 @@ public class Dealer : GameBase {
                 gameStatus = Status.playerPlay;
                 break;
             case Status.playerPlay:
-                if ((FindCardPointed(cardsInGame) != null) && (Input.GetMouseButton(0)))
+                if ((FindCardPointed(cardsInGame) != null) && (player.GetAction()))
                     {
                     SpreadCards(challengeCards);    // Spread the cards on screen...
                     timeToWait = ShowCards(challengeCards, DeltaTime[Short], DeltaTime[Long]);   // ... and show them
 
                     objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);   // Highlightes objective card in center
 
-                    timeToWait += ShowCard(objectiveCard, challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);   // Also shows objective card
+                    ShowCard(objectiveCard, challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);   // Also shows objective card
                     Wait(timeToWait, Status.playerChoice);
                     }   // Waits player plays the game
                 break;
@@ -139,7 +141,7 @@ public class Dealer : GameBase {
     /// <param name="deck">Deck of card to be checked.</param>
     private Card FindCardPointed(List<Card> deck)
     {
-        Ray camRay = Camera.main.ScreenPointToRay (Input.mousePosition);
+        Ray camRay = Camera.main.ScreenPointToRay (player.GetPosition());
         RaycastHit cardHit;
 
         if (Physics.Raycast(camRay, out cardHit, 50f, cardMask))
@@ -172,7 +174,7 @@ public class Dealer : GameBase {
                 aimedCard.scale.MoveTo(1.1f * Vector3.one, DeltaTime[Short]);
 
             }
-            if (Input.GetMouseButton(0))
+            if (player.GetAction())
             {
                 if (aimedCard == objectiveCard)
                     return Status.rightCard;

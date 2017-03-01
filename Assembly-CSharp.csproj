@@ -47,9 +47,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Card.cs" />
+     <Compile Include="Assets\Scripts\ControlInterface.cs" />
      <Compile Include="Assets\Scripts\Dealer.cs" />
      <Compile Include="Assets\Scripts\GameBase.cs" />
+     <Compile Include="Assets\Scripts\Logger.cs" />
      <Compile Include="Assets\Scripts\Motion.cs" />
+     <Compile Include="Assets\Scripts\Singleton.cs" />
      <None Include="Assets\Shaders\Text3D.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
