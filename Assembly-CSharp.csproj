@@ -47,12 +47,14 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Card.cs" />
-     <Compile Include="Assets\Scripts\ControlInterface.cs" />
+     <Compile Include="Assets\Scripts\Choice.cs" />
+     <Compile Include="Assets\Scripts\ControlManager.cs" />
      <Compile Include="Assets\Scripts\DataManager.cs" />
      <Compile Include="Assets\Scripts\Dealer.cs" />
      <Compile Include="Assets\Scripts\Exit.cs" />
      <Compile Include="Assets\Scripts\GameBase.cs" />
      <Compile Include="Assets\Scripts\HideShow.cs" />
+     <Compile Include="Assets\Scripts\InterfaceManager.cs" />
      <Compile Include="Assets\Scripts\Logger.cs" />
      <Compile Include="Assets\Scripts\Motion.cs" />
      <Compile Include="Assets\Scripts\Singleton.cs" />

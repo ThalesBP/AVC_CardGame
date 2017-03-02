@@ -3,7 +3,7 @@
 /// <summary>
 /// Singleton works as a static class.
 /// </summary>
-public class Singleton<T> : MonoBehaviour where T : Singleton<T>
+public class Singleton<T> : GameBase where T : Singleton<T>
 {
     public static T Instance;
 

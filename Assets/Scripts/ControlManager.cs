@@ -5,33 +5,37 @@ using UnityEngine;
 /// <summary>
 /// Controls interface between the game and player.
 /// </summary>
-public class ControlInterface : Singleton<ControlInterface> {
+public class ControlManager : Singleton<ControlManager> {
 
     [SerializeField]
     private Vector2 Position;
     [SerializeField]
     private float ActionCounter, ActionCheck;
     [SerializeField]
-    private bool ActionTrigger;
+    private bool ActionCounting, ActionTrigger;
 
 	// Use this for initialization
 	void Start () 
     {
         ActionCounter = 0f;
-        ActionTrigger = false;
+        ActionCounting = false;
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
         Position = Input.mousePosition;
-        if (ActionTrigger)
+        if (ActionCounting)
         {
             if (ActionCheck < ActionCounter)
+            {
                 ActionCheck = ActionCounter;
+                if (ActionCounter > 2f)
+                    ActionTrigger = true;
+            }
             else
             {
-                ActionTrigger = false;
+                ActionCounting = false;
                 ActionCounter = ActionCheck = 0f;
             }
         }
@@ -52,7 +56,7 @@ public class ControlInterface : Singleton<ControlInterface> {
     /// <returns><c>true</c>, if action was gotten, <c>false</c> otherwise.</returns>
     public bool GetAction()
     {
-        ActionTrigger = true;
+        ActionCounting = true;
         ActionCounter += Time.deltaTime;
         return Input.GetMouseButton(0);
     }

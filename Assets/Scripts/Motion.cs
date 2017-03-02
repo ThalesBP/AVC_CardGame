@@ -7,22 +7,22 @@ using UnityEngine;
 /// </summary>
 public class Motion : GameBase {
 
-    enum Status {idle, waiting, moving, updating};
+    public enum Status {idle, waiting, moving, updating};
+    public Status status;
 
     private Vector3 initial, value, final;
     private float counter, delay, delta;
-    private Status status;
+    private float lerpScale;
+
+    public float LerpScale
+    {
+        get { return Mathf.Clamp(lerpScale, 0f, 1f); }
+    }
 
     public Vector3 Value
     {
-        get
-        {
-            return value;
-        }
-        set
-        {
-            this.value = value; 
-        }
+        get { return value; }
+//        set {this.value = value;}
     }
     public static implicit operator Vector3(Motion motion)
     {
@@ -34,7 +34,8 @@ public class Motion : GameBase {
 	void Awake () 
     {
         initial = final = Vector3.zero;
-        counter = delay = delta = 0f;
+        delay = 0f;
+        counter = delta = 1f;
         status = Status.idle;
 	}
 	
@@ -47,7 +48,7 @@ public class Motion : GameBase {
             case Status.idle:
                 break;
             case Status.moving:
-                value = Vector3.Lerp(initial, final, Mathf.SmoothStep(0f, 1f, (counter - delay) / delta));
+                value = Vector3.Lerp(initial, final, Mathf.SmoothStep(0f, 1f, lerpScale));
                 break;
             case Status.waiting:
                 break;
@@ -63,6 +64,8 @@ public class Motion : GameBase {
     /// </summary>
     private void Counter()
     {
+        lerpScale = (counter - delay) / delta;
+
         if (status != Status.idle)
         {
             if (counter < delay)

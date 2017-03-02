@@ -12,10 +12,11 @@ public class Dealer : GameBase {
     /// </summary>
     public enum Status {newGame, playerPlay, playerChoice, rightCard, wrongCard, endGame, waitingMotion};
 
+    [SerializeField]
     private Status gameStatus;      // Controls the game phases
     public GameObject cardPrefab;   // Card prefab to be instantiated
     public int challengeNumber;     // Number of card in challange - It may be useless
-    public ControlInterface player;  // Reads player's position
+    public ControlManager player;  // Reads player's position
 
     private float waitCounter;      // Counter for waiting function
     private float timeToWait;       // Aux variable for sums time to wait
@@ -23,6 +24,8 @@ public class Dealer : GameBase {
     private bool onCard;            // Checks if mouse is on a card
     private Status nextStatus;      // Save the next status after wait moves
     private Card aimedCard;
+    [SerializeField]
+    private InterfaceManager scores;
 
     // Cards in the game    
     [SerializeField]
@@ -31,17 +34,19 @@ public class Dealer : GameBase {
     private List<Card> challengeCards;  // Challenge cards in the game
     [SerializeField]
     private Card objectiveCard;         // Objective card
+    private List<Choice> choices;       // Saves player's choices
 
     private LayerMask cardMask;
 
     // Start variables
     void Start () 
     {
+        choices = new List<Choice>();
         gameStatus = Status.newGame;
         cardMask = LayerMask.GetMask("Card");
         challengeCards = new List<Card>();
         cardsInGame = new List<Card>();
-        player = gameObject.AddComponent<ControlInterface>();
+        player = gameObject.AddComponent<ControlManager>();
         onCard = false;
         waitCounter = 0f;
         timeToWait = 0f;
@@ -64,10 +69,14 @@ public class Dealer : GameBase {
                     challengeCards.Clear();
                     packCounter = 0;
                 }   // Cards must be cleared after frist phase
+                else
+                {
+                    scores.countDownCounter = CountDown + 1;
+                }
 
                 challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
-
                 objectiveCard = CreateCard(ChooseCard(challengeCards)); // Chose one card from challenge cards to be the objective card
+
                 gameStatus = Status.playerPlay;
                 break;
             case Status.playerPlay:
@@ -176,6 +185,9 @@ public class Dealer : GameBase {
             }
             if (player.GetAction())
             {
+                choices.Add(new Choice(aimedCard, objectiveCard));
+                scores.scoreValue = Choice.totalPoints;
+                    
                 if (aimedCard == objectiveCard)
                     return Status.rightCard;
                 else
@@ -257,6 +269,7 @@ public class Dealer : GameBase {
     /// <param name="card">Card to be destroyed.</param>
     private void DestroyCard(Card card)
     {
+        cardsInGame.RemoveAt(cardsInGame.FindLastIndex(x => x == card));
         Destroy(card.gameObject);
     }
 
