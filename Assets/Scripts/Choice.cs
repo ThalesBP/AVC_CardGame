@@ -7,11 +7,12 @@ using UnityEngine;
 /// </summary>
 public class Choice {
 
+    public static int suitCounter, valueCounter, colorCounter = 0;
     public static int totalPoints = 0;
     public static int orderCounter = 0;
-    public static string objectiveCard = "";
-    public static string choiceCard = "";
 
+    public string objectiveCard = "";
+    public string choiceCard = "";
     public bool suitMatch, valueMatch, colorMatch;
     public int pointMatch;
     public int order;
@@ -27,11 +28,20 @@ public class Choice {
         colorMatch = objective.color == choice.color;
 
         if (suitMatch)
+        {
             pointMatch += 10;
+            suitCounter++;
+        }
         if (valueMatch)
+        {
             pointMatch += 15;
+            valueCounter++;
+        }
         if (colorMatch)
+        {
             pointMatch += 5;
+            colorCounter++;
+        }
 
         order = orderCounter;
         orderCounter++;

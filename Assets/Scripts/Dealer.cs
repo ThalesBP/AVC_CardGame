@@ -188,6 +188,9 @@ public class Dealer : GameBase {
             {
                 choices.Add(new Choice(aimedCard, objectiveCard));
                 gameInterface.scoreValue = Choice.totalPoints;
+                gameInterface.metric1Value = 100 * Choice.suitCounter / Choice.orderCounter;
+                gameInterface.metric2Value = 100 * Choice.valueCounter / Choice.orderCounter;
+                gameInterface.metric3Value = 100 * Choice.colorCounter / Choice.orderCounter;
                     
                 if (aimedCard == objectiveCard)
                     return Status.rightCard;

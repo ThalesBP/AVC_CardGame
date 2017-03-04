@@ -98,9 +98,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 		
         scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
 
-        metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0");
-        metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0");
-        metric3.text = metric3Text[language] + "\n" + metric3Value.ToString("F0");
+        metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0") + "%";
+        metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0") + "%";
+        metric3.text = metric3Text[language] + "\n" + metric3Value.ToString("F0") + "%";
 
         if (countDownCounter >= 0)
         {
