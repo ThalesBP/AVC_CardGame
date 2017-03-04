@@ -25,7 +25,7 @@ public class Dealer : GameBase {
     private Status nextStatus;      // Save the next status after wait moves
     private Card aimedCard;
     [SerializeField]
-    private InterfaceManager scores;
+    private InterfaceManager gameInterface;
 
     // Cards in the game    
     [SerializeField]
@@ -60,6 +60,7 @@ public class Dealer : GameBase {
             case Status.newGame:
                 if (challengeCards.Count > 0)
                 {
+                    gameStatus = Status.playerPlay;
                     foreach (Card card in challengeCards)
                     {
                         DestroyCard(card);
@@ -71,13 +72,13 @@ public class Dealer : GameBase {
                 }   // Cards must be cleared after frist phase
                 else
                 {
-                    scores.countDownCounter = CountDown + 1;
+                    gameInterface.StartCountDown(CountDown);
+                    Wait(CountDown, Status.playerPlay);
                 }
 
                 challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
                 objectiveCard = CreateCard(ChooseCard(challengeCards)); // Chose one card from challenge cards to be the objective card
 
-                gameStatus = Status.playerPlay;
                 break;
             case Status.playerPlay:
                 if ((FindCardPointed(cardsInGame) != null) && (player.GetAction()))
@@ -186,7 +187,7 @@ public class Dealer : GameBase {
             if (player.GetAction())
             {
                 choices.Add(new Choice(aimedCard, objectiveCard));
-                scores.scoreValue = Choice.totalPoints;
+                gameInterface.scoreValue = Choice.totalPoints;
                     
                 if (aimedCard == objectiveCard)
                     return Status.rightCard;
@@ -207,7 +208,7 @@ public class Dealer : GameBase {
     }
 
     /// <summary>
-    /// Wait the specified time and set status game after that.
+    /// Waits the specified time and set status game after that.
     /// </summary>
     /// <param name="time">Time to wait.</param>
     /// <param name="after">After status.</param>
@@ -245,6 +246,7 @@ public class Dealer : GameBase {
         transform.SetParent(this.transform);
 
         cardObjAux.name = "Card_" + valueNames[value] + "_" + suitNames[suit];
+        cardObjAux.transform.SetParent(this.transform);
         cardAux = cardObjAux.GetComponent<Card>();
         cardAux.UpdateInfos(suit, value);
 

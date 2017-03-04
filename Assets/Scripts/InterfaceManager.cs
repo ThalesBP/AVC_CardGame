@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,10 +25,16 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     private Text metric2;
     private Text metric3;
 
-    [SerializeField]
     private Text gameMessages;
 
     private Text panelName;
+
+    private Text connect;
+    private Text start;
+    private Text stop;
+    private Text playTime;
+    private Text help;
+    private Text numOfCards;
     #endregion
 
     #region GameVariables
@@ -45,6 +51,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     public int scoreValue;
     public Messages gameMessage = Messages.newGame;
+    #endregion
+
+    #region Interactive objects
+    public Button connectButton, startButton, stopButton;
+    public InputField playTimeField;
+    public Toggle helpToggle;
+    public Slider numOfCardsSlider;
     #endregion
 
 	// Use this for initialization
@@ -70,7 +83,14 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>();
 
         panelName = GameObject.Find("PanelName").GetComponentInChildren<Text>();
-	}
+
+        connect = GameObject.Find("Connect").GetComponentInChildren<Text>();
+        start = GameObject.Find("Start").GetComponentInChildren<Text>();
+        stop = GameObject.Find("Stop").GetComponentInChildren<Text>();
+        playTime = GameObject.Find("PlayTimePlaceholder").GetComponentInChildren<Text>();
+        help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>();
+        numOfCards = GameObject.Find("NumOfCards").GetComponentInChildren<Text>();
+        }
 	// Update is called once per frame
 	void Update ()
     {
@@ -78,14 +98,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 		
         scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
 
+        metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0");
+        metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0");
+        metric3.text = metric3Text[language] + "\n" + metric3Value.ToString("F0");
+
         if (countDownCounter >= 0)
         {
-//            if (countDownCounter > CountDown)
-  //          {
-    //            playStatus.text = readyText[language];
-      //      }
-        //    else
-          //  {
             if (statusScale.status == Motion.Status.idle)
             {
                 countDownCounter--;
@@ -96,19 +114,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     playStatus.text = countDownCounter.ToString();
                 
                 statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[MuchLonger]);
-                /*                switch (countDownCounter)
-                    {
-                        case -1:
-                            playStatus.text = "";
-                            break;
-                        case 0:
-                            playStatus.text = goText[language];
-                            break;
-                        default:
-                            playStatus.text = countDownCounter.ToString();
-                            statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[VeryLong]);
-                            break;
-                    }*/
             }
             else
             {
@@ -116,9 +121,26 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 playStatus.color =  new Color(playStatus.color.r, playStatus.color.g, playStatus.color.b, 1f - statusScale.LerpScale);
                 statusBoarder.effectColor = Color.Lerp(Color.black, playStatus.color, statusScale.LerpScale);
             }
-            //}
         }
 
+        panelName.text = panelText[language];
+
         gameMessages.text = gameMessageTexts[(int)gameMessage, language];
+
+        connect.text = connectText[language];
+        start.text = startText[language];
+        stop.text = stopText[language];
+        playTime.text = playTimeText[language];
+        help.text = helpText[language];
+        numOfCards.text = numOfCardsText[language];
 	}
+
+    /// <summary>
+    /// Starts count down with 'time' seconds.
+    /// </summary>
+    /// <param name="time">Time in seconds.</param>
+    public void StartCountDown(int time)
+    {
+        countDownCounter = time + 1;
+    }
 }

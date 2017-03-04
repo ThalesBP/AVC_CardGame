@@ -50,6 +50,7 @@ public class GameBase : MonoBehaviour {
 
     #region Texts
     public enum Languages {English, Portuguese};
+    public static Languages chosenLanguage = Languages.English;
     protected static readonly string[] readyText = { "Ready?", "Pronto?" };
     protected static readonly string[] goText = { "Go!", "Vai!" };
     protected static readonly string[] hitRateText = { "Hit Rate", "Taxa de Acerto" };
@@ -65,8 +66,9 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] disconnectText = { "Disconnect", "Desconectar" };
     protected static readonly string[] startText = { "Start", "Iniciar" };
     protected static readonly string[] stopText = { "Stop", "Parar" };
+    protected static readonly string[] playTimeText = { "Play time in minutes", "Tempo de jogo em minutos" };
     protected static readonly string[] helpText = { "Visual Help", "Ajuda Visual" };
-    protected static readonly string[] nCardsText = { "Number of Cards", "Número de Cartas" };
+    protected static readonly string[] numOfCardsText = { "Number of Cards", "Número de Cartas" };
 
     public enum Messages {newGame, playerPlay, playerChoice, rightCard, wrongCard, endGame, waitingMotion, Connecting, Disconnecting};
     protected static readonly string[,] gameMessageTexts =
@@ -88,9 +90,9 @@ public class GameBase : MonoBehaviour {
     #endregion
 
     #region Public Variables    // Variables to be changed realtime
-    public Languages chosenLanguage = Languages.English;
     public int fontSizeAdjust_S = 60;
     public int fontSizeAdjust_M = 100;
+    public Languages languageAdjust = Languages.English;
     #endregion
 
     /// <summary>
@@ -102,6 +104,7 @@ public class GameBase : MonoBehaviour {
         charSize_M = refSize / fontSize_M;
         fontSize_S = fontSizeAdjust_S;
         charSize_S = refSize / fontSize_S;
+        chosenLanguage = languageAdjust;
     }
 
     /// <summary>
