@@ -51,6 +51,7 @@ public class Dealer : GameBase {
         waitCounter = 0f;
         timeToWait = 0f;
         packCounter = 0;
+        gameInterface.numOfCardsSlider.onValueChanged.AddListener(delegate {SliderChanged();});
     }
     // Update is called once per frame
 	void Update () 
@@ -72,8 +73,8 @@ public class Dealer : GameBase {
                 }   // Cards must be cleared after frist phase
                 else
                 {
-                    gameInterface.StartCountDown(CountDown);
-                    Wait(CountDown, Status.playerPlay);
+                 //   gameInterface.StartCountDown(CountDown);
+                 //   Wait(CountDown, Status.playerPlay);
                 }
 
                 challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
@@ -129,7 +130,6 @@ public class Dealer : GameBase {
                 timeToWait += PackCards(cardsInGame, DeltaTime[Short], timeToWait);
 
                 Wait(timeToWait, Status.newGame);
-                challengeNumber++;  // Demonstrative only
                 break;
             case Status.waitingMotion:
                 if (waitCounter < timeToWait)
@@ -186,12 +186,21 @@ public class Dealer : GameBase {
             }
             if (player.GetAction())
             {
-                choices.Add(new Choice(aimedCard, objectiveCard));
+                choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber));
                 gameInterface.scoreValue = Choice.totalPoints;
-                gameInterface.metric1Value = 100 * Choice.suitCounter / Choice.orderCounter;
-                gameInterface.metric2Value = 100 * Choice.valueCounter / Choice.orderCounter;
+                gameInterface.metric1Value = 100f * Choice.suitCounter / Choice.orderCounter;
+                gameInterface.metric2Value = 100f * Choice.valueCounter / Choice.orderCounter;
                 gameInterface.metric3Value = 100 * Choice.colorCounter / Choice.orderCounter;
-                    
+
+                float precisionRate;
+                if ((bool)choices[choices.Count - 1])
+                    precisionRate = 1f;
+                else
+                    precisionRate = (challengeNumber - 1) / challengeNumber;
+
+                Choice.precision = (Choice.precision * (Choice.orderCounter - 1) + precisionRate) / Choice.orderCounter;
+            //    gameInterface.metric3Value = 100f * Choice.precision;
+
                 if (aimedCard == objectiveCard)
                     return Status.rightCard;
                 else
@@ -220,6 +229,26 @@ public class Dealer : GameBase {
         timeToWait = time;
         nextStatus = after;
         gameStatus = Status.waitingMotion;
+    }
+
+    /// <summary>
+    /// Is called when slider is changed
+    /// </summary>
+    private void SliderChanged()
+    {
+        challengeNumber = Mathf.FloorToInt(gameInterface.numOfCardsSlider.value);
+        switch (gameStatus)
+        {
+            case Status.playerPlay:
+                gameStatus = Status.newGame;
+                break;
+            case Status.playerChoice:
+                gameStatus = Status.endGame;
+                break;
+            default:
+                break;
+        }
+
     }
     #endregion
 

@@ -10,14 +10,22 @@ public class Choice {
     public static int suitCounter, valueCounter, colorCounter = 0;
     public static int totalPoints = 0;
     public static int orderCounter = 0;
+    public static float precision = 0f;
 
     public string objectiveCard = "";
     public string choiceCard = "";
     public bool suitMatch, valueMatch, colorMatch;
     public int pointMatch;
     public int order;
+    public int numOptions;
 
-    public Choice(Card objective, Card choice)
+    /// <summary>
+    /// Initializes a new instance of the <see cref="Choice"/> class comparing the card chosen with objective card and the number of options.
+    /// </summary>
+    /// <param name="objective">Objective card.</param>
+    /// <param name="choice">Chosen card.</param>
+    /// <param name="nOptions">Number of card options.</param>
+    public Choice(Card objective, Card choice, int nOptions)
     {
         pointMatch = 0;
         objectiveCard = objective.ToString(0);
@@ -56,9 +64,6 @@ public class Choice {
         suitMatch = false;
         valueMatch = false;
         colorMatch = false;
-
-        order = orderCounter;
-        orderCounter++;
     }
 
     public static bool operator ==(Choice A, Choice B)

@@ -48,10 +48,17 @@ public class GameBase : MonoBehaviour {
     static protected float highlightScale = 1.2f;   // How much it grows to hightlight somethings
     #endregion
 
+    #region Interface
+    protected static readonly Color ConnectColor = new Color(16f/255f, 204f/255f, 0f);
+    protected static readonly Color StartColor = new Color(0f, 192f/255f, 1f);
+    protected static readonly Color StopColor = Color.red;
+    protected static readonly Color YellowText = new Color(1f, 206f/255f, 0f);
+    #endregion
+
     #region Texts
     public enum Languages {English, Portuguese};
     public static Languages chosenLanguage = Languages.English;
-    protected static readonly string[] readyText = { "Ready?", "Pronto?" };
+    protected static readonly string[] readyText = { "READY?", "PRONTO?" };
     protected static readonly string[] goText = { "Go!", "Vai!" };
     protected static readonly string[] hitRateText = { "Hit Rate", "Taxa de Acerto" };
     protected static readonly string[] timeRateText = { "Time Rate", "Taxa de Tempo" };
@@ -65,6 +72,8 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] connectText = { "Connect", "Conectar" };
     protected static readonly string[] disconnectText = { "Disconnect", "Desconectar" };
     protected static readonly string[] startText = { "Start", "Iniciar" };
+    protected static readonly string[] pausedText = { "Paused", "Pausado" };
+    protected static readonly string[] pauseText = { "Pause", "Pausar" };
     protected static readonly string[] stopText = { "Stop", "Parar" };
     protected static readonly string[] playTimeText = { "Play time in minutes", "Tempo de jogo em minutos" };
     protected static readonly string[] helpText = { "Visual Help", "Ajuda Visual" };
@@ -158,5 +167,11 @@ public class GameBase : MonoBehaviour {
                 return pack [i];
         }
         return null;
+    }
+
+
+    protected Color SetAlpha(Color color, float alpha)
+    {
+        return new Color(color.r, color.g, color.b, alpha);
     }
 }

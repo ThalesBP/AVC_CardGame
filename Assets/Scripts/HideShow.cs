@@ -36,7 +36,7 @@ public class HideShow : MonoBehaviour {
         if (moving)
         {
             transf.anchoredPosition = Vector2.Lerp(transf.anchoredPosition, target, time * slideTime);
-            time += Time.deltaTime;
+            time += Time.unscaledDeltaTime;
             if (time * slideTime > 1f)
                 moving = false;
         }

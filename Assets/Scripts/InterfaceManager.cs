@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class InterfaceManager : Singleton<InterfaceManager> {
 
+    private enum Status {begin, playing, paused};
+    private Status currentStatus = Status.begin;
     private int language;
 //    private enum PlayStatus {waiting, counting, playing};
   //  public PlayStatus countingStatus;
@@ -38,7 +40,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     #endregion
 
     #region GameVariables
-    public int countDownCounter;
+    private int countDownCounter;
 
     public float hitRateValue;
     public float timeRateValue;
@@ -67,6 +69,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         playStatus = GameObject.Find("PlayStatus").GetComponentInChildren<Text>();
         statusScale = playStatus.gameObject.AddComponent<Motion>();
+        statusScale.MoveTo(Vector3.one);
         statusBoarder = playStatus.GetComponent<Outline>();
 
         hitRate = GameObject.Find("HitRate").GetComponentsInChildren<Text>();
@@ -90,6 +93,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         playTime = GameObject.Find("PlayTimePlaceholder").GetComponentInChildren<Text>();
         help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>();
         numOfCards = GameObject.Find("NumOfCards").GetComponentInChildren<Text>();
+
+        Time.timeScale = 0f;
+        startButton.onClick.AddListener(delegate { SwitchStartPause(); });
+
         }
 	// Update is called once per frame
 	void Update ()
@@ -108,27 +115,49 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             {
                 countDownCounter--;
                 statusScale.MoveTo(Vector3.one);
-                if (countDownCounter == 0)
-                    playStatus.text = goText[language];
-                else
-                    playStatus.text = countDownCounter.ToString();
-                
+                switch (countDownCounter)
+                {
+                    case -1:
+                        playStatus.text = "";
+                        break;
+                    case 0:
+                        playStatus.text = goText[language];
+                        break;
+                    default:
+                        playStatus.text = countDownCounter.ToString();
+                        break;
+                }
                 statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[MuchLonger]);
             }
             else
             {
-                playStatus.transform.localScale = statusScale;
-                playStatus.color =  new Color(playStatus.color.r, playStatus.color.g, playStatus.color.b, 1f - statusScale.LerpScale);
-                statusBoarder.effectColor = Color.Lerp(Color.black, playStatus.color, statusScale.LerpScale);
+                playStatus.color = SetAlpha(YellowText, 1f - statusScale.LerpScale);
+                statusBoarder.effectColor = Color.Lerp(Color.black, playStatus.color, statusScale.LerpScale + 0.2f);
             }
         }
+        playStatus.transform.localScale = statusScale;
 
         panelName.text = panelText[language];
 
-        gameMessages.text = gameMessageTexts[(int)gameMessage, language];
+        switch (currentStatus)
+        {
+            case Status.begin:
+                playStatus.text = readyText[language];
+                gameMessages.text = gameMessageTexts[(int)gameMessage, language];
+                start.text = startText[language];
+                break;
+            case Status.paused:
+                gameMessages.text = pausedText[language];
+                start.text = startText[language];
+                break;
+            case Status.playing:
+                gameMessages.text = gameMessageTexts[(int)gameMessage, language];
+
+                start.text = pauseText[language];
+                break;
+        }
 
         connect.text = connectText[language];
-        start.text = startText[language];
         stop.text = stopText[language];
         playTime.text = playTimeText[language];
         help.text = helpText[language];
@@ -142,5 +171,31 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public void StartCountDown(int time)
     {
         countDownCounter = time + 1;
+    }
+
+    /// <summary>
+    /// Switchs between start and pause status.
+    /// </summary>
+    private void SwitchStartPause()
+    {
+        if (Time.timeScale == 1f)
+        {
+            playStatus.text = pausedText[language];
+
+            statusScale.MoveTo(Vector3.one);
+            playStatus.color = YellowText;
+            statusBoarder.effectColor = Color.black;
+
+            currentStatus = Status.paused;
+            Time.timeScale = 0f;
+        }
+        else 
+        {
+            statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[VeryLong]);
+            StartCountDown(CountDown);
+
+            currentStatus = Status.playing;
+            Time.timeScale = 1f;
+        }
     }
 }
