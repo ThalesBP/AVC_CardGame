@@ -20,6 +20,7 @@ public class Dealer : GameBase {
 
     private float waitCounter;      // Counter for waiting function
     private float timeToWait;       // Aux variable for sums time to wait
+    private float timeToChoose;     // Time player takes to choose
     private int packCounter;        // Counter for positioning cards in a pack
     private bool onCard;            // Checks if mouse is on a card
     private Status nextStatus;      // Save the next status after wait moves
@@ -50,6 +51,7 @@ public class Dealer : GameBase {
         onCard = false;
         waitCounter = 0f;
         timeToWait = 0f;
+        timeToChoose = 0f;
         packCounter = 0;
         gameInterface.numOfCardsSlider.onValueChanged.AddListener(delegate {SliderChanged();});
     }
@@ -93,6 +95,7 @@ public class Dealer : GameBase {
                     }   // Waits player plays the game
                 break;
             case Status.playerChoice:
+                timeToChoose += Time.deltaTime;
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
             case Status.wrongCard:
@@ -185,11 +188,13 @@ public class Dealer : GameBase {
             }
             if (player.GetAction())
             {
-                choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber));
+                choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
                 gameInterface.scoreValue = Choice.totalPoints;
                 gameInterface.metric1Value = 100f * Choice.suitCounter / Choice.orderCounter;
                 gameInterface.metric2Value = 100f * Choice.valueCounter / Choice.orderCounter;
                 gameInterface.metric3Value = 100 * Choice.colorCounter / Choice.orderCounter;
+
+                timeToChoose = 0f;
 
                 float precisionRate;
                 if ((bool)choices[choices.Count - 1])

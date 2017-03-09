@@ -65,6 +65,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] info1Text = { "Plantar/Dorsiflexion", "Plantar/Dorsiflexão" };
     protected static readonly string[] info2Text = { "Inver/Eversion", "Inver/Eversão" };
     protected static readonly string[] scorePointsText = { "Score", "Pontos" };
+    protected static readonly string[] timeText = { "Time", "Tempo" };
     protected static readonly string[] metric1Text = { "Suit", "Naipe" };
     protected static readonly string[] metric2Text = { "Value", "Valor" };
     protected static readonly string[] metric3Text = { "Color", "Cor" };

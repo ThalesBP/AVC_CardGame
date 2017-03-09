@@ -22,6 +22,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     private Text[] info2;
 
     private Text scorePoints;
+    private Text timeCounter;
 
     private Text metric1;
     private Text metric2;
@@ -66,6 +67,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 	// Use this for initialization
 	void Start () 
     {
+        
         Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
         countDownCounter = -1;
 
@@ -80,6 +82,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         info2 = GameObject.Find("Info2").GetComponentsInChildren<Text>();
 
         scorePoints = GameObject.Find("ScorePoints").GetComponentInChildren<Text>();
+        timeCounter = GameObject.Find("TimeCounter").GetComponentInChildren<Text>();
 
         metric1 = GameObject.Find("Metric1").GetComponentInChildren<Text>();
         metric2 = GameObject.Find("Metric2").GetComponentInChildren<Text>();
@@ -106,6 +109,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         language = (int)chosenLanguage;
 		
         scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
+        timeCounter.text = timeText[language] + "\n" + Choice.averageTimeToChoose.ToString("F2"); 
 
         metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0") + "%";
         metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0") + "%";

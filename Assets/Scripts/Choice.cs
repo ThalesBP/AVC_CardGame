@@ -11,6 +11,7 @@ public class Choice {
     public static int totalPoints = 0;
     public static int orderCounter = 0;
     public static float precision = 0f;
+    public static float averageTimeToChoose = 0f;
 
     public string objectiveCard = "";
     public string choiceCard = "";
@@ -18,6 +19,7 @@ public class Choice {
     public int pointMatch;
     public int order;
     public int numOptions;
+    public float timeToChoose;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="Choice"/> class comparing the card chosen with objective card and the number of options.
@@ -25,7 +27,7 @@ public class Choice {
     /// <param name="objective">Objective card.</param>
     /// <param name="choice">Chosen card.</param>
     /// <param name="nOptions">Number of card options.</param>
-    public Choice(Card objective, Card choice, int nOptions)
+    public Choice(Card objective, Card choice, int nOptions, float timeToChoose)
     {
         pointMatch = 0;
         objectiveCard = objective.ToString(0);
@@ -51,6 +53,8 @@ public class Choice {
             colorCounter++;
         }
 
+        this.timeToChoose = timeToChoose;
+        averageTimeToChoose = (averageTimeToChoose * orderCounter + timeToChoose) / (orderCounter + 1);
         order = orderCounter;
         orderCounter++;
         totalPoints += pointMatch;
