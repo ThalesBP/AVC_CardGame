@@ -60,11 +60,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public InputField playTimeField;
     public Toggle helpToggle;
     public Slider numOfCardsSlider;
+    public Texture2D mouseDefault;
     #endregion
 
 	// Use this for initialization
 	void Start () 
     {
+        Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
         countDownCounter = -1;
 
         playStatus = GameObject.Find("PlayStatus").GetComponentInChildren<Text>();

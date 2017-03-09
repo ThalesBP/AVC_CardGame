@@ -73,8 +73,7 @@ public class Dealer : GameBase {
                 }   // Cards must be cleared after frist phase
                 else
                 {
-                 //   gameInterface.StartCountDown(CountDown);
-                 //   Wait(CountDown, Status.playerPlay);
+                    Wait(CountDown, Status.playerPlay);
                 }
 
                 challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
