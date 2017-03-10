@@ -77,6 +77,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] pauseText = { "Pause", "Pausar" };
     protected static readonly string[] stopText = { "Stop", "Parar" };
     protected static readonly string[] playTimeText = { "Play time in minutes", "Tempo de jogo em minutos" };
+    protected static readonly string[] infTimeText = { "Infinite game time", "Tempo de jogo infinito" };
     protected static readonly string[] helpText = { "Visual Help", "Ajuda Visual" };
     protected static readonly string[] numOfCardsText = { "Number of Cards", "Número de Cartas" };
 

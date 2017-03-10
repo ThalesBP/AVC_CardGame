@@ -36,12 +36,15 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     private Text start;
     private Text stop;
     private Text playTime;
+    private Text playTimeInput;
     private Text help;
     private Text numOfCards;
     #endregion
 
     #region GameVariables
-    private int countDownCounter;
+    private int countDownCounter;   // Counter for count down
+    private float gameTime;         // Current game time
+    private float totalGameTime;    // Time to end the game
 
     public float hitRateValue;
     public float timeRateValue;
@@ -96,25 +99,20 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         start = GameObject.Find("Start").GetComponentInChildren<Text>();
         stop = GameObject.Find("Stop").GetComponentInChildren<Text>();
         playTime = GameObject.Find("PlayTimePlaceholder").GetComponentInChildren<Text>();
+        playTimeInput = GameObject.Find("PlayTime").GetComponentInChildren<Text>();
         help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>();
         numOfCards = GameObject.Find("NumOfCards").GetComponentInChildren<Text>();
 
         Time.timeScale = 0f;
+        connectButton.interactable = false;
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });
-
+        stopButton.interactable = false;
         }
 	// Update is called once per frame
 	void Update ()
     {
         language = (int)chosenLanguage;
 		
-        scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
-        timeCounter.text = timeText[language] + "\n" + Choice.averageTimeToChoose.ToString("F2"); 
-
-        metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0") + "%";
-        metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0") + "%";
-        metric3.text = metric3Text[language] + "\n" + metric3Value.ToString("F0") + "%";
-
         if (countDownCounter >= 0)
         {
             if (statusScale.status == Motion.Status.idle)
@@ -159,13 +157,27 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             case Status.playing:
                 gameMessages.text = gameMessageTexts[(int)gameMessage, language];
 
+                if (countDownCounter < 0)
+                    gameTime += Time.deltaTime;
+
+                if (totalGameTime > 0f)
+                    if (gameTime > 60f * totalGameTime)
+                    {
+                        FinishGame();
+                    }
                 start.text = pauseText[language];
                 break;
         }
 
+        scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
+        timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1"); 
+
+        metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0") + "%";
+        metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0") + "%";
+        metric3.text = metric3Text[language] + "\n" + metric3Value.ToString("F0") + "%";
+
         connect.text = connectText[language];
         stop.text = stopText[language];
-        playTime.text = playTimeText[language];
         help.text = helpText[language];
         numOfCards.text = numOfCardsText[language];
 	}
@@ -200,8 +212,28 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[VeryLong]);
             StartCountDown(CountDown);
 
+            playTimeField.interactable = false;
+            if (playTimeInput.text == "")
+            {
+                totalGameTime = 0f;
+                playTime.text = infTimeText[language];
+            }
+            else
+            {
+                totalGameTime = (float)int.Parse(playTimeInput.text);
+                playTime.text = "";
+            }
+
             currentStatus = Status.playing;
             Time.timeScale = 1f;
         }
+    }
+
+    /// <summary>
+    /// Finishes the game.
+    /// </summary>
+    public static void FinishGame()
+    {
+        Debug.Log("Finished");
     }
 }
