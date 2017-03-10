@@ -108,6 +108,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         connectButton.interactable = false;
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });
         stopButton.interactable = false;
+        helpToggle.interactable = false;
         }
 	// Update is called once per frame
 	void Update ()
@@ -191,7 +192,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         connect.text = connectText[language];
         stop.text = stopText[language];
         help.text = helpText[language];
-        numOfCards.text = numOfCardsText[language];
+        numOfCards.text = numOfCardsSlider.value.ToString("F0") + " " + cardsText[language];
 	}
 
     /// <summary>

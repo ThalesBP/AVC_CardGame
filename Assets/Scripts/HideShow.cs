@@ -28,7 +28,7 @@ public class HideShow : MonoBehaviour {
 			hide = transf.anchoredPosition + Vector2.Scale (transf.sizeDelta, Vector2.up * distance);
 		transf.anchoredPosition = target = hide;
 		slideTime = 0.4f;
-        slideTimeLerp = 0f;
+        slideTimeLerp = 1f;
 	}
 
 	void Update()
