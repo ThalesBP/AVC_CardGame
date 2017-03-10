@@ -60,6 +60,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     #endregion
 
     #region Interactive objects
+    public HideShow panelVisibility;
     public Button connectButton, startButton, stopButton;
     public InputField playTimeField;
     public Toggle helpToggle;
@@ -170,7 +171,18 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
 
         scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
-        timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1"); 
+
+        if (panelVisibility.showed)
+        {
+            timeCounter.color = SetAlpha(YellowText, panelVisibility.slideTimeLerp);
+            timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1");
+        }
+        else
+        {
+            timeCounter.color = SetAlpha(YellowText, 1f - panelVisibility.slideTimeLerp);
+            timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1");
+        }
+            
 
         metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0") + "%";
         metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0") + "%";

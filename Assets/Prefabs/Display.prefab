@@ -376,12 +376,12 @@ GameObject:
   - component: {fileID: 114473461799469698}
   - component: {fileID: 114001824907525468}
   m_Layer: 9
-  m_Name: Missed
+  m_Name: TimeCounter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!1 &1366451010209380
 GameObject:
   m_ObjectHideFlags: 1
@@ -1085,7 +1085,7 @@ MonoBehaviour:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
     m_FontSize: 12
     m_FontStyle: 2
-    m_BestFit: 0
+    m_BestFit: 1
     m_MinSize: 1
     m_MaxSize: 40
     m_Alignment: 4
@@ -1472,7 +1472,6 @@ MonoBehaviour:
   fontSizeAdjust_M: 100
   languageAdjust: 0
   playStatus: {fileID: 0}
-  countDownCounter: 0
   hitRateValue: 0
   timeRateValue: 0
   info1Value: 0
@@ -1488,6 +1487,7 @@ MonoBehaviour:
   playTimeField: {fileID: 114970829029709872}
   helpToggle: {fileID: 114913183249333032}
   numOfCardsSlider: {fileID: 114332536943541510}
+  mouseDefault: {fileID: 2800000, guid: a60e523e9b500984aa8225ab8d01eb3f, type: 3}
 --- !u!114 &114201828627396616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2278,7 +2278,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: 'Time
+
+    x'
 --- !u!114 &114474550029305300
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -2877,8 +2879,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23137fcebab994e4c9e57f2a44403d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slideTime: 1.5
+  slideTime: 0.6
   distance: 2
+  showed: 0
   axis: 0
 --- !u!114 &114778793601985304
 MonoBehaviour:
@@ -3039,8 +3042,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23137fcebab994e4c9e57f2a44403d35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slideTime: 2.5
+  slideTime: 0.4
   distance: 1
+  showed: 0
   axis: 1
 --- !u!114 &114874845389206580
 MonoBehaviour:

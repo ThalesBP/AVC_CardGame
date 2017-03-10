@@ -11,10 +11,10 @@ public class HideShow : MonoBehaviour {
 	private Vector2 hide, show, target;
 	private RectTransform transf;
     private bool moving;
-	private float time;
-	public float slideTime, distance;
+	public float slideTime, distance, slideTimeLerp;
+    public bool showed;
 
-	[SerializeField] Axis axis;
+	[SerializeField] private Axis axis;
 
 	// Use this for initialization
 	void Start () 
@@ -27,17 +27,17 @@ public class HideShow : MonoBehaviour {
 		else
 			hide = transf.anchoredPosition + Vector2.Scale (transf.sizeDelta, Vector2.up * distance);
 		transf.anchoredPosition = target = hide;
-		slideTime = 2.5f;
-		time = 0f;
+		slideTime = 0.4f;
+        slideTimeLerp = 0f;
 	}
 
 	void Update()
 	{
         if (moving)
         {
-            transf.anchoredPosition = Vector2.Lerp(transf.anchoredPosition, target, time * slideTime);
-            time += Time.unscaledDeltaTime;
-            if (time * slideTime > 1f)
+            transf.anchoredPosition = Vector2.Lerp(transf.anchoredPosition, target, slideTimeLerp);
+            slideTimeLerp += Time.unscaledDeltaTime / slideTime;
+            if (slideTimeLerp > 1f)
                 moving = false;
         }
 	}
@@ -47,9 +47,10 @@ public class HideShow : MonoBehaviour {
     /// </summary>
 	public void Show () 
 	{
+        showed = true;
 		target = show;
         moving = true;
-		time = 0;
+        slideTimeLerp = 0;
 	}
 
     /// <summary>
@@ -57,8 +58,9 @@ public class HideShow : MonoBehaviour {
     /// </summary>
 	public void Hide () 
 	{
+        showed = false;
 		target = hide;
         moving = true;
-		time = 0;
+        slideTimeLerp = 0;
 	}
 }
