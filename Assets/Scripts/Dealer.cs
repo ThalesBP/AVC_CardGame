@@ -15,16 +15,19 @@ public class Dealer : GameBase {
     [SerializeField]
     private Status gameStatus;      // Controls the game phases
     public GameObject cardPrefab;   // Card prefab to be instantiated
-    public int challengeNumber;     // Number of card in challange - It may be useless
-    public ControlManager player;  // Reads player's position
+    public ControlManager player;   // Reads player's position
 
     private float waitCounter;      // Counter for waiting function
     private float timeToWait;       // Aux variable for sums time to wait
     private float timeToChoose;     // Time player takes to choose
     private int packCounter;        // Counter for positioning cards in a pack
+    private int challengeNumber;    // Number of card in challange - It may be useless
     private bool onCard;            // Checks if mouse is on a card
     private Status nextStatus;      // Save the next status after wait moves
     private Card aimedCard;
+    /// <summary>
+    /// Class to acess interface components.
+    /// </summary>
     [SerializeField]
     private InterfaceManager gameInterface;
 
@@ -54,6 +57,7 @@ public class Dealer : GameBase {
         timeToChoose = 0f;
         packCounter = 0;
         gameInterface.numOfCardsSlider.onValueChanged.AddListener(delegate {SliderChanged();});
+        challengeNumber = Mathf.FloorToInt(gameInterface.numOfCardsSlider.value);
     }
     // Update is called once per frame
 	void Update () 
@@ -61,6 +65,7 @@ public class Dealer : GameBase {
         switch (gameStatus)
         {
             case Status.newGame:
+                gameInterface.dealerMessage = Messages.newGame;
                 if (challengeCards.Count > 0)
                 {
                     gameStatus = Status.playerPlay;
@@ -80,9 +85,9 @@ public class Dealer : GameBase {
 
                 challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
                 objectiveCard = CreateCard(ChooseCard(challengeCards)); // Chose one card from challenge cards to be the objective card
-
                 break;
             case Status.playerPlay:
+                gameInterface.dealerMessage = Messages.waitingPlayer;
                 if ((FindCardPointed(cardsInGame) != null) && (player.GetAction()))
                     {
                     SpreadCards(challengeCards);    // Spread the cards on screen...
@@ -95,14 +100,17 @@ public class Dealer : GameBase {
                     }   // Waits player plays the game
                 break;
             case Status.playerChoice:
+                gameInterface.dealerMessage = Messages.waitingChoice;
                 timeToChoose += Time.deltaTime;
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
             case Status.wrongCard:
+                gameInterface.dealerMessage = Messages.wrongCard;
                 aimedCard.status = Card.Status.wrong;   // If chosen card is wrong, highlight it first
                 Wait(1.5f, Status.rightCard);
                 break;
             case Status.rightCard:
+                gameInterface.dealerMessage = Messages.rightCard;
                 foreach (Card card in challengeCards)
                 {
                     if (card == objectiveCard)
@@ -120,6 +128,7 @@ public class Dealer : GameBase {
                 Wait(2.5f, Status.endGame);
                 break;
             case Status.endGame:
+                gameInterface.dealerMessage = Messages.endGame;
                 foreach (Card card in cardsInGame)
                 {
                     card.status = Card.Status.free;
@@ -134,6 +143,7 @@ public class Dealer : GameBase {
                 Wait(timeToWait, Status.newGame);
                 break;
             case Status.waitingMotion:
+          //      gameInterface.dealerMessage = Messages.waitingMotion;
                 if (waitCounter < timeToWait)
                     waitCounter += Time.deltaTime;
                 else

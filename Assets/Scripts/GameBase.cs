@@ -60,6 +60,7 @@ public class GameBase : MonoBehaviour {
     public static Languages chosenLanguage = Languages.English;
     protected static readonly string[] readyText = { "READY?", "PRONTO?" };
     protected static readonly string[] goText = { "Go!", "Vai!" };
+    protected static readonly string[] endOfGameText = { "End of game", "Fim de jogo" };
     protected static readonly string[] hitRateText = { "Hit Rate", "Taxa de Acerto" };
     protected static readonly string[] timeRateText = { "Time Rate", "Taxa de Tempo" };
     protected static readonly string[] info1Text = { "Plantar/Dorsiflexion", "Plantar/Dorsiflexão" };
@@ -82,16 +83,36 @@ public class GameBase : MonoBehaviour {
     //protected static readonly string[] numOfCardsText = { "Number of Cards", "Número de Cartas" };
     protected static readonly string[] cardsText = { "Cards", "Cartas" };
 
-    public enum Messages {newGame, playerPlay, playerChoice, rightCard, wrongCard, endGame, waitingMotion, Connecting, Disconnecting};
+    public enum Messages {
+        newGame, 
+        waitingPlayer, 
+        waitingChoice, 
+        choiceDone, 
+        rightCard, 
+        wrongCard, 
+        endGame, 
+        waitingMotion, 
+        waitingStart, 
+        gameRunning, 
+        gamePaused, 
+        showingResults, 
+        connecting, 
+        disconnecting
+    };
     protected static readonly string[,] gameMessageTexts =
     {
             {"Creating new game", "Criando novo jogo"},
             {"Waiting player starts", "Esperando jogador iniciar"},
+            {"Waiting player chooses", "Esperando jogador escolher"},
             {"Choice done", "Jogada realizada"},
             {"Right card", "Carta certa"},
             {"Wrong card", "Carta errada"},
-            {"Ending game", "Jogo terminando"},
+            {"Turn ended", "Turno terminando"},
             {"Waiting motion", "Esperando movimento"},
+            {"Waiting to start", "Esperando iniciar"},
+            {"Game running", "Jogo executando"},
+            {"Game paused", "Jogo pausado"},
+            {"Showing results", "Mostrando resultados"},
             {"Connecting", "Conectando"},
             {"Disconecting", "Desconectando"}
     };
@@ -172,7 +193,12 @@ public class GameBase : MonoBehaviour {
         return null;
     }
 
-
+    /// <summary>
+    /// Returns the color with alpha changed.
+    /// </summary>
+    /// <returns>Color with alpha changed.</returns>
+    /// <param name="color">Color to have alpha changed.</param>
+    /// <param name="alpha">Alpha desired.</param>
     protected Color SetAlpha(Color color, float alpha)
     {
         return new Color(color.r, color.g, color.b, alpha);

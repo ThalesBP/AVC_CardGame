@@ -10,8 +10,10 @@ public class Choice {
     public static int suitCounter, valueCounter, colorCounter = 0;
     public static int totalPoints = 0;
     public static int orderCounter = 0;
+    public static int totalMatches = 0;
     public static float precision = 0f;
     public static float averageTimeToChoose = 0f;
+    public static float[] rangeOfTime = { 6000f, 0f };
 
     public string objectiveCard = "";
     public string choiceCard = "";
@@ -53,7 +55,15 @@ public class Choice {
             colorCounter++;
         }
 
+        if (pointMatch == 30)
+            totalMatches++;
+
         this.timeToChoose = timeToChoose;
+        if (timeToChoose < rangeOfTime[0])
+            rangeOfTime[0] = timeToChoose;
+        if (timeToChoose > rangeOfTime[1])
+            rangeOfTime[1] = timeToChoose;
+
         averageTimeToChoose = (averageTimeToChoose * orderCounter + timeToChoose) / (orderCounter + 1);
         order = orderCounter;
         orderCounter++;
