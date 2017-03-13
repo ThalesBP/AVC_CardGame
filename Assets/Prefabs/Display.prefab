@@ -647,7 +647,7 @@ GameObject:
   - component: {fileID: 114651885531724982}
   - component: {fileID: 114263086187698458}
   m_Layer: 9
-  m_Name: Score
+  m_Name: TopInfos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1028,7 +1028,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 1, y: 1}
-  m_UseGraphicAlpha: 0
+  m_UseGraphicAlpha: 1
 --- !u!114 &114006604186008752
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -1481,6 +1481,8 @@ MonoBehaviour:
   metric3Value: 0
   scoreValue: 0
   gameMessage: 0
+  panelVisibility: {fileID: 114873553481996414}
+  resultsVisibility: {fileID: 114778403954723424}
   connectButton: {fileID: 114065188029545602}
   startButton: {fileID: 114214517985916792}
   stopButton: {fileID: 114416372653878142}
@@ -2881,6 +2883,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slideTime: 0.6
   distance: 2
+  slideTimeLerp: 0
   showed: 0
   axis: 0
 --- !u!114 &114778793601985304
@@ -3044,6 +3047,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   slideTime: 0.4
   distance: 1
+  slideTimeLerp: 0
   showed: 0
   axis: 1
 --- !u!114 &114874845389206580
@@ -4634,7 +4638,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 776.9208, y: -54}
+  m_AnchoredPosition: {x: 712.7, y: -54}
   m_SizeDelta: {x: 446.15836, y: 108}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224869408672586034

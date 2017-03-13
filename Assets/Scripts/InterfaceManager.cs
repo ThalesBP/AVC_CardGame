@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class InterfaceManager : Singleton<InterfaceManager> {
 
-    private enum Status {begin, playing, paused};
+    private enum Status {begin, playing, paused, end};
     private Status currentStatus = Status.begin;
     private int language;
 //    private enum PlayStatus {waiting, counting, playing};
@@ -30,7 +30,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     private Text gameMessages;
 
-    private Text panelName;
+    private Text panel;
 
     private Text connect;
     private Text start;
@@ -60,7 +60,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     #endregion
 
     #region Interactive objects
-    public HideShow panelVisibility;
+    public HideShow panelVisibility, resultsVisibility;
     public Button connectButton, startButton, stopButton;
     public InputField playTimeField;
     public Toggle helpToggle;
@@ -94,7 +94,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>();
 
-        panelName = GameObject.Find("PanelName").GetComponentInChildren<Text>();
+        panel = GameObject.Find("PanelName").GetComponentInChildren<Text>();
 
         connect = GameObject.Find("Connect").GetComponentInChildren<Text>();
         start = GameObject.Find("Start").GetComponentInChildren<Text>();
@@ -108,6 +108,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         connectButton.interactable = false;
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });
         stopButton.interactable = false;
+        stopButton.onClick.AddListener(delegate { FinishGame(); });
         helpToggle.interactable = false;
         }
 	// Update is called once per frame
@@ -143,7 +144,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
         playStatus.transform.localScale = statusScale;
 
-        panelName.text = panelText[language];
+        panel.text = panelText[language];
 
         switch (currentStatus)
         {
@@ -168,6 +169,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                         FinishGame();
                     }
                 start.text = pauseText[language];
+                break;
+            case Status.end:
                 break;
         }
 
@@ -237,6 +240,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 playTime.text = "";
             }
 
+            stopButton.interactable = true;
+
             currentStatus = Status.playing;
             Time.timeScale = 1f;
         }
@@ -245,8 +250,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// <summary>
     /// Finishes the game.
     /// </summary>
-    public static void FinishGame()
+    public void FinishGame()
     {
-        Debug.Log("Finished");
+        currentStatus = Status.end;
+        resultsVisibility.Show();
     }
 }

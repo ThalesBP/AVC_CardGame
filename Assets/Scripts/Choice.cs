@@ -115,4 +115,15 @@ public class Choice {
     {
         return (pointMatch);
     }
+
+    public static int CountMatches(List<Choice> choices)
+    {
+        int numOfMatches = 0;
+        foreach (Choice choice in choices)
+        {
+            if (choice)
+                numOfMatches++;
+        }
+        return numOfMatches;
+    }
 }

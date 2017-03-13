@@ -10,6 +10,7 @@ public class HideShow : MonoBehaviour {
 
 	private Vector2 hide, show, target;
 	private RectTransform transf;
+    [SerializeField]
     private bool moving;
 	public float slideTime, distance, slideTimeLerp;
     public bool showed;
@@ -47,10 +48,13 @@ public class HideShow : MonoBehaviour {
     /// </summary>
 	public void Show () 
 	{
-        showed = true;
-		target = show;
-        moving = true;
-        slideTimeLerp = 0;
+        if (!showed)
+        {
+            showed = true;
+            target = show;
+            moving = true;
+            slideTimeLerp = 0;
+        }
 	}
 
     /// <summary>
@@ -58,9 +62,23 @@ public class HideShow : MonoBehaviour {
     /// </summary>
 	public void Hide () 
 	{
-        showed = false;
-		target = hide;
-        moving = true;
-        slideTimeLerp = 0;
+        if (showed)
+        {
+            showed = false;
+            target = hide;
+            moving = true;
+            slideTimeLerp = 0;
+        }
 	}
+
+    /// <summary>
+    /// Toggles between hidden and showed.
+    /// </summary>
+    public void Toggle()
+    {
+        if (showed)
+            Hide();
+        else
+            Show();
+    }
 }
