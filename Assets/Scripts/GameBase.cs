@@ -42,7 +42,7 @@ public class GameBase : MonoBehaviour {
     #endregion
 
     #region Position, rotation and scale of cards on screen
-    static protected float backgndDist = 0.4f;      // Background distance
+    static protected float backgndDist = 0.7f;      // Background distance
     static protected float cardThick = 0.01f;       // Card's thickness
     static protected float spreadRadius = 3f;       // The radius that cards are spread
     static protected float highlightScale = 1.2f;   // How much it grows to hightlight somethings

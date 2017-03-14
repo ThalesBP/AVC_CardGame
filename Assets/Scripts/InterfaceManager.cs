@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class InterfaceManager : Singleton<InterfaceManager> {
 
-    private enum Status {begin, playing, paused, end};
-    private Status currentStatus = Status.begin;
+    public enum Status {begin, playing, paused, end};
+    public Status currentStatus = Status.begin;
     private int language;
 //    private enum PlayStatus {waiting, counting, playing};
   //  public PlayStatus countingStatus;
@@ -177,6 +177,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 gameMessages.text = gameMessageTexts[(int)gameMessage, language];
                 playStatus.text = endOfGameText[language];
                 start.text = startText[language];
+                Time.timeScale = 0f;
                 break;
         }
         gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
@@ -295,6 +296,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public void FinishGame()
     {
         resultsVisibility.Show();
+        countDownCounter = -1;
 
         playStatus.text = endOfGameText[language];
         statusScale.MoveTo(Vector3.one);

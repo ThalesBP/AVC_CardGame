@@ -80,7 +80,7 @@ public class Dealer : GameBase {
                 }   // Cards must be cleared after frist phase
                 else
                 {
-                    Wait(CountDown, Status.playerPlay);
+                    Wait(CountDown + 1, Status.playerPlay);
                 }
 
                 challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
@@ -137,13 +137,13 @@ public class Dealer : GameBase {
 
                 // Hides and packs all the cards
                 packCounter = 0;
-                timeToWait = HideCards(cardsInGame, 0f, 0f);
-                timeToWait += PackCards(cardsInGame, DeltaTime[Short], timeToWait);
+                HideCards(cardsInGame, 0f, 0f);
+                timeToWait = PackCards(cardsInGame, DeltaTime[Short], timeToWait);
 
                 Wait(timeToWait, Status.newGame);
                 break;
             case Status.waitingMotion:
-          //      gameInterface.dealerMessage = Messages.waitingMotion;
+                gameInterface.dealerMessage = Messages.waitingMotion;
                 if (waitCounter < timeToWait)
                     waitCounter += Time.deltaTime;
                 else
