@@ -90,8 +90,8 @@ public class Dealer : GameBase {
                 gameInterface.dealerMessage = Messages.waitingPlayer;
                 if ((FindCardPointed(cardsInGame) != null) && (player.GetAction()))
                     {
-                    SpreadCards(challengeCards);    // Spread the cards on screen...
-                    timeToWait = ShowCards(challengeCards, DeltaTime[Short], DeltaTime[Long]);   // ... and show them
+                    timeToWait = SpreadCards(challengeCards);    // Spread the cards on screen...
+                    timeToWait += ShowCards(challengeCards, timeToWait);// DeltaTime[Short], DeltaTime[Long]);   // ... and show them
 
                     objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);   // Highlightes objective card in center
 
@@ -418,7 +418,7 @@ public class Dealer : GameBase {
     }
 
     /// <summary>
-    /// Shows a pack of cards.
+    /// Shows a pack of cards eachone delayed by delayStep after wait delay time.
     /// </summary>
     /// <returns>Total time to execute</returns>
     /// <param name="deck">Deck to be showed.</param>
@@ -426,11 +426,23 @@ public class Dealer : GameBase {
     /// <param name="delay">Delay before start to showed.</param>
     float ShowCards(List<Card> deck, float delayStep, float delay)
     {
+        float showTime = 0f;
         foreach (Card card in deck)
         {
-            ShowCard(card, deck.IndexOf(card) * delayStep + delay);
+            showTime = ShowCard(card, deck.IndexOf(card) * delayStep + delay);
         }
-        return (DeltaTime[Long] + deck.Count * delayStep + delay);
+        return (showTime + deck.Count * delayStep + delay);
+    }
+
+    /// <summary>
+    /// Shows a pack of cards at one after wait delay time.
+    /// </summary>
+    /// <returns>Total time to execute</returns>
+    /// <param name="deck">Deck to be showed.</param>
+    /// <param name="delay">Delay before start to showed.</param>
+    float ShowCards(List<Card> deck, float delay)
+    {
+        return ShowCards(deck, 0f, delay);
     }
 
     /// <summary>

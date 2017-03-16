@@ -38,7 +38,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly int VeryLong = 4;
     protected static readonly int MuchLonger = 4;
 
-    protected static readonly int CountDown = 3;    // 3 seconds
+    protected static readonly int CountDown = 1;    // 3 seconds
     #endregion
 
     #region Position, rotation and scale of cards on screen
@@ -62,7 +62,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] goText = { "Go!", "Vai!" };
     protected static readonly string[] endOfGameText = { "End of game", "Fim de jogo" };
     protected static readonly string[] hitRateText = { "Hit Rate", "Taxa de Acerto" };
-    protected static readonly string[] timeRateText = { "Time Rate", "Taxa de Tempo" };
+    protected static readonly string[] timeRateText = { "Time to Choose", "Tempo de Escolha" };
     protected static readonly string[] info1Text = { "Plantar/Dorsiflexion", "Plantar/Dorsiflexão" };
     protected static readonly string[] info2Text = { "Inver/Eversion", "Inver/Eversão" };
     protected static readonly string[] scorePointsText = { "Score", "Pontos" };

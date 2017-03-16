@@ -43,6 +43,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     #region GameVariables
     private int countDownCounter;   // Counter for count down
+    public int CountDownCounter {get {return countDownCounter;}}
+
     private float gameTime;         // Current game time
     private float totalGameTime;    // Time to end the game
 
