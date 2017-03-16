@@ -91,7 +91,7 @@ public class Dealer : GameBase {
                 if ((FindCardPointed(cardsInGame) != null) && (player.GetAction()))
                     {
                     timeToWait = SpreadCards(challengeCards);    // Spread the cards on screen...
-                    timeToWait += ShowCards(challengeCards, timeToWait);// DeltaTime[Short], DeltaTime[Long]);   // ... and show them
+                    ShowCards(challengeCards, timeToWait);// DeltaTime[Short], DeltaTime[Long]);   // ... and show them
 
                     objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);   // Highlightes objective card in center
 
@@ -111,6 +111,7 @@ public class Dealer : GameBase {
                 break;
             case Status.rightCard:
                 gameInterface.dealerMessage = Messages.rightCard;
+                int num = 0;
                 foreach (Card card in challengeCards)
                 {
                     if (card == objectiveCard)
@@ -120,8 +121,11 @@ public class Dealer : GameBase {
                     else
                     {
                         if (card.status == Card.Status.free)
+                        {
                             HideCard(card, 0f);
-                    }                   
+                        }
+                    }
+                    num++;
                 }   // Highlight the right cards and hides the cards not highlighted
                 objectiveCard.status = Card.Status.right;
 
@@ -129,6 +133,7 @@ public class Dealer : GameBase {
                 break;
             case Status.endGame:
                 gameInterface.dealerMessage = Messages.endGame;
+                aimedCard = null;
                 foreach (Card card in cardsInGame)
                 {
                     card.status = Card.Status.free;
@@ -137,7 +142,7 @@ public class Dealer : GameBase {
 
                 // Hides and packs all the cards
                 packCounter = 0;
-                HideCards(cardsInGame, 0f, 0f);
+                timeToWait = HideCards(cardsInGame, 0f, 0f);
                 timeToWait = PackCards(cardsInGame, DeltaTime[Short], timeToWait);
 
                 Wait(timeToWait, Status.newGame);
@@ -198,13 +203,16 @@ public class Dealer : GameBase {
             }
             if (player.GetAction())
             {
+                Debug.Log(aimedCard.ToString() + " " + objectiveCard.ToString());
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
                 gameInterface.scoreValue = Choice.totalPoints;
+
+                onCard = false;
+                timeToChoose = 0f;
+
                 gameInterface.metric1Value = 100f * Choice.suitCounter / Choice.orderCounter;
                 gameInterface.metric2Value = 100f * Choice.valueCounter / Choice.orderCounter;
-                gameInterface.metric3Value = 100 * Choice.colorCounter / Choice.orderCounter;
-
-                timeToChoose = 0f;
+                gameInterface.metric3Value = 100f * Choice.colorCounter / Choice.orderCounter;
 
                 float precisionRate;
                 if ((bool)choices[choices.Count - 1])
@@ -386,7 +394,7 @@ public class Dealer : GameBase {
     float HideCard(Card card, float delay)
     {
         card.rotation.MoveTo(new Vector3(0f, 180f, 0f), DeltaTime[Long], delay);
-        return delay;
+        return DeltaTime[Long] + delay;
     }
 
     /// <summary>
@@ -398,7 +406,7 @@ public class Dealer : GameBase {
     float ShowCard(Card card, float delay)
     {
         card.rotation.MoveTo(Vector3.zero, DeltaTime[Long], delay);
-        return delay;
+        return DeltaTime[Long] + delay;
     }
 
     /// <summary>
@@ -410,11 +418,12 @@ public class Dealer : GameBase {
     /// <param name="delay">Delay before start to hidden.</param>
     float HideCards(List<Card> deck, float delayStep, float delay)
     {
+        float hideTime = 0f;
         foreach (Card card in deck)
         {
-            HideCard(card, deck.IndexOf(card) * delayStep + delay);
+            hideTime = HideCard(card, deck.IndexOf(card) * delayStep + delay);
         }
-        return (DeltaTime[Long] + deck.Count * delayStep + delay);
+        return (hideTime + deck.Count * delayStep + delay);
     }
 
     /// <summary>
@@ -462,7 +471,7 @@ public class Dealer : GameBase {
     float PackCard(Card card, float delay)
     {
         card.position.MoveTo(PackPosition(), DeltaTime[Long], delay);
-        return delay;
+        return DeltaTime[Long] + delay;
     }
 
     /// <summary>
@@ -472,11 +481,12 @@ public class Dealer : GameBase {
     /// <param name="deck">Deck to be packed.</param>
     float PackCards(List<Card> deck, float delayStep, float delay)
     {
+        float packTime = 0f;
         foreach (Card card in deck)
         {
-            PackCard(card, deck.IndexOf(card) * delayStep + delay);
+            packTime = PackCard(card, deck.IndexOf(card) * delayStep + delay);
         }
-        return (DeltaTime[Long] + deck.Count * delayStep + delay);
+        return (packTime + deck.Count * delayStep + delay);
     }
 
     /// <summary>
