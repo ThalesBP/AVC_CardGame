@@ -42,6 +42,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     #endregion
 
     #region GameVariables
+    [Range(0.1f, 3.0f)]
+    public float gameSpeed = 1f;
+
     private int countDownCounter;   // Counter for count down
     public int CountDownCounter {get {return countDownCounter;}}
 
@@ -81,6 +84,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         playStatus = GameObject.Find("PlayStatus").GetComponentInChildren<Text>();
         statusScale = playStatus.gameObject.AddComponent<Motion>();
         statusScale.MoveTo(Vector3.one);
+        statusScale.timeScaled = false;
         statusBoarder = playStatus.GetComponent<Outline>();
 
         hitRate = GameObject.Find("HitRate").GetComponentsInChildren<Text>();
@@ -145,7 +149,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 playStatus.color = SetAlpha(YellowText, 1f - statusScale.LerpScale);
                 statusBoarder.effectColor = Color.Lerp(Color.black, playStatus.color, statusScale.LerpScale + 0.2f);
             }
-        } 
+        }
 
         playStatus.transform.localScale = statusScale;
 
@@ -166,6 +170,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
                 if (countDownCounter < 0)
                     gameTime += Time.deltaTime;
+
+                if (Choice.orderCounter > 0)
+                {
+                    gameSpeed = 3f - (Mathf.Clamp(Choice.averageTimeToChoose, 0.5f, 4.5f) - 0.5f) / 2f;
+                    if (Time.timeScale != 0f)
+                        Time.timeScale = Mathf.Clamp(gameSpeed * Choice.totalMatches / Choice.orderCounter, 1f, 3f);
+                }
 
                 if (totalGameTime > 0f)
                     if (gameTime > 60f * totalGameTime)
@@ -249,6 +260,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         currentStatus = Status.paused;
         Time.timeScale = 0f;
+        countDownCounter = -1;
     }
 
     /// <summary>
@@ -274,7 +286,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         stopButton.interactable = true;
 
         currentStatus = Status.playing;
-        Time.timeScale = 1f;
+        Time.timeScale = gameSpeed;
     }
 
     /// <summary>
@@ -282,7 +294,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     private void SwitchStartPause()
     {
-        if (Time.timeScale == 1f)
+        if (Time.timeScale == gameSpeed)
         {
             PauseGame();
         }

@@ -18,6 +18,7 @@ public class Motion : GameBase {
     {
         get { return Mathf.Clamp(lerpScale, 0f, 1f); }
     }
+    public bool timeScaled = true;
 
     public Vector3 Value
     {
@@ -71,12 +72,19 @@ public class Motion : GameBase {
             if (counter < delay)
             {
                 status = Status.waiting;
-                counter += Time.deltaTime;
+                if (timeScaled)
+                    counter += Time.deltaTime;
+                else
+                    counter += Time.unscaledDeltaTime;
             }
             else if (counter < delay + delta)
             {
                 status = Status.moving;
-                counter += Time.deltaTime;
+
+                if (timeScaled)
+                    counter += Time.deltaTime;
+                else
+                    counter += Time.unscaledDeltaTime;
             }
             else
                 status = Status.updating;
@@ -106,6 +114,7 @@ public class Motion : GameBase {
             delta = deltaTime;
             final = destiny;
             status = Status.moving;
+            lerpScale = (counter - delay) / delta;
         }
         else
             MoveTo(destiny);
