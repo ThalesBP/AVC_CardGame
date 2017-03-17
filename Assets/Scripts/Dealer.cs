@@ -91,11 +91,11 @@ public class Dealer : GameBase {
                 if ((FindCardPointed(cardsInGame) != null) && (player.GetAction()))
                     {
                     timeToWait = SpreadCards(challengeCards);    // Spread the cards on screen...
-                    ShowCards(challengeCards, timeToWait);// DeltaTime[Short], DeltaTime[Long]);   // ... and show them
+                    timeToWait = ShowCards(challengeCards, timeToWait);// DeltaTime[Short], DeltaTime[Long]);   // ... and show them
 
                     objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);   // Highlightes objective card in center
 
-                    ShowCard(objectiveCard, challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);   // Also shows objective card
+                    timeToWait = ShowCard(objectiveCard, timeToWait);// challengeCards.Count * DeltaTime[Short] + DeltaTime[Long]);   // Also shows objective card
                     Wait(timeToWait, Status.playerChoice);
                     }   // Waits player plays the game
                 break;
@@ -155,6 +155,7 @@ public class Dealer : GameBase {
                 {
                     waitCounter = timeToWait = 0f;
                     gameStatus = nextStatus;
+
                 }
                 break;
         }
@@ -418,12 +419,11 @@ public class Dealer : GameBase {
     /// <param name="delay">Delay before start to hidden.</param>
     float HideCards(List<Card> deck, float delayStep, float delay)
     {
-        float hideTime = 0f;
         foreach (Card card in deck)
         {
-            hideTime = HideCard(card, deck.IndexOf(card) * delayStep + delay);
+            HideCard(card, deck.IndexOf(card) * delayStep + delay);
         }
-        return (hideTime + deck.Count * delayStep + delay);
+        return (DeltaTime[Long] + deck.Count * delayStep + delay);
     }
 
     /// <summary>
@@ -435,12 +435,11 @@ public class Dealer : GameBase {
     /// <param name="delay">Delay before start to showed.</param>
     float ShowCards(List<Card> deck, float delayStep, float delay)
     {
-        float showTime = 0f;
         foreach (Card card in deck)
         {
-            showTime = ShowCard(card, deck.IndexOf(card) * delayStep + delay);
+            ShowCard(card, deck.IndexOf(card) * delayStep + delay);
         }
-        return (showTime + deck.Count * delayStep + delay);
+        return (DeltaTime[Long] + deck.Count * delayStep + delay);
     }
 
     /// <summary>
@@ -481,12 +480,11 @@ public class Dealer : GameBase {
     /// <param name="deck">Deck to be packed.</param>
     float PackCards(List<Card> deck, float delayStep, float delay)
     {
-        float packTime = 0f;
         foreach (Card card in deck)
         {
-            packTime = PackCard(card, deck.IndexOf(card) * delayStep + delay);
+            PackCard(card, deck.IndexOf(card) * delayStep + delay);
         }
-        return (packTime + deck.Count * delayStep + delay);
+        return (DeltaTime[Long] + (deck.Count - 1) * delayStep + delay);
     }
 
     /// <summary>
