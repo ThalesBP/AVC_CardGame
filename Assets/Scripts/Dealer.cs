@@ -83,14 +83,15 @@ public class Dealer : GameBase {
                     Wait(CountDown + 1, Status.playerPlay);
                 }
 
+
                 challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
-                objectiveCard = CreateCard(ChooseCard(challengeCards)); // Chose one card from challenge cards to be the objective card
+                objectiveCard = CreateCard(challengeCards[0]); // Chose one card from challenge cards to be the objective card
                 break;
             case Status.playerPlay:
                 gameInterface.dealerMessage = Messages.waitingPlayer;
                 if ((FindCardPointed(cardsInGame) != null) && (player.GetAction()))
                     {
-                    timeToWait = SpreadCards(challengeCards);    // Spread the cards on screen...
+                    timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber - 1) * 360f / challengeNumber);    // Spread the cards on screen...
                     timeToWait = ShowCards(challengeCards, timeToWait);// DeltaTime[Short], DeltaTime[Long]);   // ... and show them
 
                     objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);   // Highlightes objective card in center
@@ -204,7 +205,6 @@ public class Dealer : GameBase {
             }
             if (player.GetAction())
             {
-                Debug.Log(aimedCard.ToString() + " " + objectiveCard.ToString());
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
                 gameInterface.scoreValue = Choice.totalPoints;
 
@@ -476,7 +476,7 @@ public class Dealer : GameBase {
     /// <summary>
     /// Packs the cards of a deck.
     /// </summary>
-    /// <returns>Total time to execute</returns>
+    /// <returns>Total time to execute.</returns>
     /// <param name="deck">Deck to be packed.</param>
     float PackCards(List<Card> deck, float delayStep, float delay)
     {
@@ -488,18 +488,19 @@ public class Dealer : GameBase {
     }
 
     /// <summary>
-    /// Spreads the cards in a circle around screen.
+    /// Spreads the cards in a circle around screen starting from a angle.
     /// </summary>
-    /// <param name="deck">Deck to be spread</param>
+    /// <param name="deck">Deck to be spread.</param>
+    /// <param name="Angle of first card in degrees."> 
     /// <returns>Total time to execute</returns>
-    float SpreadCards(List<Card> deck)
+    float SpreadCards(List<Card> deck, float angle)
     {
         float angShare;
-
+       
         angShare = 2f * Mathf.PI / deck.Count;
         foreach (Card card in deck)
         {
-            card.position.MoveTo(new Vector3(spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card)), spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card)), 0), DeltaTime[Long], deck.IndexOf(card) * DeltaTime[Short]);
+            card.position.MoveTo(new Vector3(spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), 0), DeltaTime[Long], deck.IndexOf(card) * DeltaTime[Short]);
         }
         return (deck.Count * DeltaTime[Short]);
     }

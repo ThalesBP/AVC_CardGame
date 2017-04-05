@@ -1,0 +1,6 @@
+More 2 game modes
+Player choices log
+User selection interface
+Cursor following robot movement
+Game restart
+Robot comunication
