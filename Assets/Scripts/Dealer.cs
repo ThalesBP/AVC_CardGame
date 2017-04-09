@@ -102,7 +102,7 @@ public class Dealer : GameBase {
                 break;
             case Status.playerChoice:
                 gameInterface.dealerMessage = Messages.waitingChoice;
-                timeToChoose += Time.deltaTime;
+                timeToChoose += Time.unscaledDeltaTime;
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
             case Status.wrongCard:

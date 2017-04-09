@@ -169,7 +169,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 gameMessage = Messages.gameRunning;
 
                 if (countDownCounter < 0)
-                    gameTime += Time.deltaTime;
+                    gameTime += Time.unscaledDeltaTime;
 
                 if (Choice.orderCounter > 0)
                 {
