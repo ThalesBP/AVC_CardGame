@@ -61,8 +61,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public float metric3Value;
 
     public int scoreValue;
-    public Messages gameMessage = Messages.newGame;
-    public Messages dealerMessage = Messages.newGame;
+    public Messages gameMessage = Messages.newTurn;
+    public Messages dealerMessage = Messages.newTurn;
     #endregion
 
     #region Interactive objects
@@ -190,7 +190,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 gameMessages.text = gameMessageTexts[(int)gameMessage, language];
                 playStatus.text = endOfGameText[language];
                 start.text = startText[language];
-                Time.timeScale = 0f;
+                //Time.timeScale = 0f;
                 break;
         }
         gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
@@ -284,6 +284,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
 
         stopButton.interactable = true;
+        resultsVisibility.Hide();
+
+        if (currentStatus == Status.end)
+            gameTime = totalGameTime = 0f;
 
         currentStatus = Status.playing;
         Time.timeScale = gameSpeed;

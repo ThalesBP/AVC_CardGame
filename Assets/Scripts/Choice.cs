@@ -136,4 +136,15 @@ public class Choice {
         }
         return numOfMatches;
     }
+
+    public static void ResetChoice()
+    {
+        suitCounter = valueCounter = colorCounter = 0;
+        totalPoints = 0;
+        orderCounter = 0;
+        totalMatches = 0;
+        precision = 0f;
+        averageTimeToChoose = 0f;
+        rangeOfTime = new float[] { 6000f, 0f };
+    }
 }

@@ -10,7 +10,7 @@ public class Dealer : GameBase {
     /// <summary>
     /// Game phases from new game to end game.
     /// </summary>
-    public enum Status {newGame, playerPlay, playerChoice, rightCard, wrongCard, endGame, waitingMotion};
+    public enum Status {newTurn, playerPlay, playerChoice, rightCard, wrongCard, endTurn, waitingMotion, endGame};
 
     [SerializeField]
     private Status gameStatus;      // Controls the game phases
@@ -46,7 +46,7 @@ public class Dealer : GameBase {
     void Start () 
     {
         choices = new List<Choice>();
-        gameStatus = Status.newGame;
+        gameStatus = Status.newTurn;
         cardMask = LayerMask.GetMask("Card");
         challengeCards = new List<Card>();
         cardsInGame = new List<Card>();
@@ -57,6 +57,7 @@ public class Dealer : GameBase {
         timeToChoose = 0f;
         packCounter = 0;
         gameInterface.numOfCardsSlider.onValueChanged.AddListener(delegate {SliderChanged();});
+        gameInterface.stopButton.onClick.AddListener(delegate {GameEnd();});
         challengeNumber = Mathf.FloorToInt(gameInterface.numOfCardsSlider.value);
     }
     // Update is called once per frame
@@ -64,25 +65,24 @@ public class Dealer : GameBase {
     {
         switch (gameStatus)
         {
-            case Status.newGame:
-                gameInterface.dealerMessage = Messages.newGame;
+            case Status.newTurn:
+                gameInterface.dealerMessage = Messages.newTurn;
                 if (challengeCards.Count > 0)
                 {
                     gameStatus = Status.playerPlay;
-                    foreach (Card card in challengeCards)
-                    {
-                        DestroyCard(card);
-                    }
+                    DestroyDeck(challengeCards);
                     DestroyCard(objectiveCard);
                     cardsInGame.Clear();
-                    challengeCards.Clear();
                     packCounter = 0;
                 }   // Cards must be cleared after frist phase
                 else
                 {
+                    gameInterface.scoreValue = 0;
+                    gameInterface.metric1Value = 0f;
+                    gameInterface.metric2Value = 0f;
+                    gameInterface.metric3Value = 0f;
                     Wait(CountDown + 1, Status.playerPlay);
                 }
-
 
                 challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
                 objectiveCard = CreateCard(challengeCards[0]); // Chose one card from challenge cards to be the objective card
@@ -130,10 +130,10 @@ public class Dealer : GameBase {
                 }   // Highlight the right cards and hides the cards not highlighted
                 objectiveCard.status = Card.Status.right;
 
-                Wait(2.5f, Status.endGame);
+                Wait(2.5f, Status.endTurn);
                 break;
-            case Status.endGame:
-                gameInterface.dealerMessage = Messages.endGame;
+            case Status.endTurn:
+                gameInterface.dealerMessage = Messages.endTurn;
                 aimedCard = null;
                 foreach (Card card in cardsInGame)
                 {
@@ -146,7 +146,10 @@ public class Dealer : GameBase {
                 timeToWait = HideCards(cardsInGame, 0f, 0f);
                 timeToWait = PackCards(cardsInGame, DeltaTime[Short], timeToWait);
 
-                Wait(timeToWait, Status.newGame);
+                if (gameInterface.currentStatus == InterfaceManager.Status.end)
+                    Wait(timeToWait, Status.endGame);
+                else 
+                    Wait(timeToWait, Status.newTurn);
                 break;
             case Status.waitingMotion:
                 gameInterface.dealerMessage = Messages.waitingMotion;
@@ -157,6 +160,21 @@ public class Dealer : GameBase {
                     waitCounter = timeToWait = 0f;
                     gameStatus = nextStatus;
 
+                }
+                break;
+            case Status.endGame:
+                if (gameInterface.currentStatus != InterfaceManager.Status.end)
+                {
+                    gameStatus = Status.newTurn;
+                    DestroyDeck(challengeCards);
+                    DestroyCard(objectiveCard);
+                    cardsInGame.Clear();
+                    packCounter = 0;
+                    Choice.ResetChoice();
+                }
+                else
+                {
+                    Time.timeScale = 0f;
                 }
                 break;
         }
@@ -263,16 +281,25 @@ public class Dealer : GameBase {
         switch (gameStatus)
         {
             case Status.playerPlay:
-                gameStatus = Status.newGame;
+                gameStatus = Status.newTurn;
                 break;
             case Status.playerChoice:
-                gameStatus = Status.endGame;
+                gameStatus = Status.endTurn;
                 break;
             default:
                 break;
         }
 
     }
+
+    private void GameEnd()
+    {
+        if (gameStatus == Status.waitingMotion)
+            nextStatus = Status.endTurn;
+        else
+            gameStatus = Status.endTurn;
+    }
+
     #endregion
 
     #region Create and Destroy card functions
@@ -332,7 +359,7 @@ public class Dealer : GameBase {
 
     #endregion
 
-    #region Create deck functions
+    #region Create and Destroy deck functions
     /// <summary>
     /// Creates the deck based in a number of suits and values.
     /// </summary>
@@ -382,6 +409,19 @@ public class Dealer : GameBase {
         }
         return deckAux;
 
+    }
+
+    /// <summary>
+    /// Destroys the deck.
+    /// </summary>
+    /// <param name="deck">Deck to be destroyed.</param>
+    private void DestroyDeck(List<Card> deck)
+    {
+        foreach (Card card in deck)
+        {
+            DestroyCard(card);
+        }
+        deck.Clear();
     }
     #endregion
 

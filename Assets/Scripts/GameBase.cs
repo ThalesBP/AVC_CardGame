@@ -84,13 +84,13 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] cardsText = { "Cards", "Cartas" };
 
     public enum Messages {
-        newGame, 
+        newTurn, 
         waitingPlayer, 
         waitingChoice, 
         choiceDone, 
         rightCard, 
         wrongCard, 
-        endGame, 
+        endTurn, 
         waitingMotion, 
         waitingStart, 
         gameRunning, 
