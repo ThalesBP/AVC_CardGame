@@ -157,6 +157,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         switch (currentStatus)
         {
             case Status.begin:
+                gameTime = totalGameTime = 0f;
                 gameMessage = Messages.waitingStart;
                 playStatus.text = readyText[language];
                 start.text = startText[language];
@@ -189,7 +190,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 gameMessage = Messages.showingResults;
                 gameMessages.text = gameMessageTexts[(int)gameMessage, language];
                 playStatus.text = endOfGameText[language];
-                start.text = startText[language];
+                start.text = restartText[language];
                 //Time.timeScale = 0f;
                 break;
         }
@@ -286,9 +287,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         stopButton.interactable = true;
         resultsVisibility.Hide();
 
-        if (currentStatus == Status.end)
-            gameTime = totalGameTime = 0f;
-
         currentStatus = Status.playing;
         Time.timeScale = gameSpeed;
     }
@@ -298,13 +296,21 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     private void SwitchStartPause()
     {
-        if (Time.timeScale == gameSpeed)
+        if (currentStatus != Status.end)
         {
-            PauseGame();
+            if (Time.timeScale == gameSpeed)
+            {
+                PauseGame();
+            }
+            else
+            {
+                StartGame();
+            }
         }
-        else 
+        else
         {
-            StartGame();
+            currentStatus = Status.begin;
+            resultsVisibility.Hide();
         }
     }
 

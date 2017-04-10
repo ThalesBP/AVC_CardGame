@@ -75,6 +75,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] connectText = { "Connect", "Conectar" };
     protected static readonly string[] disconnectText = { "Disconnect", "Desconectar" };
     protected static readonly string[] startText = { "Start", "Iniciar" };
+    protected static readonly string[] restartText = { "Restart", "Reiniciar" };
     protected static readonly string[] pausedText = { "Paused", "Pausado" };
     protected static readonly string[] pauseText = { "Pause", "Pausar" };
     protected static readonly string[] stopText = { "Stop", "Parar" };
