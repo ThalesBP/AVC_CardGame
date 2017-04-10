@@ -229,6 +229,8 @@ public class Dealer : GameBase {
                 onCard = false;
                 timeToChoose = 0f;
 
+                gameInterface.gameSpeed = Mathf.Clamp(gameInterface.gameSpeed + (choices[choices.Count - 1].pointMatch - 15) / 60f, GameSpeedLimits[0], GameSpeedLimits[1]);
+
                 gameInterface.metric1Value = 100f * Choice.suitCounter / Choice.orderCounter;
                 gameInterface.metric2Value = 100f * Choice.valueCounter / Choice.orderCounter;
                 gameInterface.metric3Value = 100f * Choice.colorCounter / Choice.orderCounter;

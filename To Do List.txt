@@ -3,4 +3,3 @@ Player choices log
 User selection interface
 Cursor following robot movement
 Robot comunication
-Defined levels for gameSpeed
