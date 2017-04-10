@@ -83,6 +83,9 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] helpText = { "Visual Help", "Ajuda Visual" };
     //protected static readonly string[] numOfCardsText = { "Number of Cards", "Número de Cartas" };
     protected static readonly string[] cardsText = { "Cards", "Cartas" };
+    protected static readonly string[] ofText = { " of ", " de " };
+    protected static readonly string[] fromText = { " from ", " de " };
+    protected static readonly string[] toText = { " to ", " até " };
 
     public enum Messages {
         newTurn, 

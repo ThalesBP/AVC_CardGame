@@ -219,10 +219,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             info1[1].text = "0";
             info2[1].text = "0";
 
-            hitRate[2].text = Choice.totalMatches.ToString("F0") + " / " + Choice.orderCounter.ToString("F0");
-            timeRate[2].text = Choice.rangeOfTime[0].ToString("F1") + " / " + Choice.rangeOfTime[1].ToString("F1");
-            info1[2].text = "0 / 0";
-            info2[2].text = "0 / 0";
+            hitRate[2].text = Choice.totalMatches.ToString("F0") + ofText[language] + Choice.orderCounter.ToString("F0");
+            timeRate[2].text = fromText[language] + Choice.rangeOfTime[0].ToString("F1") + toText[language] + Choice.rangeOfTime[1].ToString("F1");
+            info1[2].text = fromText[language] + "0 to 0";
+            info2[2].text = fromText[language] +"0 to 0";
         }
 
         panel.text = panelText[language];
