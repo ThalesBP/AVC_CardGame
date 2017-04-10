@@ -39,6 +39,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     private Text playTimeInput;
     private Text help;
     private Text numOfCards;
+
+    private Text userTab;
+    private Text managerLogin;
+    private Text managerPassword;
+    private Text login;
+    private Text playerSelect;
+    private Text choose;
     #endregion
 
     #region GameVariables
@@ -101,7 +108,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>();
 
-        panel = GameObject.Find("PanelName").GetComponentInChildren<Text>();
+        panel = GameObject.Find("ControlTabName").GetComponentInChildren<Text>();
 
         connect = GameObject.Find("Connect").GetComponentInChildren<Text>();
         start = GameObject.Find("Start").GetComponentInChildren<Text>();
@@ -110,6 +117,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         playTimeInput = GameObject.Find("PlayTime").GetComponentInChildren<Text>();
         help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>();
         numOfCards = GameObject.Find("NumOfCards").GetComponentInChildren<Text>();
+
+        userTab = GameObject.Find("UserTabName").GetComponentInChildren<Text>();
+        managerLogin = GameObject.Find("ManagerDescription").GetComponentInChildren<Text>();
+        managerPassword = GameObject.Find("ManagerPasswordPlaceholder").GetComponentInChildren<Text>();
+        login = GameObject.Find("Login").GetComponentInChildren<Text>();
+        playerSelect = GameObject.Find("PlayerDescription").GetComponentInChildren<Text>();
+        choose = GameObject.Find("Choose").GetComponentInChildren<Text>();
 
         Time.timeScale = 0f;
         connectButton.interactable = false;
@@ -226,7 +240,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             info2[2].text = fromText[language] +"0 to 0";
         }
 
-        panel.text = panelText[language];
+        panel.text = controlPanelText[language];
         scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
 
         metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0") + "%";
@@ -237,6 +251,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         stop.text = stopText[language];
         help.text = helpText[language];
         numOfCards.text = numOfCardsSlider.value.ToString("F0") + " " + cardsText[language];
+
+        userTab.text = userPanelText[language];
+        managerLogin.text = managerLoginText[language];
+        managerPassword.text = enterPasswordText[language];
+        login.text = loginText[language];
+        playerSelect.text = playerSelectText[language];
+        choose.text = chooseText[language];
 	}
 
     /// <summary>

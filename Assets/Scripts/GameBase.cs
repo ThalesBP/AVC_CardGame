@@ -59,19 +59,26 @@ public class GameBase : MonoBehaviour {
     #region Texts
     public enum Languages {English, Portuguese};
     public static Languages chosenLanguage = Languages.English;
+    // Central Message
     protected static readonly string[] readyText = { "READY?", "PRONTO?" };
     protected static readonly string[] goText = { "Go!", "Vai!" };
     protected static readonly string[] endOfGameText = { "End of game", "Fim de jogo" };
+    // Results
     protected static readonly string[] hitRateText = { "Hit Rate", "Taxa de Acerto" };
     protected static readonly string[] timeRateText = { "Time to Choose", "Tempo de Escolha" };
     protected static readonly string[] info1Text = { "Plantar/Dorsiflexion", "Plantar/Dorsiflexão" };
     protected static readonly string[] info2Text = { "Inver/Eversion", "Inver/Eversão" };
+    protected static readonly string[] ofText = { " of ", " de " };
+    protected static readonly string[] fromText = { " from ", " de " };
+    protected static readonly string[] toText = { " to ", " até " };
+    // Realtime Infos
     protected static readonly string[] scorePointsText = { "Score", "Pontos" };
     protected static readonly string[] timeText = { "Time", "Tempo" };
     protected static readonly string[] metric1Text = { "Suit", "Naipe" };
     protected static readonly string[] metric2Text = { "Value", "Valor" };
     protected static readonly string[] metric3Text = { "Color", "Cor" };
-    protected static readonly string[] panelText = { "Panel", "Painel" };
+    // Control panel
+    protected static readonly string[] controlPanelText = { "Control", "Controle" };
     protected static readonly string[] connectText = { "Connect", "Conectar" };
     protected static readonly string[] disconnectText = { "Disconnect", "Desconectar" };
     protected static readonly string[] startText = { "Start", "Iniciar" };
@@ -82,11 +89,23 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] playTimeText = { "Play time in minutes", "Tempo de jogo em minutos" };
     protected static readonly string[] infTimeText = { "Infinite game time", "Tempo de jogo infinito" };
     protected static readonly string[] helpText = { "Visual Help", "Ajuda Visual" };
-    //protected static readonly string[] numOfCardsText = { "Number of Cards", "Número de Cartas" };
     protected static readonly string[] cardsText = { "Cards", "Cartas" };
-    protected static readonly string[] ofText = { " of ", " de " };
-    protected static readonly string[] fromText = { " from ", " de " };
-    protected static readonly string[] toText = { " to ", " até " };
+    // User panel
+    protected static readonly string[] userPanelText = { "User", "Usuário" };
+    protected static readonly string[] managerLoginText = { "Manager Login", "Entrar Administrador" };
+    protected static readonly string[] enterPasswordText = { "Enter password...", "Insira a senha..." }; 
+    protected static readonly string[] loginText = { "Login", "Entrar" };
+    protected static readonly string[] playerSelectText = { "Player Select", "Selecionar Jogador" };
+    protected static readonly string[] chooseText = { "Choose", "Escolher" };
+
+    public enum Limbs { rightHand, leftHand, rightFoot, leftFoot };
+    protected static readonly string[,] limbTexts = 
+        {
+            {"Right hand", "Mão direita" },
+            {"Left hand", "Mão esquerda" },
+            {"Right foot", "Pé direito" },
+            {"Left foot", "Pé esquerdo" }
+        };
 
     public enum Messages {
         newTurn, 

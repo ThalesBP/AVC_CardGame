@@ -81,4 +81,19 @@ public class HideShow : MonoBehaviour {
         else
             Show();
     }
+
+    /// <summary>
+    /// Moves to a relative position.
+    /// </summary>
+    /// <param name="posRel">Position relative to showed in percent.</param>
+    public void MoveTo (float posRel)
+    {
+        if (axis == Axis.horizontal)
+            target = transf.anchoredPosition + Vector2.Scale (transf.sizeDelta, Vector2.right * (1f - 0.01f*posRel));
+        else
+            target = transf.anchoredPosition + Vector2.Scale (transf.sizeDelta, Vector2.up * (1f - 0.01f*posRel));
+        showed = true;
+        moving = true;
+        slideTimeLerp = 0;
+    }
 }
