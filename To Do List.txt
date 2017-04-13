@@ -1,5 +1,5 @@
 More 2 game modes
 Player choices log
-User selection interface
+Manager and player selection interface functional
 Cursor following robot movement
 Robot comunication

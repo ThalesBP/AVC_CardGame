@@ -37,9 +37,9 @@ public class GameBase : MonoBehaviour {
     protected static readonly int Long = 3;
     protected static readonly int VeryLong = 4;
     protected static readonly int MuchLonger = 4;
-
-    protected static readonly int CountDown = 1;    // 3 seconds
+        protected static readonly int CountDown = 1;    // 3 seconds
     protected static readonly float[] GameSpeedLimits = { 1f, 3f };
+    protected static readonly float[] TimeChoiceLimits = { 0.5f, 4.5f };
     #endregion
 
     #region Position, rotation and scale of cards on screen
@@ -226,5 +226,20 @@ public class GameBase : MonoBehaviour {
     protected Color SetAlpha(Color color, float alpha)
     {
         return new Color(color.r, color.g, color.b, alpha);
+    }
+
+    /// <summary>
+    /// Linear interpolation:
+    /// Returns a <value>y</value> of a <value>x</value> in a line defined by <value>(x1, y1)</value> and <value>(x2, y2)</value>.
+    /// </summary>
+    /// <returns>Returns a <value>y</value> of a <value>x</value> in a line.</returns>
+    /// <param name="x1">The first x value.</param>
+    /// <param name="y1">The first y value.</param>
+    /// <param name="x2">The second x value.</param>
+    /// <param name="y2">The second y value.</param>
+    /// <param name="x">The x coordinate of y desired value.</param>
+    protected float LI (float x1, float y1, float x2, float y2, float x)
+    {
+        return ((y2 - y1) * x - x1 * y2 + x2 * y1) / (x2 - x1);
     }
 }

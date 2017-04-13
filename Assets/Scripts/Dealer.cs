@@ -229,7 +229,12 @@ public class Dealer : GameBase {
                 onCard = false;
                 timeToChoose = 0f;
 
-                gameInterface.gameSpeed = Mathf.Clamp(gameInterface.gameSpeed + (choices[choices.Count - 1].pointMatch - 15) / 60f, GameSpeedLimits[0], GameSpeedLimits[1]);
+                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.averageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
+
+                if (Mathf.Abs(gameSpeed_aux - gameInterface.gameSpeed) > TimeChoiceLimits[0])
+                    gameInterface.gameSpeed += TimeChoiceLimits[0] * Mathf.Sign(gameSpeed_aux - gameInterface.gameSpeed);
+                else
+                    gameInterface.gameSpeed = Mathf.Clamp(gameSpeed_aux, GameSpeedLimits[0], GameSpeedLimits[1]);
 
                 gameInterface.metric1Value = 100f * Choice.suitCounter / Choice.orderCounter;
                 gameInterface.metric2Value = 100f * Choice.valueCounter / Choice.orderCounter;

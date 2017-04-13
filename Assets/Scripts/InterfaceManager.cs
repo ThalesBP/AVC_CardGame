@@ -188,9 +188,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
                 if (Choice.orderCounter > 0)
                 {
-                //    gameSpeed = 3f - (Mathf.Clamp(Choice.averageTimeToChoose, 0.5f, 4.5f) - 0.5f) / 2f;
                     if (Time.timeScale != 0f)
-                        Time.timeScale = Mathf.Clamp(gameSpeed * Choice.totalMatches / Choice.orderCounter, 1f, 3f);
+                        Time.timeScale = gameSpeed;
                 }
 
                 if (totalGameTime > 0f)
