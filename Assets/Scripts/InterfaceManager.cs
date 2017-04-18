@@ -7,7 +7,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     public enum Status {begin, playing, paused, end};
     public Status currentStatus = Status.begin;
-    private int language;
+    public int language;
+    public bool dropdownActive;
 //    private enum PlayStatus {waiting, counting, playing};
   //  public PlayStatus countingStatus;
 
@@ -73,18 +74,24 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     #endregion
 
     #region Interactive objects
-    public HideShow panelVisibility, resultsVisibility;
+    // Control interface
+    public HideShow controlPanelVisibility, managerPanelVisibility, resultsVisibility;
     public Button connectButton, startButton, stopButton;
     public InputField playTimeField;
     public Toggle helpToggle;
     public Slider numOfCardsSlider;
     public Texture2D mouseDefault;
-    #endregion
 
+    // User interface
+    public Dropdown managerDropdown, playerDropdown, memberDropdown;
+    public InputField passwordField;
+    public Button loginButton, managerEditButton, chooseButton, playerEditButton;
+    #endregion
+    public 
 	// Use this for initialization
 	void Start () 
     {
-        
+        dropdownActive = false;
         Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
         countDownCounter = -1;
 
@@ -210,14 +217,14 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
 
         // Shows or hides the timer with panel
-        if (panelVisibility.showed)
+        if (controlPanelVisibility.showed)
         {
-            timeCounter.color = SetAlpha(YellowText, panelVisibility.slideTimeLerp);
+            timeCounter.color = SetAlpha(YellowText, controlPanelVisibility.slideTimeLerp);
             timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1");
         }
         else
         {
-            timeCounter.color = SetAlpha(YellowText, 1f - panelVisibility.slideTimeLerp);
+            timeCounter.color = SetAlpha(YellowText, 1f - controlPanelVisibility.slideTimeLerp);
             timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1");
         }
             
@@ -254,7 +261,17 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         userTab.text = userPanelText[language];
         managerLogin.text = managerLoginText[language];
         managerPassword.text = enterPasswordText[language];
-        login.text = loginText[language];
+
+        if (managerDropdown.captionText.text == newUserText[language])
+        {
+            login.text = addText[language];
+            managerEditButton.interactable = false;
+        }
+        else
+        {
+            login.text = loginText[language];
+            managerEditButton.interactable = true;
+        }
         playerSelect.text = playerSelectText[language];
         choose.text = chooseText[language];
 	}

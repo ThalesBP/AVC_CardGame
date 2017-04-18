@@ -1,17 +1,12 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\InterfaceManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\HideShow.cs">
     <Files>
       <File FileName="Assets\Scripts\Dealer.cs" Line="232" Column="17" />
-      <File FileName="Assets\Scripts\InterfaceManager.cs" Line="190" Column="18" />
-      <File FileName="Assets\Scripts\Card.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Choice.cs" Line="145" Column="21" />
-      <File FileName="Assets\Scripts\Motion.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\GameBase.cs" Line="42" Column="39" />
-      <File FileName="Assets\Scripts\ControlManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\DataManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\HideShow.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\Exit.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\InterfaceManager.cs" Line="265" Column="9" />
+      <File FileName="Assets\Scripts\GameBase.cs" Line="96" Column="69" />
+      <File FileName="Assets\Scripts\LoginManager.cs" Line="26" Column="10" />
+      <File FileName="Assets\Scripts\HideShow.cs" Line="65" Column="23" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

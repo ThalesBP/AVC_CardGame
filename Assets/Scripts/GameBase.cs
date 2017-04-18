@@ -92,6 +92,8 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] cardsText = { "Cards", "Cartas" };
     // User panel
     protected static readonly string[] userPanelText = { "User", "Usuário" };
+    protected static readonly string[] newUserText = { "New user", "Novo usuário" };
+    protected static readonly string[] addText = { "Add", "Adicionar" };
     protected static readonly string[] managerLoginText = { "Manager Login", "Entrar Administrador" };
     protected static readonly string[] enterPasswordText = { "Enter password...", "Insira a senha..." }; 
     protected static readonly string[] loginText = { "Login", "Entrar" };

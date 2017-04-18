@@ -3,3 +3,7 @@ Player choices log
 Manager and player selection interface functional
 Cursor following robot movement
 Robot comunication
+Verificar e manipular possibilidade de pontuação do turno
+Efeitos sonoros
+-------------------------------------
+Partidas para coleta de dados / análise de dificuldade
