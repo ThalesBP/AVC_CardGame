@@ -887,7 +887,6 @@ GameObject:
   - component: {fileID: 222435934415801376}
   - component: {fileID: 114848446716720336}
   - component: {fileID: 114723290905095736}
-  - component: {fileID: 114711669221234308}
   m_Layer: 9
   m_Name: ManagerLogin
   m_TagString: Untagged
@@ -2871,7 +2870,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moving: 0
-  locked: 0
   slideTime: 0.4
   distance: 1
   slideTimeLerp: 0
@@ -3100,7 +3098,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 224539756983564346}
   m_Direction: 0
   m_Value: 0
-  m_Size: 0.9999999
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5936,21 +5934,6 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
---- !u!114 &114711669221234308
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1386090102738456}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e45c5254e1917be42b6f563f2b28f285, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  fontSizeAdjust_S: 60
-  fontSizeAdjust_M: 100
-  languageAdjust: 0
-  gameInterface: {fileID: 114201770635401606}
 --- !u!114 &114712628332803978
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -6365,7 +6348,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moving: 0
-  locked: 0
   slideTime: 0.6
   distance: 2
   slideTimeLerp: 0
@@ -6834,7 +6816,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moving: 0
-  locked: 0
   slideTime: 0.4
   distance: 1
   slideTimeLerp: 0

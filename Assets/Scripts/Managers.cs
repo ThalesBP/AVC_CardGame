@@ -13,14 +13,17 @@ public class Managers : GameBase {
     private string accountsPath = "\\Users\\Managers\\";
     private string accountsFile = "Accounts.data";
 
-    public int amount;
-    public List<string> User
+    public List<string> Users
     {
         get { return users; }
     }
+    public int Amount
+    {
+        get { return users.Count; }
+    }
 
 	// Use this for initialization
-	void Start () 
+	void Awake () 
     {
         users = new List<string>();
         passwords = new List<string>();
@@ -40,19 +43,15 @@ public class Managers : GameBase {
         }
 
         accounts = Read(accountsFile);
-        amount = accounts.GetLength(0);
 
-        for (int i = 0; i < amount; i++)
+        for (int i = 0; i < accounts.GetLength(0); i++)
         {
             users.Add(accounts[i, 0]);
             passwords.Add(accounts[i, 1]);
         }
+
+        Debug.Log(Amount);
     }
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
 
     /// <summary>
     /// Reads the specified file.
@@ -81,5 +80,73 @@ public class Managers : GameBase {
                 result[i, j] = line[j];
         }
         return result;
+    }
+
+    /// <summary>
+    /// Saves current users and passwords.
+    /// </summary>
+    private void Save()
+    {
+        if (!File.Exists(accountsPath + "Temp.data"))
+            File.Create(accountsPath + "Temp.data");
+
+        for (int i = 0; i < Amount; i++)
+        {
+            File.AppendAllText(accountsPath + "Temp.data", users[i] + "\t" + passwords[i] + Environment.NewLine);
+        }
+        File.Replace(accountsPath + "Temp.data", accountsFile, accountsPath + "Backup.data");
+        File.Delete(accountsPath + "Temp.data");
+    }
+
+    /// <summary>
+    /// Checks the password.
+    /// </summary>
+    /// <returns><c>true</c>, if password was checked, <c>false</c> otherwise.</returns>
+    /// <param name="UserNumber">User number.</param>
+    /// <param name="password">Password.</param>
+    public bool CheckPassword(int userNumber, string password)
+    {
+        return (passwords[userNumber] == password);
+    }
+
+    /// <summary>
+    /// Adds the specified name and password.
+    /// </summary>
+    /// <param name="name">Name.</param>
+    /// <param name="password">Password.</param>
+    public void Add(string name, string password)
+    {
+        users.Add(name);
+        passwords.Add(password);
+        Save();
+    }
+
+    /// <summary>
+    /// Trys to remove the specified user, checks the password, return true if is correct.
+    /// </summary>
+    /// <param name="userNumber">User number.</param>
+    /// <param name="password">Password.</param>
+    public bool Remove(int userNumber, string password)
+    {
+        Debug.Log(Amount);
+
+        if (userNumber >= Amount)
+        {
+            Debug.Log("Maior");
+            return false;
+        }
+
+        if (CheckPassword(userNumber, password))
+        {
+            users.RemoveAt(userNumber);
+            passwords.RemoveAt(userNumber);
+            Save();
+            return true;
+        }
+        else
+        {
+            return false;
+            Debug.Log("Senha errada");
+        }
     }
 }

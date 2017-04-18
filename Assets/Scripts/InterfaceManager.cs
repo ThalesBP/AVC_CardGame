@@ -9,6 +9,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public Status currentStatus = Status.begin;
     public int language;
     public bool dropdownActive;
+
 //    private enum PlayStatus {waiting, counting, playing};
   //  public PlayStatus countingStatus;
 
@@ -83,6 +84,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public Texture2D mouseDefault;
 
     // User interface
+    private Managers managers;
     public Dropdown managerDropdown, playerDropdown, memberDropdown;
     public InputField passwordField;
     public Button loginButton, managerEditButton, chooseButton, playerEditButton;
@@ -138,6 +140,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         stopButton.interactable = false;
         stopButton.onClick.AddListener(delegate { FinishGame(); });
         helpToggle.interactable = false;
+        managers = gameObject.AddComponent<Managers>();
+        managerDropdown.ClearOptions();
+        managerDropdown.AddOptions(managers.Users);
         }
 	// Update is called once per frame
 	void Update ()
