@@ -96,9 +96,11 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] addText = { "Add", "Adicionar" };
     protected static readonly string[] managerLoginText = { "Manager Login", "Entrar Administrador" };
     protected static readonly string[] enterPasswordText = { "Enter password...", "Insira a senha..." }; 
-    protected static readonly string[] loginText = { "Login", "Entrar" };
+    protected static readonly string[] loginText = { "Log In", "Entrar" };
+    protected static readonly string[] logoutText = { "Log Out", "Sair" };
     protected static readonly string[] playerSelectText = { "Player Select", "Selecionar Jogador" };
     protected static readonly string[] chooseText = { "Choose", "Escolher" };
+    protected static readonly string[] changeText = { "Change", "Mudar" };
 
     public enum Limbs { rightHand, leftHand, rightFoot, leftFoot };
     protected static readonly string[,] limbTexts = 

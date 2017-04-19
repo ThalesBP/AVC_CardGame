@@ -84,10 +84,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public Texture2D mouseDefault;
 
     // User interface
-    private Managers managers;
+    private bool logged, newManager, playerChosen, newPlayer;
+    private UserManager users;
     public Dropdown managerDropdown, playerDropdown, memberDropdown;
     public InputField passwordField;
-    public Button loginButton, managerEditButton, chooseButton, playerEditButton;
+    public Button managerButton, managerEditButton, playerButton, playerEditButton;
+    public Text playerDescription;
     #endregion
     public 
 	// Use this for initialization
@@ -135,14 +137,26 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         choose = GameObject.Find("Choose").GetComponentInChildren<Text>();
 
         Time.timeScale = 0f;
+        // Control panel
         connectButton.interactable = false;
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });
         stopButton.interactable = false;
         stopButton.onClick.AddListener(delegate { FinishGame(); });
         helpToggle.interactable = false;
-        managers = gameObject.AddComponent<Managers>();
-        managerDropdown.ClearOptions();
-        managerDropdown.AddOptions(managers.Users);
+
+        // User panel
+        logged = newManager = playerChosen = newPlayer = false;
+        users = gameObject.AddComponent<UserManager>();
+        UpdateUsers(managerDropdown, users.Managers);
+        playerDropdown.ClearOptions();
+        playerDropdown.interactable = false;
+        playerButton.interactable = false;
+        playerEditButton.interactable = false;
+        memberDropdown.interactable = false;
+
+        managerButton.onClick.AddListener(delegate { ManagerAction(); });
+        playerButton.onClick.AddListener(delegate { PlayerAction(); });
+        playerDropdown.onValueChanged.AddListener( delegate { UpdateDescription();});
         }
 	// Update is called once per frame
 	void Update ()
@@ -263,24 +277,45 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         help.text = helpText[language];
         numOfCards.text = numOfCardsSlider.value.ToString("F0") + " " + cardsText[language];
 
+        newManager = (managerDropdown.captionText.text == newUserText[language]);
+        newPlayer = (playerDropdown.captionText.text == newUserText[language]);
+
+        managerDropdown.interactable = !logged;
+        managerEditButton.interactable = (!logged) || newManager;
+        passwordField.interactable = (!logged);
+        playerDropdown.interactable = logged;
+        playerButton.interactable = logged;
+        playerEditButton.interactable = logged && !playerChosen && !newPlayer;
+        memberDropdown.interactable = logged && playerChosen;
+
         userTab.text = userPanelText[language];
         managerLogin.text = managerLoginText[language];
         managerPassword.text = enterPasswordText[language];
 
-        if (managerDropdown.captionText.text == newUserText[language])
+        managerDropdown.options[users.AmountManagers].text = newUserText[language];
+        if (logged)
         {
-            login.text = addText[language];
-            managerEditButton.interactable = false;
+            playerDropdown.options[users.AmountPlayers].text = newUserText[language];
+            login.text = logoutText[language];
         }
         else
         {
             login.text = loginText[language];
-            managerEditButton.interactable = true;
         }
+
+        if (playerChosen)
+        {
+            choose.text = changeText[language];
+        }
+        else
+        {
+            choose.text = chooseText[language];
+        }
+
         playerSelect.text = playerSelectText[language];
-        choose.text = chooseText[language];
 	}
 
+    #region Game status manager functions
     /// <summary>
     /// Starts count down with 'time' seconds.
     /// </summary>
@@ -373,4 +408,76 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         currentStatus = Status.end;
     }
+    #endregion
+
+    #region Status update functions
+    void UpdateUsers(Dropdown dropdown, List<string> users)
+    {
+        List<string> users_aux = new List<string>();
+        foreach (string user in users)
+            users_aux.Add(user);
+        users_aux.Add(newUserText[language]);
+
+        dropdown.ClearOptions();
+        dropdown.AddOptions(users_aux);
+        users_aux.Clear();
+    }
+
+    void UpdateDescription()
+    {
+        if (playerDropdown.value == users.AmountManagers)
+            playerDescription.text = "";
+        else
+            playerDescription.text = users.Description[playerDropdown.value]; 
+    }
+
+    void ManagerAction()
+    {
+        if (!newManager)
+        {
+            if (!logged)
+            {
+                if (users.CheckPassword(managerDropdown.value, passwordField.text))
+                {
+                    UpdateUsers(playerDropdown, users.players);
+                    UpdateDescription();
+                    logged = true;
+                }
+                else
+                {
+
+                    Debug.Log("Password Error");
+                }
+            }
+            else
+            {
+                passwordField.text = "";
+                logged = false;
+            }
+        }
+        else
+        {
+            Debug.Log("Create Manager");
+        }
+    }
+
+    void PlayerAction()
+    {
+        if (!newManager)
+        {
+            if (!playerChosen)
+            {
+                playerChosen = true;
+            }
+            else
+            {
+                playerChosen = false;
+            }
+        }
+        else
+        {
+            Debug.Log("Create Player");
+        }
+    }
+    #endregion
 }
