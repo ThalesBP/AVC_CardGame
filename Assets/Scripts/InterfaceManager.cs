@@ -8,7 +8,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public enum Status {begin, playing, paused, end};
     public Status currentStatus = Status.begin;
     public int language;
-    public bool dropdownActive;
 
 //    private enum PlayStatus {waiting, counting, playing};
   //  public PlayStatus countingStatus;
@@ -95,7 +94,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 	// Use this for initialization
 	void Start () 
     {
-        dropdownActive = false;
         Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
         countDownCounter = -1;
 
@@ -148,15 +146,15 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         logged = newManager = playerChosen = newPlayer = false;
         users = gameObject.AddComponent<UserManager>();
         UpdateUsers(managerDropdown, users.Managers);
-        playerDropdown.ClearOptions();
-        playerDropdown.interactable = false;
-        playerButton.interactable = false;
-        playerEditButton.interactable = false;
-        memberDropdown.interactable = false;
+        UpdateUsers(playerDropdown, users.players);
+        //playerDropdown.ClearOptions();
 
         managerButton.onClick.AddListener(delegate { ManagerAction(); });
+        managerEditButton.onClick.AddListener(delegate { EditManager(); });
         playerButton.onClick.AddListener(delegate { PlayerAction(); });
+        playerEditButton.onClick.AddListener(delegate { EditPlayer(); });
         playerDropdown.onValueChanged.AddListener( delegate { UpdateDescription();});
+
         }
 	// Update is called once per frame
 	void Update ()
@@ -281,12 +279,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         newPlayer = (playerDropdown.captionText.text == newUserText[language]);
 
         managerDropdown.interactable = !logged;
-        managerEditButton.interactable = (!logged) || newManager;
-        passwordField.interactable = (!logged);
+        managerEditButton.interactable = (!logged) && !newManager;
+        passwordField.interactable = !logged;
         playerDropdown.interactable = logged;
         playerButton.interactable = logged;
         playerEditButton.interactable = logged && !playerChosen && !newPlayer;
-        memberDropdown.interactable = logged && playerChosen;
+        memberDropdown.interactable = logged && !playerChosen && !newPlayer;
 
         userTab.text = userPanelText[language];
         managerLogin.text = managerLoginText[language];
@@ -300,19 +298,31 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
         else
         {
-            login.text = loginText[language];
+            if (newManager)
+                login.text = addText[language];
+            else
+                login.text = loginText[language];
         }
 
+        playerSelect.text = playerSelectText[language];
         if (playerChosen)
         {
             choose.text = changeText[language];
         }
         else
         {
-            choose.text = chooseText[language];
+            if (newPlayer)
+                choose.text = addText[language];
+            else
+                choose.text = chooseText[language];
         }
 
-        playerSelect.text = playerSelectText[language];
+        for (int option = 0; option < memberDropdown.options.Count; option++)
+        {
+            memberDropdown.options[option].text = limbTexts[option + 2, language];
+        }
+        memberDropdown.RefreshShownValue();
+
 	}
 
     #region Game status manager functions
@@ -411,6 +421,11 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     #endregion
 
     #region Status update functions
+    /// <summary>
+    /// Updates a specified dropdown.
+    /// </summary>
+    /// <param name="dropdown">Dropdown to be updated.</param>
+    /// <param name="users">Users to be uploaded.</param>
     void UpdateUsers(Dropdown dropdown, List<string> users)
     {
         List<string> users_aux = new List<string>();
@@ -423,6 +438,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         users_aux.Clear();
     }
 
+    /// <summary>
+    /// Updates the description space based on the player.
+    /// </summary>
     void UpdateDescription()
     {
         if (playerDropdown.value == users.AmountManagers)
@@ -431,11 +449,23 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             playerDescription.text = users.Description[playerDropdown.value]; 
     }
 
+    /// <summary>
+    /// Executes the manager button action.
+    /// </summary>
     void ManagerAction()
     {
-        if (!newManager)
+        if (newManager)
         {
-            if (!logged)
+            Debug.Log("Create Manager");
+        }
+        else
+        {
+            if (logged)
+            {
+                passwordField.text = "";
+                logged = false;
+            }
+            else
             {
                 if (users.CheckPassword(managerDropdown.value, passwordField.text))
                 {
@@ -445,25 +475,18 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 else
                 {
-
                     Debug.Log("Password Error");
                 }
             }
-            else
-            {
-                passwordField.text = "";
-                logged = false;
-            }
-        }
-        else
-        {
-            Debug.Log("Create Manager");
         }
     }
 
+    /// <summary>
+    /// Execute the players button action.
+    /// </summary>
     void PlayerAction()
     {
-        if (!newManager)
+        if (!newPlayer)
         {
             if (!playerChosen)
             {
@@ -478,6 +501,22 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         {
             Debug.Log("Create Player");
         }
+    }
+
+    /// <summary>
+    /// Creates a new manager.
+    /// </summary>
+    void EditManager()
+    {
+        Debug.Log("Edit manager");
+    }
+
+    /// <summary>
+    /// Creates a new player.
+    /// </summary>
+    void EditPlayer()
+    {
+        Debug.Log("Edit player");
     }
     #endregion
 }
