@@ -146,7 +146,7 @@ public class Dealer : GameBase {
                 timeToWait = HideCards(cardsInGame, 0f, 0f);
                 timeToWait = PackCards(cardsInGame, DeltaTime[Short], timeToWait);
 
-                if (gameInterface.currentStatus == InterfaceManager.Status.end)
+                if (gameInterface.currentStatus == InterfaceManager.GameStatus.end)
                     Wait(timeToWait, Status.endGame);
                 else 
                     Wait(timeToWait, Status.newTurn);
@@ -163,7 +163,7 @@ public class Dealer : GameBase {
                 }
                 break;
             case Status.endGame:
-                if (gameInterface.currentStatus != InterfaceManager.Status.end)
+                if (gameInterface.currentStatus != InterfaceManager.GameStatus.end)
                 {
                     gameStatus = Status.newTurn;
                     DestroyDeck(challengeCards);

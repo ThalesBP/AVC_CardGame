@@ -5,8 +5,11 @@ using UnityEngine.UI;
 
 public class InterfaceManager : Singleton<InterfaceManager> {
 
-    public enum Status {begin, playing, paused, end};
-    public Status currentStatus = Status.begin;
+    public enum GameStatus {begin, playing, paused, end};
+    public enum UserStatus {unlocked, locked, creating, editing}
+    public GameStatus currentStatus = GameStatus.begin;
+    public UserStatus managerStatus = UserStatus.unlocked;
+    public UserStatus playerStatus = UserStatus.unlocked;
     public int language;
 
 //    private enum PlayStatus {waiting, counting, playing};
@@ -74,21 +77,25 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     #endregion
 
     #region Interactive objects
-    // Control interface
-    public HideShow controlPanelVisibility, managerPanelVisibility, resultsVisibility;
-    public Button connectButton, startButton, stopButton;
-    public InputField playTimeField;
-    public Toggle helpToggle;
-    public Slider numOfCardsSlider;
-    public Texture2D mouseDefault;
+        #region Control interface
+        public HideShow controlPanelVisibility, managerPanelVisibility, resultsVisibility;
+        public Button connectButton, startButton, stopButton;
+        public InputField playTimeField;
+        public Toggle helpToggle;
+        public Slider numOfCardsSlider;
+        public Texture2D mouseDefault;
+        #endregion
 
-    // User interface
-    private bool logged, newManager, playerChosen, newPlayer;
-    private UserManager users;
-    public Dropdown managerDropdown, playerDropdown, memberDropdown;
-    public InputField passwordField;
-    public Button managerButton, managerEditButton, playerButton, playerEditButton;
-    public Text playerDescription;
+        #region User interface
+        private bool logged, newManager, editManager, playerChosen, newPlayer, editPlayer;
+        private UserManager users;
+        public Dropdown managerDropdown, playerDropdown, memberDropdown;
+        public InputField managerField, playerField, passwordField;
+        public Button managerButton, managerEditButton, playerButton, playerEditButton;
+        public RawImage managerEditImage, playerEditImage;
+        public Texture editTexture, deleteTexture;
+        public Text playerDescription;
+        #endregion
     #endregion
     public 
 	// Use this for initialization
@@ -96,27 +103,27 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     {
         Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
         countDownCounter = -1;
+        Time.timeScale = 0f;
 
+        #region General Interface Initialization
         playStatus = GameObject.Find("PlayStatus").GetComponentInChildren<Text>();
         statusScale = playStatus.gameObject.AddComponent<Motion>();
         statusScale.MoveTo(Vector3.one);
         statusScale.timeScaled = false;
         statusBoarder = playStatus.GetComponent<Outline>();
 
+        scorePoints = GameObject.Find("ScorePoints").GetComponentInChildren<Text>();
+        timeCounter = GameObject.Find("TimeCounter").GetComponentInChildren<Text>();
+        #endregion
+
+        #region Results Panel Initialization
         hitRate = GameObject.Find("HitRate").GetComponentsInChildren<Text>();
         timeRate = GameObject.Find("TimeRate").GetComponentsInChildren<Text>();
         info1 = GameObject.Find("Info1").GetComponentsInChildren<Text>();
         info2 = GameObject.Find("Info2").GetComponentsInChildren<Text>();
+        #endregion
 
-        scorePoints = GameObject.Find("ScorePoints").GetComponentInChildren<Text>();
-        timeCounter = GameObject.Find("TimeCounter").GetComponentInChildren<Text>();
-
-        metric1 = GameObject.Find("Metric1").GetComponentInChildren<Text>();
-        metric2 = GameObject.Find("Metric2").GetComponentInChildren<Text>();
-        metric3 = GameObject.Find("Metric3").GetComponentInChildren<Text>();
-
-        gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>();
-
+        #region Control Panel Initialization
         panel = GameObject.Find("ControlTabName").GetComponentInChildren<Text>();
 
         connect = GameObject.Find("Connect").GetComponentInChildren<Text>();
@@ -127,34 +134,42 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>();
         numOfCards = GameObject.Find("NumOfCards").GetComponentInChildren<Text>();
 
+        metric1 = GameObject.Find("Metric1").GetComponentInChildren<Text>();
+        metric2 = GameObject.Find("Metric2").GetComponentInChildren<Text>();
+        metric3 = GameObject.Find("Metric3").GetComponentInChildren<Text>();
+
+        gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>();
+        #endregion
+
+        #region User Panel Initialization
         userTab = GameObject.Find("UserTabName").GetComponentInChildren<Text>();
         managerLogin = GameObject.Find("ManagerDescription").GetComponentInChildren<Text>();
         managerPassword = GameObject.Find("ManagerPasswordPlaceholder").GetComponentInChildren<Text>();
         login = GameObject.Find("Login").GetComponentInChildren<Text>();
         playerSelect = GameObject.Find("PlayerDescription").GetComponentInChildren<Text>();
         choose = GameObject.Find("Choose").GetComponentInChildren<Text>();
+        #endregion
 
-        Time.timeScale = 0f;
-        // Control panel
+        #region Control Panel Interactive
         connectButton.interactable = false;
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });
         stopButton.interactable = false;
         stopButton.onClick.AddListener(delegate { FinishGame(); });
         helpToggle.interactable = false;
+        #endregion
 
-        // User panel
-        logged = newManager = playerChosen = newPlayer = false;
+        #region User Panel Interactive
+        logged = newManager = editManager = playerChosen = newPlayer = editPlayer = false;
         users = gameObject.AddComponent<UserManager>();
         UpdateUsers(managerDropdown, users.Managers);
         UpdateUsers(playerDropdown, users.players);
-        //playerDropdown.ClearOptions();
 
         managerButton.onClick.AddListener(delegate { ManagerAction(); });
         managerEditButton.onClick.AddListener(delegate { EditManager(); });
         playerButton.onClick.AddListener(delegate { PlayerAction(); });
         playerEditButton.onClick.AddListener(delegate { EditPlayer(); });
         playerDropdown.onValueChanged.AddListener( delegate { UpdateDescription();});
-
+        #endregion
         }
 	// Update is called once per frame
 	void Update ()
@@ -194,17 +209,17 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         // Checks current game status
         switch (currentStatus)
         {
-            case Status.begin:
+            case GameStatus.begin:
                 gameTime = totalGameTime = 0f;
                 gameMessage = Messages.waitingStart;
                 playStatus.text = readyText[language];
                 start.text = startText[language];
                 break;
-            case Status.paused:
+            case GameStatus.paused:
                 gameMessage = Messages.gamePaused;
                 start.text = startText[language];
                 break;
-            case Status.playing:
+            case GameStatus.playing:
                 gameMessage = Messages.gameRunning;
 
                 if (countDownCounter < 0)
@@ -223,7 +238,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     }
                 start.text = pauseText[language];
                 break;
-            case Status.end:
+            case GameStatus.end:
                 gameMessage = Messages.showingResults;
                 gameMessages.text = gameMessageTexts[(int)gameMessage, language];
                 playStatus.text = endOfGameText[language];
@@ -244,7 +259,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             timeCounter.color = SetAlpha(YellowText, 1f - controlPanelVisibility.slideTimeLerp);
             timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1");
         }
-            
+
         if (resultsVisibility.showed)
         {
             hitRate[0].text = hitRateText[language];
@@ -263,6 +278,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             info2[2].text = fromText[language] +"0 to 0";
         }
 
+        #region Control Panel Text Update
         panel.text = controlPanelText[language];
         scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
 
@@ -274,24 +290,59 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         stop.text = stopText[language];
         help.text = helpText[language];
         numOfCards.text = numOfCardsSlider.value.ToString("F0") + " " + cardsText[language];
+        #endregion
+
+        #region User Panel Text Update
+        switch (managerStatus)
+        {
+            case UserStatus.unlocked:
+                UpdateManagerActivity(true, newManager, newManager, true);
+                UpdatePlayerActivity(false, false, false, true);
+                if (newManager)
+                    login.text = addText[language];
+                else
+                    login.text = loginText[language];
+                break;
+            case UserStatus.creating:
+                UpdateManagerActivity(true, true, true, false);
+                break;
+            case UserStatus.editing:
+                UpdateManagerActivity(true, true, true, false);
+                break;
+            case UserStatus.locked:
+                UpdateManagerActivity(false, false, false, true);
+                playerStatus = UserStatus.unlocked;
+                playerDropdown.options[users.AmountPlayers].text = newUserText[language];
+                login.text = logoutText[language];
+                break;
+        }
+
+        switch (playerStatus)
+        {
+            case UserStatus.unlocked:
+                UpdatePlayerActivity(true, true, newPlayer, true);
+
+                break;
+            case UserStatus.creating:
+                UpdatePlayerActivity(true, true, true, false);
+                break;
+            case UserStatus.editing:
+                UpdatePlayerActivity(true, true, true, false);
+                break;
+            case UserStatus.locked:
+                UpdatePlayerActivity(false, true, false, true);
+                break;
+        }
 
         newManager = (managerDropdown.captionText.text == newUserText[language]);
         newPlayer = (playerDropdown.captionText.text == newUserText[language]);
-
-        managerDropdown.interactable = !logged;
-        managerEditButton.interactable = (!logged) && !newManager;
-        passwordField.interactable = !logged;
-        playerDropdown.interactable = logged;
-        playerButton.interactable = logged;
-        playerEditButton.interactable = logged && !playerChosen && !newPlayer;
-        memberDropdown.interactable = logged && !playerChosen && !newPlayer;
 
         userTab.text = userPanelText[language];
         managerLogin.text = managerLoginText[language];
         managerPassword.text = enterPasswordText[language];
 
         managerDropdown.options[users.AmountManagers].text = newUserText[language];
-        if (logged)
+   /*     if (logged)
         {
             playerDropdown.options[users.AmountPlayers].text = newUserText[language];
             login.text = logoutText[language];
@@ -302,7 +353,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 login.text = addText[language];
             else
                 login.text = loginText[language];
-        }
+        }*/
 
         playerSelect.text = playerSelectText[language];
         if (playerChosen)
@@ -322,7 +373,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             memberDropdown.options[option].text = limbTexts[option + 2, language];
         }
         memberDropdown.RefreshShownValue();
-
+        #endregion
 	}
 
     #region Game status manager functions
@@ -346,7 +397,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         playStatus.color = YellowText;
         statusBoarder.effectColor = Color.black;
 
-        currentStatus = Status.paused;
+        currentStatus = GameStatus.paused;
         Time.timeScale = 0f;
         countDownCounter = -1;
     }
@@ -374,7 +425,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         stopButton.interactable = true;
         resultsVisibility.Hide();
 
-        currentStatus = Status.playing;
+        currentStatus = GameStatus.playing;
         Time.timeScale = gameSpeed;
     }
 
@@ -383,7 +434,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     private void SwitchStartPause()
     {
-        if (currentStatus != Status.end)
+        if (currentStatus != GameStatus.end)
         {
             if (Time.timeScale == gameSpeed)
             {
@@ -396,7 +447,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
         else
         {
-            currentStatus = Status.begin;
+            currentStatus = GameStatus.begin;
             resultsVisibility.Hide();
         }
     }
@@ -416,7 +467,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         stopButton.interactable = false;
 
-        currentStatus = Status.end;
+        currentStatus = GameStatus.end;
     }
     #endregion
 
@@ -450,13 +501,39 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     }
 
     /// <summary>
+    /// Updates the manager activity.
+    /// </summary>
+    void UpdateManagerActivity(bool dropdown, bool edit, bool password, bool selectMode)
+    {
+        managerDropdown.interactable = dropdown;
+        managerEditButton.interactable = edit;
+        passwordField.interactable = password;
+        managerDropdown.gameObject.SetActive(selectMode);
+        managerField.gameObject.SetActive(!selectMode);
+    }
+
+    /// <summary>
+    /// Updates the player activity.
+    /// </summary>
+    void UpdatePlayerActivity(bool dropdown, bool button, bool edit, bool selectMode)
+    {
+        playerDropdown.interactable = dropdown;
+        playerButton.interactable = button;
+        playerEditButton.interactable = edit;
+        memberDropdown.interactable = button;
+        playerDropdown.gameObject.SetActive(selectMode);
+        playerField.gameObject.SetActive(!selectMode);
+    }
+
+    /// <summary>
     /// Executes the manager button action.
     /// </summary>
     void ManagerAction()
     {
         if (newManager)
         {
-            Debug.Log("Create Manager");
+            managerDropdown.gameObject.SetActive(false);
+            managerField.gameObject.SetActive(true);
         }
         else
         {
