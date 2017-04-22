@@ -3497,6 +3497,8 @@ MonoBehaviour:
   fontSizeAdjust_M: 100
   languageAdjust: 0
   currentStatus: 0
+  managerStatus: 0
+  playerStatus: 0
   language: 0
   playStatus: {fileID: 0}
   gameSpeed: 1
@@ -3534,6 +3536,7 @@ MonoBehaviour:
   playerEditImage: {fileID: 114105013987373454}
   editTexture: {fileID: 2800000, guid: f304636ab0ffca040ba8948f12235136, type: 3}
   deleteTexture: {fileID: 2800000, guid: d2f8ace7165043a4da20e704150e4db3, type: 3}
+  cancelTexture: {fileID: 2800000, guid: 3300691ea0be19b418db55d16e99e2c8, type: 3}
   playerDescription: {fileID: 114300122876230314}
 --- !u!114 &114201828627396616
 MonoBehaviour:
@@ -10085,7 +10088,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -0.000005096197}
+  m_AnchoredPosition: {x: 0, y: 0.0000045746565}
   m_SizeDelta: {x: 0, y: 160}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224612525681625322

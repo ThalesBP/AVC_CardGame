@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class InterfaceManager : Singleton<InterfaceManager> {
 
     public enum GameStatus {begin, playing, paused, end};
-    public enum UserStatus {unlocked, locked, creating, editing}
+    public enum UserStatus {unlocked, locked, newUser, creating, editing}
     public GameStatus currentStatus = GameStatus.begin;
     public UserStatus managerStatus = UserStatus.unlocked;
     public UserStatus playerStatus = UserStatus.unlocked;
@@ -87,13 +87,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         #endregion
 
         #region User interface
-        private bool logged, newManager, editManager, playerChosen, newPlayer, editPlayer;
         private UserManager users;
         public Dropdown managerDropdown, playerDropdown, memberDropdown;
         public InputField managerField, playerField, passwordField;
         public Button managerButton, managerEditButton, playerButton, playerEditButton;
         public RawImage managerEditImage, playerEditImage;
-        public Texture editTexture, deleteTexture;
+        public Texture editTexture, deleteTexture, cancelTexture;
         public Text playerDescription;
         #endregion
     #endregion
@@ -159,7 +158,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         #endregion
 
         #region User Panel Interactive
-        logged = newManager = editManager = playerChosen = newPlayer = editPlayer = false;
         users = gameObject.AddComponent<UserManager>();
         UpdateUsers(managerDropdown, users.Managers);
         UpdateUsers(playerDropdown, users.players);
@@ -176,7 +174,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     {
         language = (int)chosenLanguage;
 		
-        // Counts the time down
+        #region Counts the time down
         if (countDownCounter >= 0)
         {
             if (statusScale.status == Motion.Status.idle)
@@ -205,8 +203,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
 
         playStatus.transform.localScale = statusScale;
+        #endregion
 
-        // Checks current game status
+        #region Checks current game status
         switch (currentStatus)
         {
             case GameStatus.begin:
@@ -247,8 +246,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 break;
         }
         gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
+        #endregion
 
-        // Shows or hides the timer with panel
+        #region Shows or hides the timer with panel
         if (controlPanelVisibility.showed)
         {
             timeCounter.color = SetAlpha(YellowText, controlPanelVisibility.slideTimeLerp);
@@ -277,6 +277,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             info1[2].text = fromText[language] + "0 to 0";
             info2[2].text = fromText[language] +"0 to 0";
         }
+        #endregion
 
         #region Control Panel Text Update
         panel.text = controlPanelText[language];
@@ -296,78 +297,79 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         switch (managerStatus)
         {
             case UserStatus.unlocked:
-                UpdateManagerActivity(true, newManager, newManager, true);
-                UpdatePlayerActivity(false, false, false, true);
-                if (newManager)
-                    login.text = addText[language];
-                else
-                    login.text = loginText[language];
+                UpdateManagerActivity(true, true, true, true);
+                managerEditImage.texture = editTexture;
+                login.text = loginText[language];
+                if (managerDropdown.captionText.text == newUserText[language])
+                    managerStatus = UserStatus.newUser;
+                break;
+            case UserStatus.newUser:
+                UpdateManagerActivity(true, false, false, true);
+                login.text = addText[language];
+                managerEditImage.texture = editTexture;
+                if (managerDropdown.captionText.text != newUserText[language])
+                    managerStatus = UserStatus.unlocked;
                 break;
             case UserStatus.creating:
                 UpdateManagerActivity(true, true, true, false);
+                login.text = doneText[language];
+                managerEditImage.texture = cancelTexture;
                 break;
             case UserStatus.editing:
                 UpdateManagerActivity(true, true, true, false);
+                login.text = doneText[language];
+                managerEditImage.texture = deleteTexture;
                 break;
             case UserStatus.locked:
                 UpdateManagerActivity(false, false, false, true);
-                playerStatus = UserStatus.unlocked;
+                managerEditImage.texture = editTexture;
                 playerDropdown.options[users.AmountPlayers].text = newUserText[language];
                 login.text = logoutText[language];
                 break;
         }
-
         switch (playerStatus)
         {
             case UserStatus.unlocked:
-                UpdatePlayerActivity(true, true, newPlayer, true);
-
+                if (managerStatus == UserStatus.locked)
+                    UpdatePlayerActivity(true, true, true, true, true);
+                else 
+                    UpdatePlayerActivity(false, false, false, false, true);
+                choose.text = chooseText[language];
+                playerEditImage.texture = editTexture;
+                if (playerDropdown.captionText.text == newUserText[language])
+                    playerStatus = UserStatus.newUser;
+                break;
+            case UserStatus.newUser:
+                UpdatePlayerActivity(true, true, false, false, true);
+                playerEditImage.texture = editTexture;
+                choose.text = addText[language];
+                if (playerDropdown.captionText.text != newUserText[language])
+                    playerStatus = UserStatus.unlocked;
                 break;
             case UserStatus.creating:
-                UpdatePlayerActivity(true, true, true, false);
+                UpdatePlayerActivity(true, true, true, false, false);
+                playerEditImage.texture = cancelTexture;
+                choose.text = doneText[language];
                 break;
             case UserStatus.editing:
-                UpdatePlayerActivity(true, true, true, false);
+                UpdatePlayerActivity(true, true, true, false, false);
+                playerEditImage.texture = deleteTexture;
+                choose.text = doneText[language];
                 break;
             case UserStatus.locked:
-                UpdatePlayerActivity(false, true, false, true);
+                UpdatePlayerActivity(false, true, false, false, true);
+                playerEditImage.texture = editTexture;
+                choose.text = changeText[language];
                 break;
         }
 
-        newManager = (managerDropdown.captionText.text == newUserText[language]);
-        newPlayer = (playerDropdown.captionText.text == newUserText[language]);
-
         userTab.text = userPanelText[language];
+
         managerLogin.text = managerLoginText[language];
         managerPassword.text = enterPasswordText[language];
-
         managerDropdown.options[users.AmountManagers].text = newUserText[language];
-   /*     if (logged)
-        {
-            playerDropdown.options[users.AmountPlayers].text = newUserText[language];
-            login.text = logoutText[language];
-        }
-        else
-        {
-            if (newManager)
-                login.text = addText[language];
-            else
-                login.text = loginText[language];
-        }*/
 
         playerSelect.text = playerSelectText[language];
-        if (playerChosen)
-        {
-            choose.text = changeText[language];
-        }
-        else
-        {
-            if (newPlayer)
-                choose.text = addText[language];
-            else
-                choose.text = chooseText[language];
-        }
-
         for (int option = 0; option < memberDropdown.options.Count; option++)
         {
             memberDropdown.options[option].text = limbTexts[option + 2, language];
@@ -515,46 +517,55 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// <summary>
     /// Updates the player activity.
     /// </summary>
-    void UpdatePlayerActivity(bool dropdown, bool button, bool edit, bool selectMode)
+    void UpdatePlayerActivity(bool dropdown, bool button, bool edit, bool memeber, bool selectMode)
     {
         playerDropdown.interactable = dropdown;
         playerButton.interactable = button;
         playerEditButton.interactable = edit;
-        memberDropdown.interactable = button;
+        memberDropdown.interactable = memeber;
         playerDropdown.gameObject.SetActive(selectMode);
         playerField.gameObject.SetActive(!selectMode);
     }
+    #endregion
 
+    #region User interface functions
     /// <summary>
     /// Executes the manager button action.
     /// </summary>
     void ManagerAction()
     {
-        if (newManager)
+        switch (managerStatus)
         {
-            managerDropdown.gameObject.SetActive(false);
-            managerField.gameObject.SetActive(true);
-        }
-        else
-        {
-            if (logged)
-            {
-                passwordField.text = "";
-                logged = false;
-            }
-            else
-            {
+            case UserStatus.unlocked:
                 if (users.CheckPassword(managerDropdown.value, passwordField.text))
                 {
                     UpdateUsers(playerDropdown, users.players);
                     UpdateDescription();
-                    logged = true;
+                    managerStatus = UserStatus.locked;
+                    playerStatus = UserStatus.unlocked;
                 }
                 else
                 {
                     Debug.Log("Password Error");
                 }
-            }
+                break;
+            case UserStatus.newUser:
+                managerStatus = UserStatus.creating;
+                passwordField.text = "";
+                Debug.Log("Create new Manager?");
+                break;
+            case UserStatus.creating:
+                managerStatus = UserStatus.unlocked;
+                passwordField.text = "";
+                Debug.Log("Creating Manager");
+                break;
+            case UserStatus.editing:
+                managerStatus = UserStatus.unlocked;
+                Debug.Log("Editing Manager");
+                break;
+            case UserStatus.locked:
+                managerStatus = UserStatus.unlocked;
+                break;
         }
     }
 
@@ -563,20 +574,26 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     void PlayerAction()
     {
-        if (!newPlayer)
+        switch (playerStatus)
         {
-            if (!playerChosen)
-            {
-                playerChosen = true;
-            }
-            else
-            {
-                playerChosen = false;
-            }
-        }
-        else
-        {
-            Debug.Log("Create Player");
+            case UserStatus.unlocked:
+                playerStatus = UserStatus.locked;
+                break;
+            case UserStatus.newUser:
+                playerStatus = UserStatus.editing;
+                Debug.Log("Create new Player?");
+                break;
+            case UserStatus.creating:
+                playerStatus = UserStatus.unlocked;
+                Debug.Log("Creating Player");
+                break;
+            case UserStatus.editing:
+                playerStatus = UserStatus.unlocked;
+                Debug.Log("Editing Player");
+                break;
+            case UserStatus.locked:
+                playerStatus = UserStatus.unlocked;
+                break;
         }
     }
 
@@ -585,7 +602,21 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     void EditManager()
     {
-        Debug.Log("Edit manager");
+        switch (managerStatus)
+        {
+            case UserStatus.creating:
+                managerStatus = UserStatus.unlocked;
+                Debug.Log("Cancel Creating");
+                break;
+            case UserStatus.editing:
+                managerStatus = UserStatus.unlocked;
+                Debug.Log("Delete Manager");
+                break;
+            case UserStatus.unlocked:
+                managerStatus = UserStatus.editing;
+                Debug.Log("Edit Manager");
+                break;
+        }
     }
 
     /// <summary>
@@ -593,7 +624,21 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     void EditPlayer()
     {
-        Debug.Log("Edit player");
+        switch (playerStatus)
+        {
+            case UserStatus.creating:
+                playerStatus = UserStatus.unlocked;
+                Debug.Log("Cancel Creating");
+                break;
+            case UserStatus.editing:
+                playerStatus = UserStatus.unlocked;
+                Debug.Log("Delete Player");
+                break;
+            case UserStatus.unlocked:
+                playerStatus = UserStatus.editing;
+                Debug.Log("Edit Player");
+                break;
+        }
     }
     #endregion
 }
