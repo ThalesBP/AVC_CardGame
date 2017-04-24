@@ -78,7 +78,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     #region Interactive objects
         #region Control interface
-        public HideShow controlPanelVisibility, managerPanelVisibility, resultsVisibility;
+        public HideShow controlPanelVisibility, userPanelVisibility, managerPanelVisibility, resultsVisibility;
         public Button connectButton, startButton, stopButton;
         public InputField playTimeField;
         public Toggle helpToggle;
@@ -162,10 +162,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         UpdateUsers(managerDropdown, users.Managers);
         UpdateUsers(playerDropdown, users.players);
 
-        managerButton.onClick.AddListener(delegate { ManagerAction(); });
-        managerEditButton.onClick.AddListener(delegate { EditManager(); });
-        playerButton.onClick.AddListener(delegate { PlayerAction(); });
-        playerEditButton.onClick.AddListener(delegate { EditPlayer(); });
+        managerButton.onClick.AddListener(delegate { ManagerButton1(); });
+        managerEditButton.onClick.AddListener(delegate { ManagerButton2(); });
+        playerButton.onClick.AddListener(delegate { PlayerButton1(); });
+        playerEditButton.onClick.AddListener(delegate { PlayerButton2(); });
         playerDropdown.onValueChanged.AddListener( delegate { UpdateDescription();});
         #endregion
         }
@@ -294,6 +294,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         #endregion
 
         #region User Panel Text Update
+        if (userPanelVisibility.showed && (Input.GetKey(KeyCode.Return) || Input.GetKey(KeyCode.KeypadEnter)))
+        {
+            if (managerStatus != UserStatus.locked)
+                ManagerButton1();
+        }
+
         switch (managerStatus)
         {
             case UserStatus.unlocked:
@@ -314,6 +320,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 UpdateManagerActivity(true, true, true, false);
                 login.text = doneText[language];
                 managerEditImage.texture = cancelTexture;
+                if (userPanelVisibility.showed && Input.GetKey(KeyCode.Escape))
+                    ManagerButton2();
                 break;
             case UserStatus.editing:
                 UpdateManagerActivity(true, true, true, false);
@@ -350,6 +358,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 UpdatePlayerActivity(true, true, true, false, false);
                 playerEditImage.texture = cancelTexture;
                 choose.text = doneText[language];
+                if (userPanelVisibility.showed && Input.GetKey(KeyCode.Escape))
+                    PlayerButton2();
                 break;
             case UserStatus.editing:
                 UpdatePlayerActivity(true, true, true, false, false);
@@ -533,7 +543,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// <summary>
     /// Executes the manager button action.
     /// </summary>
-    void ManagerAction()
+    void ManagerButton1()
     {
         switch (managerStatus)
         {
@@ -559,6 +569,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             case UserStatus.creating:
                 managerStatus = UserStatus.unlocked;
                 passwordField.text = "";
+
                 Debug.Log("Creating Manager");
                 break;
             case UserStatus.editing:
@@ -574,7 +585,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// <summary>
     /// Execute the players button action.
     /// </summary>
-    void PlayerAction()
+    void PlayerButton1()
     {
         switch (playerStatus)
         {
@@ -585,7 +596,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 playerField.text = "";
                 playerInfoField.text = "";
                 playerStatus = UserStatus.creating;
-                Debug.Log("Create new Player?");
                 break;
             case UserStatus.creating:
                 playerStatus = UserStatus.unlocked;
@@ -604,7 +614,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// <summary>
     /// Creates a new manager.
     /// </summary>
-    void EditManager()
+    void ManagerButton2()
     {
         switch (managerStatus)
         {
@@ -634,7 +644,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// <summary>
     /// Creates a new player.
     /// </summary>
-    void EditPlayer()
+    void PlayerButton2()
     {
         switch (playerStatus)
         {

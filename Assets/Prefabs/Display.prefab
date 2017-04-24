@@ -3661,6 +3661,7 @@ MonoBehaviour:
   gameMessage: 0
   dealerMessage: 0
   controlPanelVisibility: {fileID: 114130055930393904}
+  userPanelVisibility: {fileID: 114873553481996414}
   managerPanelVisibility: {fileID: 114873553481996414}
   resultsVisibility: {fileID: 114778403954723424}
   connectButton: {fileID: 114065188029545602}
