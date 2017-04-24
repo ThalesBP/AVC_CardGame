@@ -89,7 +89,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         #region User interface
         private UserManager users;
         public Dropdown managerDropdown, playerDropdown, memberDropdown;
-        public InputField managerField, playerField, passwordField;
+        public InputField managerField, playerField, passwordField, playerInfoField;
         public Button managerButton, managerEditButton, playerButton, playerEditButton;
         public RawImage managerEditImage, playerEditImage;
         public Texture editTexture, deleteTexture, cancelTexture;
@@ -525,6 +525,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         memberDropdown.interactable = memeber;
         playerDropdown.gameObject.SetActive(selectMode);
         playerField.gameObject.SetActive(!selectMode);
+        playerInfoField.gameObject.SetActive(!selectMode);
     }
     #endregion
 
@@ -539,10 +540,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             case UserStatus.unlocked:
                 if (users.CheckPassword(managerDropdown.value, passwordField.text))
                 {
-                    UpdateUsers(playerDropdown, users.players);
-                    UpdateDescription();
                     managerStatus = UserStatus.locked;
                     playerStatus = UserStatus.unlocked;
+                    UpdateUsers(playerDropdown, users.players);
+                    UpdateDescription();
                 }
                 else
                 {
@@ -551,6 +552,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 break;
             case UserStatus.newUser:
                 managerStatus = UserStatus.creating;
+                managerField.text = "";
                 passwordField.text = "";
                 Debug.Log("Create new Manager?");
                 break;
@@ -580,7 +582,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 playerStatus = UserStatus.locked;
                 break;
             case UserStatus.newUser:
-                playerStatus = UserStatus.editing;
+                playerField.text = "";
+                playerInfoField.text = "";
+                playerStatus = UserStatus.creating;
                 Debug.Log("Create new Player?");
                 break;
             case UserStatus.creating:
@@ -613,8 +617,16 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 Debug.Log("Delete Manager");
                 break;
             case UserStatus.unlocked:
-                managerStatus = UserStatus.editing;
-                Debug.Log("Edit Manager");
+                if (users.CheckPassword(managerDropdown.value, passwordField.text))
+                {
+                    managerStatus = UserStatus.editing;
+                    managerField.text = managerDropdown.captionText.text;
+                    Debug.Log("Edit Manager");
+                }
+                else
+                {
+                    Debug.Log("Password Error");
+                }
                 break;
         }
     }
@@ -636,6 +648,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 break;
             case UserStatus.unlocked:
                 playerStatus = UserStatus.editing;
+                playerField.text = playerDropdown.captionText.text;
+                playerInfoField.text = playerDescription.text;
                 Debug.Log("Edit Player");
                 break;
         }

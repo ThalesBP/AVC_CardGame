@@ -123,7 +123,16 @@ public class UserManager: GameBase {
         {
             File.AppendAllText(accountsPath + "Temp.data", managers[i] + "\t" + passwords[i] + Environment.NewLine);
         }
-        File.Replace(accountsPath + "Temp" + dotData, managersFile, accountsPath + "Backup" + dotData);
+        File.Replace(accountsPath + "Temp" + dotData, managersFile, accountsPath + "Backup_managers" + dotData);
+        File.Delete(accountsPath + "Temp" + dotData);
+
+        File.Create(accountsPath + "Temp" + dotData);
+
+        for (int i = 0; i < AmountPlayers; i++)
+        {
+            File.AppendAllText(accountsPath + "Temp.data", players[i] + "\t" + description[i] + Environment.NewLine);
+        }
+        File.Replace(accountsPath + "Temp" + dotData, playersFile, accountsPath + "Backup_players" + dotData);
         File.Delete(accountsPath + "Temp" + dotData);
     }
 
@@ -139,41 +148,99 @@ public class UserManager: GameBase {
     }
 
     /// <summary>
-    /// Adds the specified name and password.
+    /// Adds a new manager.
     /// </summary>
     /// <param name="name">Name.</param>
     /// <param name="password">Password.</param>
-    public void Add(string name, string password)
+    public void AddManager(string name, string password)
     {
-        managers.Add(name);
-        passwords.Add(password);
-        Save();
+        if ((name != "") && (password != ""))
+        {
+            managers.Add(name);
+            passwords.Add(password);
+            Save();
+        }
     }
 
     /// <summary>
-    /// Trys to remove the specified user, checks the password, return true if is correct.
+    /// Removes a manager.
     /// </summary>
     /// <param name="userNumber">User number.</param>
     /// <param name="password">Password.</param>
-    public bool Remove(int userNumber, string password)
+    public void RemoveManager(int userNumber, string password)
     {
-        Debug.Log(AmountManagers);
+        if (userNumber < AmountManagers)
+            if (CheckPassword(userNumber, password))
+            {
+                managers.RemoveAt(userNumber);
+                passwords.RemoveAt(userNumber);
+                Save();
+            }
+    }
 
-        if (userNumber >= AmountManagers)
+    /// <summary>
+    /// Changes a manager.
+    /// </summary>
+    /// <param name="userNumber">User number.</param>
+    /// <param name="name">Name.</param>
+    /// <param name="password">Password.</param>
+    public void ChangeManager(int userNumber, string name, string password)
+    {
+        if ((name != "") && (password != "") && (userNumber < AmountManagers))
         {
-            return false;
-        }
-
-        if (CheckPassword(userNumber, password))
-        {
-            managers.RemoveAt(userNumber);
-            passwords.RemoveAt(userNumber);
+            managers[userNumber] = name;
+            passwords[userNumber] = password;
             Save();
-            return true;
-        }
-        else
-        {
-            return false;
         }
     }
-}
+
+    /// <summary>
+    /// Adds a player.
+    /// </summary>
+    /// <param name="name">Name.</param>
+    /// <param name="information">Information.</param>
+    public void AddPlayer(string name, string information)
+    {
+        if (name != "")
+        {
+            players.Add(name);
+            if (information == "")
+                description.Add("No description");
+            else
+                description.Add(information);
+            Save();
+        }
+    }
+    /// <summary>
+    /// Removes a player.
+    /// </summary>
+    /// <param name="userNumber">User number.</param>
+    /// <param name="password">Password.</param>
+    public void RemovePlayer(int userNumber)
+    {
+        if (userNumber < AmountPlayers)
+        {
+            players.RemoveAt(userNumber);
+            description.RemoveAt(userNumber);
+            Save();
+        }
+    }
+
+    /// <summary>
+    /// Changes a player.
+    /// </summary>
+    /// <param name="userNumber">User number.</param>
+    /// <param name="name">Name.</param>
+    /// <param name="password">Password.</param>
+    public void ChangePlayer(int userNumber, string name, string information)
+    {
+        if ((name != "") && (userNumber < AmountManagers))
+        {
+            players[userNumber] = name;
+            if (information == "")
+                description[userNumber] = "No description";
+            else
+                description[userNumber] = information;
+            Save();
+        }
+    }}
