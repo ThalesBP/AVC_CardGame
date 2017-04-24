@@ -54,6 +54,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly Color GreenColor = new Color(0f, 192f/255f, 1f);
     protected static readonly Color RedColor = Color.red;
     protected static readonly Color YellowText = new Color(1f, 206f/255f, 0f);
+    protected static readonly Color BlackMatteColor = new Color(50f/255f, 50f/255f, 50f/255f, 0.5f);
     #endregion
 
     #region Texts
@@ -92,11 +93,13 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] cardsText = { "Cards", "Cartas" };
     // User panel
     protected static readonly string[] userPanelText = { "User", "Usuário" };
-    protected static readonly string[] newUserText = { "New user", "Novo usuário" };
+    protected static readonly string[] insertUser = { "Insert user", "Insira usuário" };
+    protected static readonly string[] insertInfoText = { "Insert any information", "Insira alguma informação" };
     protected static readonly string[] addText = { "Add", "Adicionar" };
     protected static readonly string[] doneText = { "Done", "Feito" };
     protected static readonly string[] managerLoginText = { "Manager Login", "Entrar Administrador" };
     protected static readonly string[] enterPasswordText = { "Enter password...", "Insira a senha..." }; 
+    protected static readonly string[] passwordWrongText = { "Password wrong!", "Senha errada!" }; 
     protected static readonly string[] loginText = { "Log In", "Entrar" };
     protected static readonly string[] logoutText = { "Log Out", "Sair" };
     protected static readonly string[] playerSelectText = { "Player Select", "Selecionar Jogador" };
