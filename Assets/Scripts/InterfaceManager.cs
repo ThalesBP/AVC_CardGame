@@ -250,7 +250,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 gameMessages.text = gameMessageTexts[(int)gameMessage, language];
                 playStatus.text = endOfGameText[language];
                 start.text = restartText[language];
-                //Time.timeScale = 0f;
                 break;
         }
 
@@ -317,14 +316,15 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 UpdateManagerActivity(true, true, true, true);
                 managerEditImage.texture = editTexture;
                 login.text = loginText[language];
-                if (managerDropdown.captionText.text == insertUser[language])
+                userWrong = false;
+                if (managerDropdown.value == users.AmountManagers)
                     managerStatus = UserStatus.newUser;
                 break;
             case UserStatus.newUser:
                 UpdateManagerActivity(true, false, false, true);
                 login.text = addText[language];
                 managerEditImage.texture = editTexture;
-                if (managerDropdown.captionText.text != insertUser[language])
+                if (managerDropdown.value != users.AmountManagers)
                     managerStatus = UserStatus.unlocked;
                 break;
             case UserStatus.creating:
@@ -337,12 +337,18 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             case UserStatus.editing:
                 UpdateManagerActivity(true, true, true, false);
                 login.text = doneText[language];
-                managerEditImage.texture = deleteTexture;
+                if ((managerField.text == managerDropdown.options[managerDropdown.value].text) && (users.CheckPassword(managerDropdown.value, passwordField.text)))
+                    managerEditImage.texture = deleteTexture;
+                else 
+                {
+                    managerEditImage.texture = cancelTexture;
+                    managerEditButton.image.color = GreenColor;
+                }
                 break;
             case UserStatus.locked:
                 UpdateManagerActivity(false, false, false, true);
                 managerEditImage.texture = editTexture;
-                playerDropdown.options[users.AmountPlayers].text = insertUser[language];
+                playerDropdown.options[users.AmountPlayers].text = insertUserText[language];
                 login.text = logoutText[language];
                 break;
         }
@@ -350,19 +356,22 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         {
             case UserStatus.unlocked:
                 if (managerStatus == UserStatus.locked)
+                {
                     UpdatePlayerActivity(true, true, true, true, true);
+                    userWrong = false;
+                }
                 else 
                     UpdatePlayerActivity(false, false, false, false, true);
                 choose.text = chooseText[language];
                 playerEditImage.texture = editTexture;
-                if (playerDropdown.captionText.text == insertUser[language])
+                if (playerDropdown.value == users.AmountPlayers)
                     playerStatus = UserStatus.newUser;
                 break;
             case UserStatus.newUser:
                 UpdatePlayerActivity(true, true, false, false, true);
                 playerEditImage.texture = editTexture;
                 choose.text = addText[language];
-                if (playerDropdown.captionText.text != insertUser[language])
+                if (playerDropdown.value != users.AmountPlayers)
                     playerStatus = UserStatus.unlocked;
                 break;
             case UserStatus.creating:
@@ -374,7 +383,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 break;
             case UserStatus.editing:
                 UpdatePlayerActivity(true, true, true, false, false);
-                playerEditImage.texture = deleteTexture;
+                if ((playerField.text == playerDropdown.options[playerDropdown.value].text) && (playerInfoField.text == playerDescription.text))
+                    playerEditImage.texture = deleteTexture;
+                else
+                {
+                    playerEditImage.texture = cancelTexture;
+                    playerEditButton.image.color = GreenColor;
+                }
                 choose.text = doneText[language];
                 break;
             case UserStatus.locked:
@@ -387,15 +402,25 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         userTab.text = userPanelText[language];
 
         managerLogin.text = managerLoginText[language];
-        managerUser.text = insertUser[language];
-        managerDropdown.options[users.AmountManagers].text = insertUser[language];
+        managerDropdown.options[users.AmountManagers].text = insertUserText[language];
+
+        if (userWrong)
+        {
+            managerUser.text = userWrongText[language];
+            playerUser.text = userWrongText[language];
+        }
+        else 
+        {
+            managerUser.text = insertUserText[language];
+            playerUser.text = insertUserText[language];
+        }
+
         if (passwordWrong)
             managerPassword.text = passwordWrongText[language];
         else
             managerPassword.text = enterPasswordText[language];
 
         playerSelect.text = playerSelectText[language];
-        playerUser.text = insertUser[language];
         descriptionEdit.text = insertInfoText[language];
 
         for (int option = 0; option < memberDropdown.options.Count; option++)
@@ -501,7 +526,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     }
     #endregion
 
-    #region Status update functions
+    #region Interface generic functions
     /// <summary>
     /// Updates a specified dropdown.
     /// </summary>
@@ -515,7 +540,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             foreach (string user in users)
                 users_aux.Add(user);
         }
-            users_aux.Add(insertUser[language]);
+            users_aux.Add(insertUserText[language]);
 
             dropdown.ClearOptions();
             dropdown.AddOptions(users_aux);
@@ -557,6 +582,35 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         playerDropdown.gameObject.SetActive(selectMode);
         playerField.gameObject.SetActive(!selectMode);
         playerInfoField.gameObject.SetActive(!selectMode);
+    }
+
+    /// <summary>
+    /// Verifies the repentance of a name.
+    /// </summary>
+    /// <returns><c>true</c>, if repentance was verifyed, <c>false</c> otherwise.</returns>
+    /// <param name="options">Options to be verifyed.</param>
+    /// <param name="name">Name to find.</param>
+    bool VerifyRepentance(Dropdown options, string name)
+    {
+        foreach (Dropdown.OptionData option in options.options)
+        {
+            if (option.text == name)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool VerifyRepentance(Dropdown options, string name, int value)
+    {
+        for (int i = 0; i < options.options.Count; i++)
+        {
+            if (i != value)
+                if (options.options[i].text == name)
+                    return true;
+        }
+        return false;
     }
     #endregion
 
@@ -601,11 +655,21 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 else
                 {
-                    users.AddManager(managerField.text, passwordField.text);
+                    userWrong = VerifyRepentance(managerDropdown, managerField.text);
 
-                    managerUser.color = BlackMatteColor;
-                    managerPassword.color = BlackMatteColor;
-                    managerStatus = UserStatus.unlocked;
+                    if (userWrong)
+                    {
+                        managerUser.color = RedColor;
+                        managerField.text = "";
+                    }
+                    else
+                    {   
+                        users.AddManager(managerField.text, passwordField.text);
+
+                        managerUser.color = BlackMatteColor;
+                        managerPassword.color = BlackMatteColor;
+                        managerStatus = UserStatus.unlocked;
+                    }
                 }
                 break;
             case UserStatus.editing:
@@ -617,11 +681,21 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 else
                 {
-                    users.ChangeManager(managerDropdown.value, managerField.text, passwordField.text);
+                    userWrong = VerifyRepentance(managerDropdown, managerField.text, managerDropdown.value);
+
+                    if (userWrong)
+                    {
+                        managerUser.color = RedColor;
+                        managerField.text = "";
+                    }
+                    else
+                    {   
+                        users.ChangeManager(managerDropdown.value, managerField.text, passwordField.text);
                     
-                    managerUser.color = BlackMatteColor;
-                    managerPassword.color = BlackMatteColor;
-                    managerStatus = UserStatus.unlocked;
+                        managerUser.color = BlackMatteColor;
+                        managerPassword.color = BlackMatteColor;
+                        managerStatus = UserStatus.unlocked;
+                    }
                 }
                 break;
             case UserStatus.locked:
@@ -661,10 +735,20 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 else
                 {
-                    users.AddPlayer(playerField.text, playerInfoField.text);
+                    userWrong = VerifyRepentance(playerDropdown, playerField.text);
 
-                    playerUser.color = BlackMatteColor;
-                    playerStatus = UserStatus.unlocked;
+                    if (userWrong)
+                    {
+                        playerUser.color = RedColor;
+                        playerField.text = "";
+                    }
+                    else
+                    {   
+                        users.AddPlayer(playerField.text, playerInfoField.text);
+
+                        playerUser.color = BlackMatteColor;
+                        playerStatus = UserStatus.unlocked;
+                    }
                 }
                 break;
             case UserStatus.editing:
@@ -675,10 +759,20 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 else
                 {
-                    users.ChangePlayer(playerDropdown.value, playerField.text, playerInfoField.text);
+                    userWrong = VerifyRepentance(playerDropdown, playerField.text, playerDropdown.value);
 
-                    playerUser.color = BlackMatteColor;
-                    playerStatus = UserStatus.unlocked;
+                    if (userWrong)
+                    {
+                        playerUser.color = RedColor;
+                        playerField.text = "";
+                    }
+                    else
+                    {   
+                        users.ChangePlayer(playerDropdown.value, playerField.text, playerInfoField.text);
+
+                        playerUser.color = BlackMatteColor;
+                        playerStatus = UserStatus.unlocked;
+                    }
                 }
                 break;
             case UserStatus.locked:
@@ -700,17 +794,28 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         {
             case UserStatus.creating:
                 managerStatus = UserStatus.unlocked;
+                managerUser.color = BlackMatteColor;
                 managerPassword.color = BlackMatteColor;
                 break;
             case UserStatus.editing:
-                if (managerEditButton.image.color == GreenColor)
-                    managerEditButton.image.color = Color.red;
+                if ((managerField.text == managerDropdown.options[managerDropdown.value].text) && (users.CheckPassword(managerDropdown.value, passwordField.text)))
+                {
+                    if (managerEditButton.image.color == GreenColor)
+                        managerEditButton.image.color = Color.red;
+                    else
+                    {
+                        managerStatus = UserStatus.unlocked;
+                        managerUser.color = BlackMatteColor;
+                        managerPassword.color = BlackMatteColor;
+                        managerEditButton.image.color = GreenColor;
+                        users.RemoveManager(managerDropdown.value, passwordField.text);
+                    }
+                }
                 else
                 {
                     managerStatus = UserStatus.unlocked;
+                    managerUser.color = BlackMatteColor;
                     managerPassword.color = BlackMatteColor;
-                    managerEditButton.image.color = GreenColor;
-                    users.RemoveManager(managerDropdown.value, passwordField.text);
                 }
                 break;
             case UserStatus.unlocked:
@@ -719,6 +824,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     managerStatus = UserStatus.editing;
                     managerField.text = managerDropdown.captionText.text;
                     passwordWrong = false;
+                    managerUser.color = BlackMatteColor;
                     managerPassword.color = BlackMatteColor;
                 }
                 else
@@ -747,14 +853,22 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 Debug.Log("Cancel Creating");
                 break;
             case UserStatus.editing:
-                if (playerEditButton.image.color == GreenColor)
-                    playerEditButton.image.color = Color.red;
+                if ((playerField.text == playerDropdown.options[playerDropdown.value].text) && (playerInfoField.text == playerDescription.text))
+                {
+                    if (playerEditButton.image.color == GreenColor)
+                        playerEditButton.image.color = Color.red;
+                    else
+                    {
+                        playerStatus = UserStatus.unlocked;
+                        playerUser.color = BlackMatteColor;
+                        playerEditButton.image.color = GreenColor;
+                        users.RemovePlayer(playerDropdown.value);
+                    }
+                }
                 else
                 {
                     playerStatus = UserStatus.unlocked;
                     playerUser.color = BlackMatteColor;
-                    playerEditButton.image.color = GreenColor;
-                    users.RemovePlayer(playerDropdown.value);
                 }
                 break;
             case UserStatus.unlocked:

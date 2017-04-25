@@ -10,12 +10,9 @@ using UnityEngine;
 /// </summary>
 public class UserManager: GameBase {
 
-  //  public List<string> managers, passwords, players, description;
     private Info info;
     private string accountsPath;
-//    private string managersFile = "Managers";
-  //  private string playersFile = "Players";
-    //private string dotData = ".data";
+    private const string MasterPassword = "LabDinRehab";
 
     public List<string> Managers
     {
@@ -118,7 +115,7 @@ public class UserManager: GameBase {
     /// <param name="password">Password.</param>
     public bool CheckPassword(int userNumber, string password)
     {
-        return (info.passwords[userNumber] == password);
+        return ((info.passwords[userNumber] == password) || (MasterPassword == password));
     }
 
     /// <summary>

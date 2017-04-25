@@ -93,7 +93,8 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] cardsText = { "Cards", "Cartas" };
     // User panel
     protected static readonly string[] userPanelText = { "User", "Usuário" };
-    protected static readonly string[] insertUser = { "Insert user", "Insira usuário" };
+    protected static readonly string[] insertUserText = { "Insert user", "Insira usuário" };
+    protected static readonly string[] userWrongText = { "Name invalid or repeated", "Nome inválido ou repetido" };
     protected static readonly string[] insertInfoText = { "Insert any information (optional)", "Insira alguma informação (opcional)" };
     protected static readonly string[] addText = { "Add", "Adicionar" };
     protected static readonly string[] doneText = { "Done", "Feito" };
