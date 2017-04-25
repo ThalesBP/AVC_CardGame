@@ -166,6 +166,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         users = gameObject.AddComponent<UserManager>();
         UpdateUsers(managerDropdown, users.Managers);
         UpdateUsers(playerDropdown, users.players);
+        UpdateDescription();
 
         managerButton.onClick.AddListener(delegate { ManagerButton1(); });
         managerEditButton.onClick.AddListener(delegate { ManagerButton2(); });
@@ -567,8 +568,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 {
                     managerStatus = UserStatus.locked;
                     playerStatus = UserStatus.unlocked;
-                    UpdateUsers(playerDropdown, users.players);
-                    UpdateDescription();
 
                     passwordWrong = false;
                     managerUser.color = BlackMatteColor;
@@ -597,6 +596,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 else
                 {
+                    users.AddManager(managerField.text, passwordField.text);
+
                     managerUser.color = BlackMatteColor;
                     managerPassword.color = BlackMatteColor;
                     managerStatus = UserStatus.unlocked;
@@ -610,6 +611,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 else
                 {
+                    users.ChangeManager(managerDropdown.value, managerField.text, passwordField.text);
+                    
                     managerUser.color = BlackMatteColor;
                     managerPassword.color = BlackMatteColor;
                     managerStatus = UserStatus.unlocked;
@@ -623,6 +626,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 playerDropdown.value = 0;
                 break;
         }
+        UpdateUsers(managerDropdown, users.managers);
+        UpdateUsers(playerDropdown, users.players);
+        UpdateDescription();
     }
 
     /// <summary>
@@ -649,6 +655,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 else
                 {
+                    users.AddPlayer(playerField.text, playerInfoField.text);
+
                     playerUser.color = BlackMatteColor;
                     playerStatus = UserStatus.unlocked;
                 }
@@ -660,6 +668,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 else
                 {
+                    users.ChangePlayer(playerDropdown.value, playerField.text, playerInfoField.text);
+
                     playerUser.color = BlackMatteColor;
                     playerStatus = UserStatus.unlocked;
                 }
@@ -669,6 +679,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 playerStatus = UserStatus.unlocked;
                 break;
         }
+        UpdateUsers(managerDropdown, users.managers);
+        UpdateUsers(playerDropdown, users.players);
+        UpdateDescription();
     }
 
     /// <summary>
@@ -703,6 +716,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 break;
         }
+        UpdateUsers(managerDropdown, users.managers);
+        UpdateUsers(playerDropdown, users.players);
+        UpdateDescription();
     }
 
     /// <summary>
@@ -730,6 +746,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 Debug.Log("Edit Player");
                 break;
         }
+        UpdateUsers(managerDropdown, users.managers);
+        UpdateUsers(playerDropdown, users.players);
+        UpdateDescription();
     }
     #endregion
 }
