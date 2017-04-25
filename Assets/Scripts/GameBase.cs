@@ -50,8 +50,8 @@ public class GameBase : MonoBehaviour {
     #endregion
 
     #region Interface
-    protected static readonly Color BlueColor = new Color(16f/255f, 204f/255f, 0f);
-    protected static readonly Color GreenColor = new Color(0f, 192f/255f, 1f);
+    protected static readonly Color GreenColor = new Color(16f/255f, 204f/255f, 0f);
+    protected static readonly Color BlueColor = new Color(0f, 192f/255f, 1f);
     protected static readonly Color RedColor = Color.red;
     protected static readonly Color YellowText = new Color(1f, 206f/255f, 0f);
     protected static readonly Color BlackMatteColor = new Color(50f/255f, 50f/255f, 50f/255f, 0.5f);

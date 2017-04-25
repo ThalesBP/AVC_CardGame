@@ -52,6 +52,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     private Text login;
     private Text playerSelect;
     private Text choose;
+    private Text descriptionEdit;
     #endregion
 
     #region GameVariables
@@ -96,7 +97,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         public RawImage managerEditImage, playerEditImage;
         public Texture editTexture, deleteTexture, cancelTexture;
         public Text playerDescription;
-        private bool passwordWrong = false;
+        private bool passwordWrong = false, userWrong = false;
         #endregion
     #endregion
     public 
@@ -152,6 +153,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         login = GameObject.Find("Login").GetComponentInChildren<Text>(true);
         playerSelect = GameObject.Find("PlayerDescription").GetComponentInChildren<Text>(true);
         choose = GameObject.Find("Choose").GetComponentInChildren<Text>(true);
+        descriptionEdit = GameObject.Find("PlayerInfoPlaceholder").GetComponentInChildren<Text>(true);
         #endregion
 
         #region Control Panel Interactive
@@ -164,8 +166,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         #region User Panel Interactive
         users = gameObject.AddComponent<UserManager>();
-        UpdateUsers(managerDropdown, users.Managers);
-        UpdateUsers(playerDropdown, users.players);
+        UpdateDropdown(managerDropdown, users.Managers);
+        UpdateDropdown(playerDropdown, users.Players);
         UpdateDescription();
 
         managerButton.onClick.AddListener(delegate { ManagerButton1(); });
@@ -394,7 +396,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         playerSelect.text = playerSelectText[language];
         playerUser.text = insertUser[language];
-        playerInfoField.text = insertInfoText[language];
+        descriptionEdit.text = insertInfoText[language];
 
         for (int option = 0; option < memberDropdown.options.Count; option++)
         {
@@ -505,16 +507,19 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     /// <param name="dropdown">Dropdown to be updated.</param>
     /// <param name="users">Users to be uploaded.</param>
-    void UpdateUsers(Dropdown dropdown, List<string> users)
+    void UpdateDropdown(Dropdown dropdown, List<string> users)
     {
         List<string> users_aux = new List<string>();
-        foreach (string user in users)
-            users_aux.Add(user);
-        users_aux.Add(insertUser[language]);
+        if (users.Count > 0)
+        {
+            foreach (string user in users)
+                users_aux.Add(user);
+        }
+            users_aux.Add(insertUser[language]);
 
-        dropdown.ClearOptions();
-        dropdown.AddOptions(users_aux);
-        users_aux.Clear();
+            dropdown.ClearOptions();
+            dropdown.AddOptions(users_aux);
+            users_aux.Clear();
     }
 
     /// <summary>
@@ -522,7 +527,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     void UpdateDescription()
     {
-        if (playerDropdown.value == users.AmountManagers)
+        if (playerDropdown.value == users.AmountPlayers)
             playerDescription.text = "";
         else
             playerDescription.text = users.Description[playerDropdown.value]; 
@@ -604,6 +609,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 break;
             case UserStatus.editing:
+                managerEditButton.image.color = GreenColor;
                 if ((managerField.text == "") || (passwordField.text == ""))
                 {
                     managerUser.color = RedColor;
@@ -626,8 +632,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 playerDropdown.value = 0;
                 break;
         }
-        UpdateUsers(managerDropdown, users.managers);
-        UpdateUsers(playerDropdown, users.players);
+        UpdateDropdown(managerDropdown, users.Managers);
+        UpdateDropdown(playerDropdown, users.Players);
         UpdateDescription();
     }
 
@@ -662,6 +668,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 break;
             case UserStatus.editing:
+                playerEditButton.image.color = GreenColor;
                 if (playerField.text == "")
                 {
                     playerUser.color = RedColor;
@@ -679,8 +686,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 playerStatus = UserStatus.unlocked;
                 break;
         }
-        UpdateUsers(managerDropdown, users.managers);
-        UpdateUsers(playerDropdown, users.players);
+        UpdateDropdown(managerDropdown, users.Managers);
+        UpdateDropdown(playerDropdown, users.Players);
         UpdateDescription();
     }
 
@@ -696,9 +703,15 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 managerPassword.color = BlackMatteColor;
                 break;
             case UserStatus.editing:
-                managerStatus = UserStatus.unlocked;
-                managerPassword.color = BlackMatteColor;
-                Debug.Log("Delete Manager");
+                if (managerEditButton.image.color == GreenColor)
+                    managerEditButton.image.color = Color.red;
+                else
+                {
+                    managerStatus = UserStatus.unlocked;
+                    managerPassword.color = BlackMatteColor;
+                    managerEditButton.image.color = GreenColor;
+                    users.RemoveManager(managerDropdown.value, passwordField.text);
+                }
                 break;
             case UserStatus.unlocked:
                 if (users.CheckPassword(managerDropdown.value, passwordField.text))
@@ -716,8 +729,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 }
                 break;
         }
-        UpdateUsers(managerDropdown, users.managers);
-        UpdateUsers(playerDropdown, users.players);
+        UpdateDropdown(managerDropdown, users.Managers);
+        UpdateDropdown(playerDropdown, users.Players);
         UpdateDescription();
     }
 
@@ -734,9 +747,15 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 Debug.Log("Cancel Creating");
                 break;
             case UserStatus.editing:
-                playerUser.color = BlackMatteColor;
-                playerStatus = UserStatus.unlocked;
-                Debug.Log("Delete Player");
+                if (playerEditButton.image.color == GreenColor)
+                    playerEditButton.image.color = Color.red;
+                else
+                {
+                    playerStatus = UserStatus.unlocked;
+                    playerUser.color = BlackMatteColor;
+                    playerEditButton.image.color = GreenColor;
+                    users.RemovePlayer(playerDropdown.value);
+                }
                 break;
             case UserStatus.unlocked:
                 playerUser.color = BlackMatteColor;
@@ -746,8 +765,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 Debug.Log("Edit Player");
                 break;
         }
-        UpdateUsers(managerDropdown, users.managers);
-        UpdateUsers(playerDropdown, users.players);
+        UpdateDropdown(managerDropdown, users.Managers);
+        UpdateDropdown(playerDropdown, users.Players);
         UpdateDescription();
     }
     #endregion

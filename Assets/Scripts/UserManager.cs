@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
 /// <summary>
@@ -9,75 +10,50 @@ using UnityEngine;
 /// </summary>
 public class UserManager: GameBase {
 
-    public List<string> managers, passwords, players, description;
-    private string accountsPath = "\\Users\\";
-    private string managersFile = "Managers";
-    private string playersFile = "Players";
-    private string dotData = ".data";
+  //  public List<string> managers, passwords, players, description;
+    private Info info;
+    private string accountsPath;
+//    private string managersFile = "Managers";
+  //  private string playersFile = "Players";
+    //private string dotData = ".data";
 
     public List<string> Managers
     {
-        get { return managers; }
+        get { return info.managers; }
     }
     public List<string> Players
     {
-        get { return players; }
+        get { return info.players; }
     }
     public List<string> Description
     {
-        get { return description; }
+        get { return info.description; }
     }
     public int AmountManagers
     {
-        get { return managers.Count; }
+        get { return info.managers.Count; }
     }
     public int AmountPlayers
     {
-        get { return players.Count; }
+        get { return info.players.Count; }
     }
 
 	// Use this for initialization
 	void Awake () 
     {
-        managers = new List<string>();
-        passwords = new List<string>();
-        players = new List<string>();
-        description = new List<string>();
+        info = new Info();
 
-        accountsPath = Application.dataPath + accountsPath;
+        accountsPath = Application.dataPath + "\\Users\\";
         if (!Directory.Exists(accountsPath))
-        {
             Directory.CreateDirectory(accountsPath);
-        }
+        
+        accountsPath = accountsPath + "Accounts.dat";
+        if (!File.Exists(accountsPath))
+            File.Create(accountsPath);
 
-        managersFile = accountsPath + managersFile + dotData;
-        if (!File.Exists(managersFile))
-        {
-            File.Create(managersFile);
-        }
-
-        playersFile = accountsPath + playersFile + dotData;
-        if (!File.Exists(playersFile))
-        {
-            File.Create(playersFile);
-        }
-
-        string[,] accounts;
-        accounts = Read(managersFile);
-        for (int i = 0; i < accounts.GetLength(0); i++)
-        {
-            managers.Add(accounts[i, 0]);
-            passwords.Add(accounts[i, 1]);
-        }
-
-        accounts = Read(playersFile);
-        for (int i = 0; i < accounts.GetLength(0); i++)
-        {
-            players.Add(accounts[i, 0]);
-            description.Add(accounts[i, 1]);
-        }
+        Load();
     }
-
+    /*
     /// <summary>
     /// Reads the specified file.
     /// </summary>
@@ -109,6 +85,18 @@ public class UserManager: GameBase {
             }
         }
         return result;
+    }*/
+
+    /// <summary>
+    /// Load current managers and passwords.
+    /// </summary>
+    void Load()
+    {
+        FileStream accounts = File.Open(accountsPath, FileMode.Open);
+        BinaryFormatter bf = new BinaryFormatter();
+        if (accounts.Length > 0)
+            info = (Info)bf.Deserialize(accounts);
+        accounts.Close();
     }
 
     /// <summary>
@@ -116,24 +104,10 @@ public class UserManager: GameBase {
     /// </summary>
     private void Save()
     {
-        if (!File.Exists(accountsPath + "Temp" + dotData))
-            File.Create(accountsPath + "Temp" + dotData);
-
-        for (int i = 0; i < AmountManagers; i++)
-        {
-            File.AppendAllText(accountsPath + "Temp.data", managers[i] + "\t" + passwords[i] + Environment.NewLine);
-        }
-        File.Replace(accountsPath + "Temp" + dotData, managersFile, accountsPath + "Backup_managers" + dotData);
-        File.Delete(accountsPath + "Temp" + dotData);
-
-        File.Create(accountsPath + "Temp" + dotData);
-
-        for (int i = 0; i < AmountPlayers; i++)
-        {
-            File.AppendAllText(accountsPath + "Temp.data", players[i] + "\t" + description[i] + Environment.NewLine);
-        }
-        File.Replace(accountsPath + "Temp" + dotData, playersFile, accountsPath + "Backup_players" + dotData);
-        File.Delete(accountsPath + "Temp" + dotData);
+        FileStream accounts = File.Open(accountsPath, FileMode.Open);
+        BinaryFormatter bf = new BinaryFormatter();
+        bf.Serialize(accounts, info);
+        accounts.Close();
     }
 
     /// <summary>
@@ -144,7 +118,7 @@ public class UserManager: GameBase {
     /// <param name="password">Password.</param>
     public bool CheckPassword(int userNumber, string password)
     {
-        return (passwords[userNumber] == password);
+        return (info.passwords[userNumber] == password);
     }
 
     /// <summary>
@@ -156,8 +130,8 @@ public class UserManager: GameBase {
     {
         if ((name != "") && (password != ""))
         {
-            managers.Add(name);
-            passwords.Add(password);
+            info.managers.Add(name);
+            info.passwords.Add(password);
             Save();
         }
     }
@@ -172,8 +146,8 @@ public class UserManager: GameBase {
         if (userNumber < AmountManagers)
             if (CheckPassword(userNumber, password))
             {
-                managers.RemoveAt(userNumber);
-                passwords.RemoveAt(userNumber);
+                info.managers.RemoveAt(userNumber);
+                info.passwords.RemoveAt(userNumber);
                 Save();
             }
     }
@@ -188,8 +162,8 @@ public class UserManager: GameBase {
     {
         if ((name != "") && (password != "") && (userNumber < AmountManagers))
         {
-            managers[userNumber] = name;
-            passwords[userNumber] = password;
+            info.managers[userNumber] = name;
+            info.passwords[userNumber] = password;
             Save();
         }
     }
@@ -203,11 +177,11 @@ public class UserManager: GameBase {
     {
         if (name != "")
         {
-            players.Add(name);
+            info.players.Add(name);
             if (information == "")
-                description.Add("No description");
+                info.description.Add("No description");
             else
-                description.Add(information);
+                info.description.Add(information);
             Save();
         }
     }
@@ -220,8 +194,8 @@ public class UserManager: GameBase {
     {
         if (userNumber < AmountPlayers)
         {
-            players.RemoveAt(userNumber);
-            description.RemoveAt(userNumber);
+            info.players.RemoveAt(userNumber);
+            info.description.RemoveAt(userNumber);
             Save();
         }
     }
@@ -236,11 +210,25 @@ public class UserManager: GameBase {
     {
         if ((name != "") && (userNumber < AmountManagers))
         {
-            players[userNumber] = name;
+            info.players[userNumber] = name;
             if (information == "")
-                description[userNumber] = "No description";
+                info.description[userNumber] = "No description";
             else
-                description[userNumber] = information;
+                info.description[userNumber] = information;
             Save();
         }
     }}
+
+[Serializable]
+class Info
+{
+    public List<string> managers, passwords, players, description;
+
+    public Info()
+    {
+        managers = new List<string>();
+        passwords = new List<string>();
+        players = new List<string>();
+        description = new List<string>();    
+    }
+}
