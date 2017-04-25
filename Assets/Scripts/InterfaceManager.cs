@@ -602,6 +602,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         return false;
     }
 
+    /// <summary>
+    /// Verifies the repentance excluding a option.
+    /// </summary>
+    /// <returns><c>true</c>, if repentance was verifyed, <c>false</c> otherwise.</returns>
+    /// <param name="options">Options to be verifyed..</param>
+    /// <param name="name">Name to find.</param>
+    /// <param name="value">Value of element to be excluded.</param>
     bool VerifyRepentance(Dropdown options, string name, int value)
     {
         for (int i = 0; i < options.options.Count; i++)

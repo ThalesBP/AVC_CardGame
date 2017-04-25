@@ -42,6 +42,10 @@ public class Dealer : GameBase {
 
     private LayerMask cardMask;
 
+    [SerializeField]
+    private AudioSource soundEffect;
+    public AudioClip successSound, failSound;
+
     // Start variables
     void Start () 
     {
@@ -59,6 +63,7 @@ public class Dealer : GameBase {
         gameInterface.numOfCardsSlider.onValueChanged.AddListener(delegate {SliderChanged();});
         gameInterface.stopButton.onClick.AddListener(delegate {GameEnd();});
         challengeNumber = Mathf.FloorToInt(gameInterface.numOfCardsSlider.value);
+        soundEffect = gameObject.GetComponent<AudioSource>();
     }
     // Update is called once per frame
 	void Update () 
@@ -250,9 +255,17 @@ public class Dealer : GameBase {
             //    gameInterface.metric3Value = 100f * Choice.precision;
 
                 if (aimedCard == objectiveCard)
+                {
+                    soundEffect.clip = successSound;
+                    soundEffect.Play();
                     return Status.rightCard;
+                }
                 else
+                {
+                    soundEffect.clip = failSound;
+                    soundEffect.Play();
                     return Status.wrongCard;
+                }
             }
         }
         else
