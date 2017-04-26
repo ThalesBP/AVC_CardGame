@@ -1210,6 +1210,7 @@ GameObject:
   - component: {fileID: 114211245459298316}
   - component: {fileID: 114130055930393904}
   - component: {fileID: 114356956270300074}
+  - component: {fileID: 114206150266398672}
   m_Layer: 9
   m_Name: ControlPanel
   m_TagString: Untagged
@@ -1827,7 +1828,7 @@ GameObject:
   - component: {fileID: 114748185024541736}
   - component: {fileID: 114201828627396616}
   m_Layer: 9
-  m_Name: NumOfCards
+  m_Name: SliderText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2276,7 +2277,7 @@ GameObject:
   - component: {fileID: 224309091163460838}
   - component: {fileID: 114332536943541510}
   m_Layer: 9
-  m_Name: NumOfCardsSlider
+  m_Name: Slider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3665,24 +3666,10 @@ MonoBehaviour:
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
   languageAdjust: 0
-  currentStatus: 0
   language: 0
-  results: {fileID: 114039917757097428}
+  control: {fileID: 114206150266398672}
   playStatus: {fileID: 0}
-  gameSpeed: 1
-  metric1Value: 0
-  metric2Value: 0
-  metric3Value: 0
   scoreValue: 0
-  gameMessage: 0
-  dealerMessage: 0
-  controlPanelVisibility: {fileID: 114130055930393904}
-  connectButton: {fileID: 114065188029545602}
-  startButton: {fileID: 114214517985916792}
-  stopButton: {fileID: 114416372653878142}
-  playTimeField: {fileID: 114970829029709872}
-  helpToggle: {fileID: 114913183249333032}
-  numOfCardsSlider: {fileID: 114332536943541510}
   mouseDefault: {fileID: 2800000, guid: a60e523e9b500984aa8225ab8d01eb3f, type: 3}
 --- !u!114 &114201828627396616
 MonoBehaviour:
@@ -3698,6 +3685,35 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 1}
   m_EffectDistance: {x: 1, y: 1}
   m_UseGraphicAlpha: 0
+--- !u!114 &114206150266398672
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1493241830922702}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d62f1853beffc54096e4d37e39e2fd3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fontSizeAdjust_S: 60
+  fontSizeAdjust_M: 100
+  languageAdjust: 0
+  status: 0
+  gameSpeed: 1
+  gameTime: 0
+  totalGameTime: 0
+  metric1Value: 0
+  metric2Value: 0
+  metric3Value: 0
+  visibility: {fileID: 114130055930393904}
+  results: {fileID: 114039917757097428}
+  connectButton: {fileID: 114065188029545602}
+  startButton: {fileID: 114214517985916792}
+  stopButton: {fileID: 114416372653878142}
+  playTimeField: {fileID: 114970829029709872}
+  helpToggle: {fileID: 114913183249333032}
+  slider: {fileID: 114332536943541510}
 --- !u!114 &114211245459298316
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10529,7 +10545,7 @@ RectTransform:
   - {fileID: 224960901897041248}
   - {fileID: 224492913298026030}
   m_Father: {fileID: 224758584489955048}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -10713,8 +10729,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224126682604030044}
-  - {fileID: 224657010835607966}
   - {fileID: 224885250847090928}
+  - {fileID: 224657010835607966}
   m_Father: {fileID: 224152458230262402}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11139,7 +11155,7 @@ RectTransform:
   - {fileID: 224157775522195388}
   - {fileID: 224938015032802208}
   m_Father: {fileID: 224758584489955048}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}

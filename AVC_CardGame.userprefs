@@ -1,15 +1,15 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ResultsPanel.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\GameBase.cs">
     <Files>
-      <File FileName="Assets\Scripts\Dealer.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\InterfaceManager.cs" Line="43" Column="5" />
-      <File FileName="Assets\Scripts\UserPanel.cs" Line="193" Column="5" />
-      <File FileName="Assets\Scripts\UserManager.cs" Line="15" Column="27" />
-      <File FileName="Assets\Scripts\GameBase.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Dealer.cs" Line="76" Column="58" />
+      <File FileName="Assets\Scripts\InterfaceManager.cs" Line="125" Column="25" />
+      <File FileName="Assets\Scripts\ControlPanel.cs" Line="111" Column="51" />
+      <File FileName="Assets\Scripts\UserPanel.cs" Line="57" Column="19" />
+      <File FileName="Assets\Scripts\GameBase.cs" Line="119" Column="26" />
       <File FileName="Assets\Scripts\HideShow.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Card.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ResultsPanel.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Choice.cs" Line="142" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

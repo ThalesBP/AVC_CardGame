@@ -5,10 +5,9 @@ using UnityEngine.UI;
 
 public class InterfaceManager : Singleton<InterfaceManager> {
 
-    public enum GameStatus {begin, playing, paused, end};
-    public GameStatus currentStatus = GameStatus.begin;
     public int language;
-    public ResultsPanel results;
+
+    public ControlPanel control;
 
     #region Interface's texts
     public Text playStatus;
@@ -17,52 +16,40 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     private Text scorePoints;
     private Text timeCounter;
-
-    private Text metric1;
-    private Text metric2;
-    private Text metric3;
-
-    private Text gameMessages;
-
-    private Text panel;
-
-    private Text connect;
-    private Text start;
-    private Text stop;
-    private Text playTime;
-    private Text playTimeInput;
-    private Text help;
-    private Text numOfCards;
     #endregion
 
     #region GameVariables
-    [Range(0.1f, 3.0f)]
-    public float gameSpeed = 1f;
+    // Delete
+ /*   [Range(0.1f, 3.0f)]
+    public float gameSpeed = 1f;*/
 
     private int countDownCounter;   // Counter for count down
     public int CountDownCounter {get {return countDownCounter;}}
 
-    private float gameTime;         // Current game time
+  /*  private float gameTime;         // Current game time
     private float totalGameTime;    // Time to end the game
-
-    public float metric1Value;
+*/
+    // Delete
+ /*   public float metric1Value;
     public float metric2Value;
-    public float metric3Value;
+    public float metric3Value;*/
 
     public int scoreValue;
-    public Messages gameMessage = Messages.newTurn;
-    public Messages dealerMessage = Messages.newTurn;
+
+    // Delete
+/*    public Messages gameMessage = Messages.newTurn;
+    public Messages dealerMessage = Messages.newTurn; // rename to generic*/
     #endregion
 
     #region Interactive objects
-        #region Control interface
-        public HideShow controlPanelVisibility;
-        public Button connectButton, startButton, stopButton;
-        public InputField playTimeField;
-        public Toggle helpToggle;
-        public Slider numOfCardsSlider;
-        public Texture2D mouseDefault;
-        #endregion
+    // Delete
+ /*   public HideShow controlPanelVisibility;
+    public Button connectButton, startButton, stopButton;
+    public InputField playTimeField;
+    public Toggle helpToggle;
+    public Slider numOfCardsSlider;*/
+
+    public Texture2D mouseDefault;
     #endregion
     public 
 
@@ -83,7 +70,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         timeCounter = GameObject.Find("TimeCounter").GetComponentInChildren<Text>(true);
         #endregion
 
-        #region Control Panel Initialization
+        // Delete
+/*        #region Control Panel Initialization
         panel = GameObject.Find("ControlTabName").GetComponentInChildren<Text>(true);
 
         connect = GameObject.Find("Connect").GetComponentInChildren<Text>(true);
@@ -99,111 +87,106 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         metric3 = GameObject.Find("Metric3").GetComponentInChildren<Text>(true);
 
         gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>(true);
-        #endregion
+        #endregion*/
 
-        #region Control Panel Interactive
+        // Delete
+    /*    #region Control Panel Interactive
         connectButton.interactable = false;
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });
         stopButton.interactable = false;
         stopButton.onClick.AddListener(delegate { FinishGame(); });
         helpToggle.interactable = false;
-        #endregion
+        #endregion*/
         }
 
 	void Update ()
     {
         language = (int)chosenLanguage;
 		
-        #region Counts the time down
-        if (countDownCounter >= 0)
-        {
-            if (statusScale.status == Motion.Status.idle)
-            {
-                countDownCounter--;
-                statusScale.MoveTo(Vector3.one);
-                switch (countDownCounter)
-                {
-                    case -1:
-                        playStatus.text = "";
-                        break;
-                    case 0:
-                        playStatus.text = goText[language];
-                        break;
-                    default:
-                        playStatus.text = countDownCounter.ToString();
-                        break;
-                }
-                statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[MuchLonger]);
-            }
-            else
-            {
-                playStatus.color = SetAlpha(YellowText, 1f - statusScale.LerpScale);
-                statusBoarder.effectColor = Color.Lerp(Color.black, playStatus.color, statusScale.LerpScale + 0.2f);
-            }
-        }
-
-        playStatus.transform.localScale = statusScale;
-        #endregion
-
         #region Checks current game status
-        switch (currentStatus)
+        switch (control.status)
         {
-            case GameStatus.begin:
-                gameTime = totalGameTime = 0f;
-                gameMessage = Messages.waitingStart;
+            case Status.begin:
                 playStatus.text = readyText[language];
-                start.text = startText[language];
+                StartCountDown(CountDown);
                 break;
-            case GameStatus.paused:
-                gameMessage = Messages.gamePaused;
-                start.text = startText[language];
+            case Status.paused:
+                playStatus.text = pausedText[language];
+                statusScale.MoveTo(Vector3.one);
+                playStatus.color = YellowText;
+                statusBoarder.effectColor = Color.black;
+ //               countDownCounter = -1;
+                StartCountDown(CountDown);
                 break;
-            case GameStatus.playing:
-                gameMessage = Messages.gameRunning;
-
-                if (countDownCounter < 0)
-                    gameTime += Time.unscaledDeltaTime;
-
-                if (Choice.orderCounter > 0)
+  /*          case Status.counting:
+                statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[VeryLong]);
+                StartCountDown(CountDown);
+                control.status = Status.playing;
+                break;*/
+            case Status.playing:
+                if (countDownCounter >= 0)
                 {
-                    if (Time.timeScale != 0f)
-                        Time.timeScale = gameSpeed;
-                }
-
-                if (totalGameTime > 0f)
-                    if (gameTime > 60f * totalGameTime)
+                    if (statusScale.status == Motion.Status.idle)
                     {
-                        FinishGame();
+                        countDownCounter--;
+                        statusScale.MoveTo(Vector3.one);
+                        switch (countDownCounter)
+                        {
+                            case -1:
+                                playStatus.text = "";
+                                break;
+                            case 0:
+                                playStatus.text = goText[language];
+                                break;
+                            default:
+                                playStatus.text = countDownCounter.ToString();
+                                break;
+                        }
+                        statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[MuchLonger]);
                     }
-                start.text = pauseText[language];
+                    else
+                    {
+                        playStatus.color = SetAlpha(YellowText, 1f - statusScale.LerpScale);
+                        statusBoarder.effectColor = Color.Lerp(Color.black, playStatus.color, statusScale.LerpScale + 0.2f);
+                    }
+                }
+                else
+                {
+                    control.gameTime += Time.unscaledDeltaTime;
+                }
+                playStatus.transform.localScale = statusScale;
                 break;
-            case GameStatus.end:
-                gameMessage = Messages.showingResults;
-                gameMessages.text = gameMessageTexts[(int)gameMessage, language];
+            case Status.end:
+ //               countDownCounter = -1;
+
                 playStatus.text = endOfGameText[language];
-                start.text = restartText[language];
+                statusScale.MoveTo(Vector3.one);
+                playStatus.color = YellowText;
+                statusBoarder.effectColor = Color.black;
+
+                playStatus.text = endOfGameText[language];
                 break;
         }
-
-        gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
         #endregion
+
+        scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
 
         #region Shows or hides the timer with panel
-        if (controlPanelVisibility.showed)
+        if (control.visibility.showed)
         {
-            timeCounter.color = SetAlpha(YellowText, controlPanelVisibility.slideTimeLerp);
-            timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1");
+            timeCounter.color = SetAlpha(YellowText, control.visibility.slideTimeLerp);
+            timeCounter.text = timeText[language] + "\n" + control.gameTime.ToString("F1");
         }
         else
         {
-            timeCounter.color = SetAlpha(YellowText, 1f - controlPanelVisibility.slideTimeLerp);
-            timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1");
+            timeCounter.color = SetAlpha(YellowText, 1f - control.visibility.slideTimeLerp);
+            timeCounter.text = timeText[language] + "\n" + control.gameTime.ToString("F1");
         }
         #endregion
 
-        #region Control Panel Text Update
+        // Delete
+    /*    #region Control Panel Text Update
         panel.text = controlPanelText[language];
-        scorePoints.text = scorePointsText[language] + "\n" + scoreValue.ToString("F0"); 
 
         metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0") + "%";
         metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0") + "%";
@@ -213,7 +196,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         stop.text = stopText[language];
         help.text = helpText[language];
         numOfCards.text = numOfCardsSlider.value.ToString("F0") + " " + cardsText[language];
-        #endregion
+        #endregion*/
 	}
 
     #region Game status manager functions
@@ -226,20 +209,14 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         countDownCounter = time + 1;
     }
 
+    // Delete
     /// <summary>
     /// Pauses the game.
     /// </summary>
-    private void PauseGame()
+/*    private void PauseGame()
     {
-        playStatus.text = pausedText[language];
-
-        statusScale.MoveTo(Vector3.one);
-        playStatus.color = YellowText;
-        statusBoarder.effectColor = Color.black;
-
-        currentStatus = GameStatus.paused;
+        currentStatus = Status.paused;
         Time.timeScale = 0f;
-        countDownCounter = -1;
     }
 
     /// <summary>
@@ -247,9 +224,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     private void StartGame()
     {
-        statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[VeryLong]);
-        StartCountDown(CountDown);
-
         playTimeField.interactable = false;
         if (playTimeInput.text == "")
         {
@@ -265,7 +239,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         stopButton.interactable = true;
         results.visibility.Hide();
 
-        currentStatus = GameStatus.playing;
+        currentStatus = Status.counting;
         Time.timeScale = gameSpeed;
     }
 
@@ -274,7 +248,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     private void SwitchStartPause()
     {
-        if (currentStatus != GameStatus.end)
+        if (currentStatus != Status.end)
         {
             if (Time.timeScale == gameSpeed)
             {
@@ -287,7 +261,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
         else
         {
-            currentStatus = GameStatus.begin;
+            currentStatus = Status.begin;
             results.visibility.Hide();
         }
     }
@@ -298,16 +272,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public void FinishGame()
     {
         results.visibility.Show();
-        countDownCounter = -1;
-
-        playStatus.text = endOfGameText[language];
-        statusScale.MoveTo(Vector3.one);
-        playStatus.color = YellowText;
-        statusBoarder.effectColor = Color.black;
 
         stopButton.interactable = false;
 
-        currentStatus = GameStatus.end;
-    }
+        currentStatus = Status.end;
+    }*/
     #endregion
 }
