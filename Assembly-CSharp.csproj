@@ -57,6 +57,7 @@
      <Compile Include="Assets\Scripts\InterfaceManager.cs" />
      <Compile Include="Assets\Scripts\Logger.cs" />
      <Compile Include="Assets\Scripts\Motion.cs" />
+     <Compile Include="Assets\Scripts\ResultsPanel.cs" />
      <Compile Include="Assets\Scripts\Singleton.cs" />
      <Compile Include="Assets\Scripts\UserManager.cs" />
      <Compile Include="Assets\Scripts\UserPanel.cs" />

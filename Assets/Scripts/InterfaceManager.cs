@@ -8,19 +8,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public enum GameStatus {begin, playing, paused, end};
     public GameStatus currentStatus = GameStatus.begin;
     public int language;
-
-//    private enum PlayStatus {waiting, counting, playing};
-  //  public PlayStatus countingStatus;
+    public ResultsPanel results;
 
     #region Interface's texts
     public Text playStatus;
     private Motion statusScale;
     private Outline statusBoarder;
-
-    private Text[] hitRate;
-    private Text[] timeRate;
-    private Text[] info1;
-    private Text[] info2;
 
     private Text scorePoints;
     private Text timeCounter;
@@ -52,11 +45,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     private float gameTime;         // Current game time
     private float totalGameTime;    // Time to end the game
 
-    public float hitRateValue;
-    public float timeRateValue;
-    public float info1Value;
-    public float info2Value;
-
     public float metric1Value;
     public float metric2Value;
     public float metric3Value;
@@ -68,7 +56,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     #region Interactive objects
         #region Control interface
-        public HideShow controlPanelVisibility, resultsVisibility;
+        public HideShow controlPanelVisibility;
         public Button connectButton, startButton, stopButton;
         public InputField playTimeField;
         public Toggle helpToggle;
@@ -77,7 +65,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         #endregion
     #endregion
     public 
-	// Use this for initialization
+
 	void Start () 
     {
         Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
@@ -93,13 +81,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         scorePoints = GameObject.Find("ScorePoints").GetComponentInChildren<Text>(true);
         timeCounter = GameObject.Find("TimeCounter").GetComponentInChildren<Text>(true);
-        #endregion
-
-        #region Results Panel Initialization
-        hitRate = GameObject.Find("HitRate").GetComponentsInChildren<Text>();
-        timeRate = GameObject.Find("TimeRate").GetComponentsInChildren<Text>();
-        info1 = GameObject.Find("Info1").GetComponentsInChildren<Text>();
-        info2 = GameObject.Find("Info2").GetComponentsInChildren<Text>();
         #endregion
 
         #region Control Panel Initialization
@@ -128,7 +109,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         helpToggle.interactable = false;
         #endregion
         }
-	// Update is called once per frame
+
 	void Update ()
     {
         language = (int)chosenLanguage;
@@ -218,24 +199,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             timeCounter.color = SetAlpha(YellowText, 1f - controlPanelVisibility.slideTimeLerp);
             timeCounter.text = timeText[language] + "\n" + gameTime.ToString("F1");
         }
-
-        if (resultsVisibility.showed)
-        {
-            hitRate[0].text = hitRateText[language];
-            timeRate[0].text = timeRateText[language];
-            info1[0].text = info1Text[language];
-            info2[0].text = info2Text[language];
-
-            hitRate[1].text = (100f * Choice.totalMatches / Choice.orderCounter).ToString("F0") + "%";
-            timeRate[1].text = Choice.averageTimeToChoose.ToString("F1");
-            info1[1].text = "0";
-            info2[1].text = "0";
-
-            hitRate[2].text = Choice.totalMatches.ToString("F0") + ofText[language] + Choice.orderCounter.ToString("F0");
-            timeRate[2].text = fromText[language] + Choice.rangeOfTime[0].ToString("F1") + toText[language] + Choice.rangeOfTime[1].ToString("F1");
-            info1[2].text = fromText[language] + "0 to 0";
-            info2[2].text = fromText[language] +"0 to 0";
-        }
         #endregion
 
         #region Control Panel Text Update
@@ -300,7 +263,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
 
         stopButton.interactable = true;
-        resultsVisibility.Hide();
+        results.visibility.Hide();
 
         currentStatus = GameStatus.playing;
         Time.timeScale = gameSpeed;
@@ -325,7 +288,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         else
         {
             currentStatus = GameStatus.begin;
-            resultsVisibility.Hide();
+            results.visibility.Hide();
         }
     }
 
@@ -334,7 +297,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     /// </summary>
     public void FinishGame()
     {
-        resultsVisibility.Show();
+        results.visibility.Show();
         countDownCounter = -1;
 
         playStatus.text = endOfGameText[language];

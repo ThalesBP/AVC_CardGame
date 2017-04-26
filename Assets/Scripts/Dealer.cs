@@ -46,7 +46,6 @@ public class Dealer : GameBase {
     private AudioSource soundEffect;
     public AudioClip successSound, failSound;
 
-    // Start variables
     void Start () 
     {
         choices = new List<Choice>();
@@ -65,7 +64,7 @@ public class Dealer : GameBase {
         challengeNumber = Mathf.FloorToInt(gameInterface.numOfCardsSlider.value);
         soundEffect = gameObject.GetComponent<AudioSource>();
     }
-    // Update is called once per frame
+
 	void Update () 
     {
         switch (gameStatus)

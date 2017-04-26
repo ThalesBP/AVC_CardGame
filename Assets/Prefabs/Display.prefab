@@ -1158,6 +1158,7 @@ GameObject:
   - component: {fileID: 222913941130728170}
   - component: {fileID: 114878905678113896}
   - component: {fileID: 114778403954723424}
+  - component: {fileID: 114039917757097428}
   m_Layer: 9
   m_Name: Results
   m_TagString: Untagged
@@ -2684,6 +2685,25 @@ MonoBehaviour:
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
+--- !u!114 &114039917757097428
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1478836685829636}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 872cbac1c8f74f64db52441c63b4b5f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fontSizeAdjust_S: 60
+  fontSizeAdjust_M: 100
+  languageAdjust: 0
+  hitRateValue: 0
+  timeRateValue: 0
+  info1Value: 0
+  info2Value: 0
+  visibility: {fileID: 114778403954723424}
 --- !u!114 &114049037414822336
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -3647,12 +3667,9 @@ MonoBehaviour:
   languageAdjust: 0
   currentStatus: 0
   language: 0
+  results: {fileID: 114039917757097428}
   playStatus: {fileID: 0}
   gameSpeed: 1
-  hitRateValue: 0
-  timeRateValue: 0
-  info1Value: 0
-  info2Value: 0
   metric1Value: 0
   metric2Value: 0
   metric3Value: 0
@@ -3660,7 +3677,6 @@ MonoBehaviour:
   gameMessage: 0
   dealerMessage: 0
   controlPanelVisibility: {fileID: 114130055930393904}
-  resultsVisibility: {fileID: 114778403954723424}
   connectButton: {fileID: 114065188029545602}
   startButton: {fileID: 114214517985916792}
   stopButton: {fileID: 114416372653878142}
@@ -7016,9 +7032,6 @@ MonoBehaviour:
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
   languageAdjust: 0
-  managerStatus: 0
-  playerStatus: 0
-  userPanelVisibility: {fileID: 114873553481996414}
   managerDropdown: {fileID: 114736963793432320}
   playerDropdown: {fileID: 114671189677807310}
   memberDropdown: {fileID: 114493179211995340}

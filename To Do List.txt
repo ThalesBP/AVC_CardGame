@@ -7,4 +7,4 @@ Navegação na interface
 -------------------------------------
 Partidas para coleta de dados / análise de dificuldade
 Criptografar a senha / Senha master pra recuperar
-Modularizar paineis
+Modularizar paineis (Getcomponent Hide Show)
