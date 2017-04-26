@@ -2084,6 +2084,7 @@ GameObject:
   - component: {fileID: 114538736128472258}
   - component: {fileID: 114873553481996414}
   - component: {fileID: 114132344427258808}
+  - component: {fileID: 114776350726222770}
   m_Layer: 9
   m_Name: UserPanel
   m_TagString: Untagged
@@ -3368,7 +3369,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 224539756983564346}
   m_Direction: 0
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999964
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3645,8 +3646,6 @@ MonoBehaviour:
   fontSizeAdjust_M: 100
   languageAdjust: 0
   currentStatus: 0
-  managerStatus: 0
-  playerStatus: 0
   language: 0
   playStatus: {fileID: 0}
   gameSpeed: 1
@@ -3661,8 +3660,6 @@ MonoBehaviour:
   gameMessage: 0
   dealerMessage: 0
   controlPanelVisibility: {fileID: 114130055930393904}
-  userPanelVisibility: {fileID: 114873553481996414}
-  managerPanelVisibility: {fileID: 114873553481996414}
   resultsVisibility: {fileID: 114778403954723424}
   connectButton: {fileID: 114065188029545602}
   startButton: {fileID: 114214517985916792}
@@ -3671,23 +3668,6 @@ MonoBehaviour:
   helpToggle: {fileID: 114913183249333032}
   numOfCardsSlider: {fileID: 114332536943541510}
   mouseDefault: {fileID: 2800000, guid: a60e523e9b500984aa8225ab8d01eb3f, type: 3}
-  managerDropdown: {fileID: 114736963793432320}
-  playerDropdown: {fileID: 114671189677807310}
-  memberDropdown: {fileID: 114493179211995340}
-  managerField: {fileID: 114716601594453288}
-  playerField: {fileID: 114213116268692418}
-  passwordField: {fileID: 114186773653278570}
-  playerInfoField: {fileID: 114023932961460758}
-  managerButton: {fileID: 114694850855016754}
-  managerEditButton: {fileID: 114584662151098776}
-  playerButton: {fileID: 114745068452971514}
-  playerEditButton: {fileID: 114674135264042604}
-  managerEditImage: {fileID: 114681259967228668}
-  playerEditImage: {fileID: 114105013987373454}
-  editTexture: {fileID: 2800000, guid: f304636ab0ffca040ba8948f12235136, type: 3}
-  deleteTexture: {fileID: 2800000, guid: d2f8ace7165043a4da20e704150e4db3, type: 3}
-  cancelTexture: {fileID: 2800000, guid: 3300691ea0be19b418db55d16e99e2c8, type: 3}
-  playerDescription: {fileID: 114300122876230314}
 --- !u!114 &114201828627396616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7022,6 +7002,40 @@ MonoBehaviour:
     m_VerticalOverflow: 0
     m_LineSpacing: 1
   m_Text: Plantar/Dorsiflexion
+--- !u!114 &114776350726222770
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1837140018389366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a0f685ef31fad504cade8b1fceceea05, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fontSizeAdjust_S: 60
+  fontSizeAdjust_M: 100
+  languageAdjust: 0
+  managerStatus: 0
+  playerStatus: 0
+  userPanelVisibility: {fileID: 114873553481996414}
+  managerDropdown: {fileID: 114736963793432320}
+  playerDropdown: {fileID: 114671189677807310}
+  memberDropdown: {fileID: 114493179211995340}
+  managerField: {fileID: 114716601594453288}
+  playerField: {fileID: 114213116268692418}
+  passwordField: {fileID: 114186773653278570}
+  playerInfoField: {fileID: 114023932961460758}
+  managerButton: {fileID: 114694850855016754}
+  managerEditButton: {fileID: 114584662151098776}
+  playerButton: {fileID: 114745068452971514}
+  playerEditButton: {fileID: 114674135264042604}
+  managerEditImage: {fileID: 114681259967228668}
+  playerEditImage: {fileID: 114105013987373454}
+  editTexture: {fileID: 2800000, guid: f304636ab0ffca040ba8948f12235136, type: 3}
+  deleteTexture: {fileID: 2800000, guid: d2f8ace7165043a4da20e704150e4db3, type: 3}
+  cancelTexture: {fileID: 2800000, guid: 3300691ea0be19b418db55d16e99e2c8, type: 3}
+  playerDescription: {fileID: 114300122876230314}
 --- !u!114 &114778403954723424
 MonoBehaviour:
   m_ObjectHideFlags: 1
