@@ -98,30 +98,30 @@ public class Dealer : GameBase {
                 timeToChoose += Time.unscaledDeltaTime;
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
-            case Status.wrongCard:
+            case Status.wrong:
                 //interfaceManager.dealerMessage = Messages.wrongCard;
-                aimedCard.status = Card.Status.wrong;   // If chosen card is wrong, highlight it first
-                Wait(1.5f, Status.rightCard);   // Waits x seconds before shows right cards
+                aimedCard.status = Card.Highlight.wrong;   // If chosen card is wrong, highlight it first
+                Wait(1.5f, Status.right);   // Waits x seconds before shows right cards
                 break;
-            case Status.rightCard:
+            case Status.right:
                 //interfaceManager.dealerMessage = Messages.rightCard;
       //          int num = 0;
                 foreach (Card card in challengeCards)
                 {
                     if (card == objectiveCard)
                     {
-                        card.status = Card.Status.right;
+                        card.status = Card.Highlight.right;
                     }
                     else
                     {
-                        if (card.status == Card.Status.free)
+                        if (card.status == Card.Highlight.free)
                         {
                             HideCard(card, 0f); // Oculta cartas que nao sejam as corretas e a errada
                         }
                     }
        //             num++;
                 }   // Highlight the right cards and hides the cards not highlighted
-                objectiveCard.status = Card.Status.right;
+                objectiveCard.status = Card.Highlight.right;
 
                 Wait(2.5f, Status.endTurn);
                 break;
@@ -130,7 +130,7 @@ public class Dealer : GameBase {
                 aimedCard = null;
                 foreach (Card card in cardsInGame)
                 {
-                    card.status = Card.Status.free;
+                    card.status = Card.Highlight.free;
                     card.scale.MoveTo(Vector3.one);
                 }   // Removes all highlights
 
@@ -159,7 +159,6 @@ public class Dealer : GameBase {
                 if (interfaceManager.control.status != Status.end)
                 {
                     gameStatus = Status.newTurn;
-                    gameStatus = Status.playerPlay;
                     DestroyDeck(challengeCards);
                     DestroyCard(objectiveCard);
                     cardsInGame.Clear();
@@ -245,13 +244,13 @@ public class Dealer : GameBase {
                 {
                     soundEffect.clip = successSound;
                     soundEffect.Play();
-                    return Status.rightCard;
+                    return Status.right;
                 }
                 else
                 {
                     soundEffect.clip = failSound;
                     soundEffect.Play();
-                    return Status.wrongCard;
+                    return Status.wrong;
                 }
             }
         }
@@ -278,26 +277,6 @@ public class Dealer : GameBase {
         nextStatus = after;
         gameStatus = Status.waitingMotion;
     }
-
-  /*  /// <summary>
-    /// Is called when slider is changed
-    /// </summary>
-    private void SliderChanged()
-    {
-        challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
-        switch (gameStatus)
-        {
-            case Status.playerPlay:
-                gameStatus = Status.newTurn;
-                break;
-            case Status.playerChoice:
-                gameStatus = Status.endTurn;
-                break;
-            default:
-                break;
-        }
-
-    }*/
 
     private void GameEnd()
     {

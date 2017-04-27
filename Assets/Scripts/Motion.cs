@@ -7,8 +7,8 @@ using UnityEngine;
 /// </summary>
 public class Motion : GameBase {
 
-    public enum Status {idle, waiting, moving, updating};
-    public Status status;
+    private enum MotionStatus {idle, waiting, moving, updating};
+    private MotionStatus status;
 
     private Vector3 initial, value, final;
     private float counter, delay, delta;
@@ -30,6 +30,15 @@ public class Motion : GameBase {
         return motion.value;
     }
 
+    /// <summary>
+    /// Returns true if status is idle.
+    /// </summary>
+    /// <value><c>true</c> if idle; otherwise, <c>false</c>.</value>
+    public bool Idle
+    {
+        get { return (status == MotionStatus.idle); }
+    }
+
 
     // Use this for initialization
 	void Awake () 
@@ -37,7 +46,7 @@ public class Motion : GameBase {
         initial = final = Vector3.zero;
         delay = 0f;
         counter = delta = 1f;
-        status = Status.idle;
+        status = MotionStatus.idle;
 	}
 	
 	// Update is called once per frame
@@ -46,16 +55,16 @@ public class Motion : GameBase {
         Counter();
         switch (status)
         {
-            case Status.idle:
+            case MotionStatus.idle:
                 break;
-            case Status.moving:
+            case MotionStatus.moving:
                 value = Vector3.Lerp(initial, final, Mathf.SmoothStep(0f, 1f, lerpScale));
                 break;
-            case Status.waiting:
+            case MotionStatus.waiting:
                 break;
-            case Status.updating:
+            case MotionStatus.updating:
                 MoveTo(final);
-                status = Status.idle;
+                status = MotionStatus.idle;
                 break;
         }
 	}
@@ -67,11 +76,11 @@ public class Motion : GameBase {
     {
         lerpScale = (counter - delay) / delta;
 
-        if (status != Status.idle)
+        if (status != MotionStatus.idle)
         {
             if (counter < delay)
             {
-                status = Status.waiting;
+                status = MotionStatus.waiting;
                 if (timeScaled)
                     counter += Time.deltaTime;
                 else
@@ -79,7 +88,7 @@ public class Motion : GameBase {
             }
             else if (counter < delay + delta)
             {
-                status = Status.moving;
+                status = MotionStatus.moving;
 
                 if (timeScaled)
                     counter += Time.deltaTime;
@@ -87,7 +96,7 @@ public class Motion : GameBase {
                     counter += Time.unscaledDeltaTime;
             }
             else
-                status = Status.updating;
+                status = MotionStatus.updating;
         }
     }
 
@@ -113,7 +122,7 @@ public class Motion : GameBase {
             counter = 0f;
             delta = deltaTime;
             final = destiny;
-            status = Status.moving;
+            status = MotionStatus.moving;
             lerpScale = (counter - delay) / delta;
         }
         else

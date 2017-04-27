@@ -7,9 +7,9 @@ public class UserPanel : GameBase {
 
     private int language;
 
-    private enum Status {unlocked, locked, newUser, creating, editing}
-    private Status managerStatus = Status.unlocked;
-    private Status playerStatus = Status.unlocked;
+    private enum UserStatus {unlocked, locked, newUser, creating, editing}
+    private UserStatus managerStatus = UserStatus.unlocked;
+    private UserStatus playerStatus = UserStatus.unlocked;
 
     private Text userTab;
     private Text managerLogin;
@@ -23,7 +23,7 @@ public class UserPanel : GameBase {
 
     private UserManager users;
     private HideShow visibility;
-    public Dropdown managerDropdown, playerDropdown, memberDropdown;
+    public Dropdown managerDropdown, playerDropdown, memberDropdown, languageDropdown;
     public InputField managerField, playerField, passwordField, playerInfoField;
     public Button managerButton, managerEditButton, playerButton, playerEditButton;
     public RawImage managerEditImage, playerEditImage;
@@ -59,41 +59,42 @@ public class UserPanel : GameBase {
 	
 	void Update () 
     {
+        chosenLanguage = (Languages)languageDropdown.value;
         language = (int)chosenLanguage;
 
         if (visibility.showed && (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)))
         {
-            if (managerStatus != Status.locked)
+            if (managerStatus != UserStatus.locked)
                 ManagerButton1();
-            else if (playerStatus != Status.locked)
+            else if (playerStatus != UserStatus.locked)
                 PlayerButton1();
         }
 
         switch (managerStatus)
         {
-            case Status.unlocked:
+            case UserStatus.unlocked:
                 UpdateManagerActivity(true, true, true, true);
                 managerEditImage.texture = editTexture;
                 login.text = loginText[language];
                 userWrong = false;
                 if (managerDropdown.value == users.AmountManagers)
-                    managerStatus = Status.newUser;
+                    managerStatus = UserStatus.newUser;
                 break;
-            case Status.newUser:
+            case UserStatus.newUser:
                 UpdateManagerActivity(true, false, false, true);
                 login.text = addText[language];
                 managerEditImage.texture = editTexture;
                 if (managerDropdown.value != users.AmountManagers)
-                    managerStatus = Status.unlocked;
+                    managerStatus = UserStatus.unlocked;
                 break;
-            case Status.creating:
+            case UserStatus.creating:
                 UpdateManagerActivity(true, true, true, false);
                 login.text = doneText[language];
                 managerEditImage.texture = cancelTexture;
                 if (visibility.showed && Input.GetKey(KeyCode.Escape))
                     ManagerButton2();
                 break;
-            case Status.editing:
+            case UserStatus.editing:
                 UpdateManagerActivity(true, true, true, false);
                 login.text = doneText[language];
                 if ((managerField.text == managerDropdown.options[managerDropdown.value].text) && (users.CheckPassword(managerDropdown.value, passwordField.text)))
@@ -104,7 +105,7 @@ public class UserPanel : GameBase {
                     managerEditButton.image.color = GreenColor;
                 }
                 break;
-            case Status.locked:
+            case UserStatus.locked:
                 UpdateManagerActivity(false, false, false, true);
                 managerEditImage.texture = editTexture;
                 playerDropdown.options[users.AmountPlayers].text = insertUserText[language];
@@ -113,8 +114,8 @@ public class UserPanel : GameBase {
         }
         switch (playerStatus)
         {
-            case Status.unlocked:
-                if (managerStatus == Status.locked)
+            case UserStatus.unlocked:
+                if (managerStatus == UserStatus.locked)
                 {
                     UpdatePlayerActivity(true, true, true, true, true);
                     userWrong = false;
@@ -124,23 +125,23 @@ public class UserPanel : GameBase {
                 choose.text = chooseText[language];
                 playerEditImage.texture = editTexture;
                 if (playerDropdown.value == users.AmountPlayers)
-                    playerStatus = Status.newUser;
+                    playerStatus = UserStatus.newUser;
                 break;
-            case Status.newUser:
+            case UserStatus.newUser:
                 UpdatePlayerActivity(true, true, false, false, true);
                 playerEditImage.texture = editTexture;
                 choose.text = addText[language];
                 if (playerDropdown.value != users.AmountPlayers)
-                    playerStatus = Status.unlocked;
+                    playerStatus = UserStatus.unlocked;
                 break;
-            case Status.creating:
+            case UserStatus.creating:
                 UpdatePlayerActivity(true, true, true, false, false);
                 playerEditImage.texture = cancelTexture;
                 choose.text = doneText[language];
                 if (visibility.showed && Input.GetKey(KeyCode.Escape))
                     PlayerButton2();
                 break;
-            case Status.editing:
+            case UserStatus.editing:
                 UpdatePlayerActivity(true, true, true, false, false);
                 if ((playerField.text == playerDropdown.options[playerDropdown.value].text) && (playerInfoField.text == playerDescription.text))
                     playerEditImage.texture = deleteTexture;
@@ -151,7 +152,7 @@ public class UserPanel : GameBase {
                 }
                 choose.text = doneText[language];
                 break;
-            case Status.locked:
+            case UserStatus.locked:
                 UpdatePlayerActivity(false, true, false, false, true);
                 playerEditImage.texture = editTexture;
                 choose.text = changeText[language];
@@ -292,11 +293,11 @@ public class UserPanel : GameBase {
     {
         switch (managerStatus)
         {
-            case Status.unlocked:
+            case UserStatus.unlocked:
                 if (users.CheckPassword(managerDropdown.value, passwordField.text))
                 {
-                    managerStatus = Status.locked;
-                    playerStatus = Status.unlocked;
+                    managerStatus = UserStatus.locked;
+                    playerStatus = UserStatus.unlocked;
 
                     passwordWrong = false;
                     managerUser.color = BlackMatteColor;
@@ -309,15 +310,15 @@ public class UserPanel : GameBase {
                     passwordField.text = "";
                 }
                 break;
-            case Status.newUser:
-                managerStatus = Status.creating;
+            case UserStatus.newUser:
+                managerStatus = UserStatus.creating;
                 managerField.text = "";
                 passwordField.text = "";
                 passwordWrong = false;
                 managerUser.color = BlackMatteColor;
                 managerPassword.color = BlackMatteColor;
                 break;
-            case Status.creating:
+            case UserStatus.creating:
                 if ((managerField.text == "") || (passwordField.text == ""))
                 {
                     managerUser.color = RedColor;
@@ -338,11 +339,11 @@ public class UserPanel : GameBase {
 
                         managerUser.color = BlackMatteColor;
                         managerPassword.color = BlackMatteColor;
-                        managerStatus = Status.unlocked;
+                        managerStatus = UserStatus.unlocked;
                     }
                 }
                 break;
-            case Status.editing:
+            case UserStatus.editing:
                 managerEditButton.image.color = GreenColor;
                 if ((managerField.text == "") || (passwordField.text == ""))
                 {
@@ -364,13 +365,13 @@ public class UserPanel : GameBase {
 
                         managerUser.color = BlackMatteColor;
                         managerPassword.color = BlackMatteColor;
-                        managerStatus = Status.unlocked;
+                        managerStatus = UserStatus.unlocked;
                     }
                 }
                 break;
-            case Status.locked:
-                managerStatus = Status.unlocked;
-                playerStatus = Status.unlocked;
+            case UserStatus.locked:
+                managerStatus = UserStatus.unlocked;
+                playerStatus = UserStatus.unlocked;
                 managerUser.color = BlackMatteColor;
                 managerPassword.color = BlackMatteColor;
                 playerDropdown.value = 0;
@@ -388,17 +389,17 @@ public class UserPanel : GameBase {
     {
         switch (playerStatus)
         {
-            case Status.unlocked:
+            case UserStatus.unlocked:
                 playerUser.color = BlackMatteColor;
-                playerStatus = Status.locked;
+                playerStatus = UserStatus.locked;
                 break;
-            case Status.newUser:
+            case UserStatus.newUser:
                 playerField.text = "";
                 playerInfoField.text = "";
                 playerUser.color = BlackMatteColor;
-                playerStatus = Status.creating;
+                playerStatus = UserStatus.creating;
                 break;
-            case Status.creating:
+            case UserStatus.creating:
                 if (playerField.text == "")
                 {
                     playerUser.color = RedColor;
@@ -417,11 +418,11 @@ public class UserPanel : GameBase {
                         users.AddPlayer(playerField.text, playerInfoField.text);
 
                         playerUser.color = BlackMatteColor;
-                        playerStatus = Status.unlocked;
+                        playerStatus = UserStatus.unlocked;
                     }
                 }
                 break;
-            case Status.editing:
+            case UserStatus.editing:
                 playerEditButton.image.color = GreenColor;
                 if (playerField.text == "")
                 {
@@ -441,13 +442,13 @@ public class UserPanel : GameBase {
                         users.ChangePlayer(playerDropdown.value, playerField.text, playerInfoField.text);
 
                         playerUser.color = BlackMatteColor;
-                        playerStatus = Status.unlocked;
+                        playerStatus = UserStatus.unlocked;
                     }
                 }
                 break;
-            case Status.locked:
+            case UserStatus.locked:
                 playerUser.color = BlackMatteColor;
-                playerStatus = Status.unlocked;
+                playerStatus = UserStatus.unlocked;
                 break;
         }
         UpdateDropdown(managerDropdown, users.Managers);
@@ -462,19 +463,19 @@ public class UserPanel : GameBase {
     {
         switch (managerStatus)
         {
-            case Status.creating:
-                managerStatus = Status.unlocked;
+            case UserStatus.creating:
+                managerStatus = UserStatus.unlocked;
                 managerUser.color = BlackMatteColor;
                 managerPassword.color = BlackMatteColor;
                 break;
-            case Status.editing:
+            case UserStatus.editing:
                 if ((managerField.text == managerDropdown.options[managerDropdown.value].text) && (users.CheckPassword(managerDropdown.value, passwordField.text)))
                 {
                     if (managerEditButton.image.color == GreenColor)
                         managerEditButton.image.color = Color.red;
                     else
                     {
-                        managerStatus = Status.unlocked;
+                        managerStatus = UserStatus.unlocked;
                         managerUser.color = BlackMatteColor;
                         managerPassword.color = BlackMatteColor;
                         managerEditButton.image.color = GreenColor;
@@ -483,15 +484,15 @@ public class UserPanel : GameBase {
                 }
                 else
                 {
-                    managerStatus = Status.unlocked;
+                    managerStatus = UserStatus.unlocked;
                     managerUser.color = BlackMatteColor;
                     managerPassword.color = BlackMatteColor;
                 }
                 break;
-            case Status.unlocked:
+            case UserStatus.unlocked:
                 if (users.CheckPassword(managerDropdown.value, passwordField.text))
                 {
-                    managerStatus = Status.editing;
+                    managerStatus = UserStatus.editing;
                     managerField.text = managerDropdown.captionText.text;
                     passwordWrong = false;
                     managerUser.color = BlackMatteColor;
@@ -517,19 +518,19 @@ public class UserPanel : GameBase {
     {
         switch (playerStatus)
         {
-            case Status.creating:
+            case UserStatus.creating:
                 playerUser.color = BlackMatteColor;
-                playerStatus = Status.unlocked;
+                playerStatus = UserStatus.unlocked;
                 Debug.Log("Cancel Creating");
                 break;
-            case Status.editing:
+            case UserStatus.editing:
                 if ((playerField.text == playerDropdown.options[playerDropdown.value].text) && (playerInfoField.text == playerDescription.text))
                 {
                     if (playerEditButton.image.color == GreenColor)
                         playerEditButton.image.color = Color.red;
                     else
                     {
-                        playerStatus = Status.unlocked;
+                        playerStatus = UserStatus.unlocked;
                         playerUser.color = BlackMatteColor;
                         playerEditButton.image.color = GreenColor;
                         users.RemovePlayer(playerDropdown.value);
@@ -537,13 +538,13 @@ public class UserPanel : GameBase {
                 }
                 else
                 {
-                    playerStatus = Status.unlocked;
+                    playerStatus = UserStatus.unlocked;
                     playerUser.color = BlackMatteColor;
                 }
                 break;
-            case Status.unlocked:
+            case UserStatus.unlocked:
                 playerUser.color = BlackMatteColor;
-                playerStatus = Status.editing;
+                playerStatus = UserStatus.editing;
                 playerField.text = playerDropdown.captionText.text;
                 playerInfoField.text = playerDescription.text;
                 Debug.Log("Edit Player");

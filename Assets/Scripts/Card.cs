@@ -10,7 +10,8 @@ public class Card : GameBase {
     /// <summary>
     /// Card status used to highlight or not, for example.
     /// </summary>
-    public enum Status {free, right, wrong};
+    public enum  Highlight {free, right, wrong};
+    public Highlight status;   // Highlight status
 
     #region Card Infos
     public string suitName, suitSymbol, valueName, colorName;   // This card textes and symbols
@@ -25,7 +26,6 @@ public class Card : GameBase {
     public GameObject highlight;    // Object that highlights the card as right or wrong
     [HideInInspector]
     public Material wrongCardMat, rightCardMat; //  Materials for highlight object
-    public Status status;   // Highlight status
     private MeshRenderer cardMeshRender;    // Mesh render of highlight object
     #endregion
 
@@ -45,7 +45,7 @@ public class Card : GameBase {
         rotation.MoveTo(transform.rotation.eulerAngles);
         scale.MoveTo(transform.localScale);
 
-        status = Status.free;
+        status = Highlight.free;
         cardMeshRender = highlight.GetComponent<MeshRenderer>();
         highlight.SetActive(false);
 
@@ -72,14 +72,14 @@ public class Card : GameBase {
 
         switch (status)
         {
-            case Status.free:
+            case Highlight.free:
                 highlight.SetActive(false);
                 break;
-            case Status.right:
+            case Highlight.right:
                 highlight.SetActive(true);
                 cardMeshRender.material = rightCardMat;
                 break;
-            case Status.wrong:
+            case Highlight.wrong:
                 highlight.SetActive(true);
                 cardMeshRender.material = wrongCardMat;
                 break;

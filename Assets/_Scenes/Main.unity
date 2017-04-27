@@ -121,7 +121,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
-  languageAdjust: 0
   gameStatus: 0
   cardPrefab: {fileID: 1921799268104742, guid: 2fe6ed2b873708f4bac81311e93e7f0a, type: 2}
   player: {fileID: 0}
@@ -355,7 +354,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
-  languageAdjust: 0
 --- !u!1 &549246499
 GameObject:
   m_ObjectHideFlags: 0
@@ -633,6 +631,11 @@ Prefab:
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224480837982674932, guid: e435aa7d892158f48a2138903352a7a3,
+        type: 2}
+      propertyPath: m_AnchorMin.y
+      value: 0.16874999
       objectReference: {fileID: 0}
     - target: {fileID: 224480837982674932, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}

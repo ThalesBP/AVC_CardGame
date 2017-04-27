@@ -92,18 +92,18 @@ public class ControlPanel : GameBase {
         {
             case Status.begin:
                 start.text = startText[language];
+                playTime.text = playTimeText[language];
                 gameTime = totalGameTime = 0f;
 //              gameMessage = Messages.waitingStart;
                 break;
             case Status.paused:
                 start.text = startText[language];
+                playTime.text = infTimeText[language];
 //              gameMessage = Messages.gamePaused;
                 break;
- //           case Status.counting:
-  //              start.text = pauseText[language];
-    //            break;
             case Status.playing:
                 start.text = pauseText[language];
+                playTime.text = infTimeText[language];
                 // To check
                 if (Choice.orderCounter > 0)
                 {
@@ -120,6 +120,7 @@ public class ControlPanel : GameBase {
                 break;
             case Status.end:
                 start.text = restartText[language];
+                playTime.text = infTimeText[language];
                 Time.timeScale = gameSpeed;
     //            gameMessage = Messages.showingResults;
     //            gameMessages.text = gameMessageTexts[(int)gameMessage, language];
@@ -145,12 +146,10 @@ public class ControlPanel : GameBase {
         if (playTimeInput.text == "")
         {
             totalGameTime = float.PositiveInfinity;;
-            playTime.text = infTimeText[language];
         }
         else
         {
             totalGameTime = (float)int.Parse(playTimeInput.text);
-            playTime.text = playTimeText[language];
         }
 
         playTimeField.interactable = false;

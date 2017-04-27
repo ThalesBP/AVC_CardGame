@@ -116,43 +116,43 @@ public class GameBase : MonoBehaviour {
             {"Left foot", "Pé esquerdo" }
         };
 
-    // Obs: Comment later
     public enum Status {
-        begin, 
-        playing, 
-        counting,
-        paused, 
-        end, 
-        newTurn, 
-        playerPlay, 
-        playerChoice, 
-        rightCard, 
-        wrongCard, 
-        endTurn, 
-        waitingMotion, 
-        endGame,
-        connecting,
-        connected,
-        disconnecting,
-        disconnected
+        begin,              // Begin of the game
+        playing,            // Game running
+        paused,             // Game paused
+        end,                // End of the game
+        newTurn,            // Starting new turn
+        playerPlay,         // Waiting player start
+        playerChoice,       // Waiting player choose
+        right,              // Player choose the right
+        wrong,               // Player choose the wrong
+        endTurn,            // Turn has ended
+        waitingMotion,      // Waiting current motion
+        endGame,            // End current match
+        connecting,         // Trying to connect to robot
+        connected,          // Connected to robot
+        disconnecting,      // Disconnecting to robot
+        disconnected        // Disconnected to robot
     };
 
     protected static readonly string[,] gameMessageTexts =
     {
-            {"Creating new game", "Criando novo jogo"},
-            {"Waiting player starts", "Esperando jogador iniciar"},
-            {"Waiting player chooses", "Esperando jogador escolher"},
-            {"Choice done", "Jogada realizada"},
-            {"Right card", "Carta certa"},
-            {"Wrong card", "Carta errada"},
-            {"Turn ended", "Turno terminando"},
-            {"Waiting motion", "Esperando movimento"},
-            {"Waiting to start", "Esperando iniciar"},
+            {"New game", "Novo jogo"},
             {"Game running", "Jogo executando"},
             {"Game paused", "Jogo pausado"},
-            {"Showing results", "Mostrando resultados"},
+            {"Game ended", "Jogo encerrado"},
+            {"New turn", "Novo turno"},
+            {"Waiting player starts", "Esperando jogador iniciar"},
+            {"Waiting player chooses", "Esperando jogador escolher"},
+            {"Right choose", "Escolha certa"},
+            {"Wrong choose", "Escolha errada"},
+            {"Turn ended", "Turno terminando"},
+            {"Waiting motion", "Esperando movimento"},
+            {"Match ended", "Partida encerrada"},
             {"Connecting", "Conectando"},
-            {"Disconecting", "Desconectando"}
+            {"Connected", "Conectado"},
+            {"Disconnecting", "Desconectando"},
+            {"Disconnected", "Desconectado"}
     };
 
     #endregion
@@ -163,7 +163,8 @@ public class GameBase : MonoBehaviour {
     #region Public Variables    // Variables to be changed realtime
     public int fontSizeAdjust_S = 60;
     public int fontSizeAdjust_M = 100;
-    public Languages languageAdjust = Languages.English;
+ //   [SerializeField]
+//    private Languages languageAdjust = Languages.Portuguese;
     #endregion
 
     /// <summary>
@@ -175,7 +176,7 @@ public class GameBase : MonoBehaviour {
         charSize_M = refSize / fontSize_M;
         fontSize_S = fontSizeAdjust_S;
         charSize_S = refSize / fontSize_S;
-        chosenLanguage = languageAdjust;
+ //       chosenLanguage = languageAdjust;
     }
 
     /// <summary>
