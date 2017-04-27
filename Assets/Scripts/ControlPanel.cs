@@ -42,10 +42,9 @@ public class ControlPanel : GameBase {
     public Toggle helpToggle;
     public Slider slider;
 
-  /*  public Messages gameMessage = Messages.newTurn;
-    public Messages dealerMessage = Messages.newTurn; // rename to generic
-*/
-	void Start () 
+    public Status gameStatus = Status.newTurn;
+
+    void Start () 
     {
         panel = GameObject.Find("ControlTabName").GetComponentInChildren<Text>(true);
 
@@ -86,7 +85,7 @@ public class ControlPanel : GameBase {
         help.text = helpText[language];
         sliderText.text = slider.value.ToString("F0") + " " + cardsText[language];
 
-  //      gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
+        gameMessages.text = gameMessageTexts[(int)status, language] + "\n" + gameMessageTexts[(int)gameStatus, language];
 
         switch (status)
         {

@@ -62,7 +62,7 @@ public class Dealer : GameBase {
         switch (gameStatus)
         {
             case Status.newTurn:
-                //interfaceManager.dealerMessage = Messages.newTurn;
+                interfaceManager.control.gameStatus = Status.endTurn;
                 if (challengeCards.Count > 0)
                 {
                     gameStatus = Status.playerPlay;
@@ -81,7 +81,7 @@ public class Dealer : GameBase {
                 objectiveCard = CreateCard(challengeCards[0]); // Chose one card from challenge cards to be the objective card
                 break;
             case Status.playerPlay:
-                //interfaceManager.dealerMessage = Messages.waitingPlayer;
+                interfaceManager.control.gameStatus = Status.playerPlay;
                 if ((FindCardPointed(cardsInGame) != null) && (player.GetAction()))
                     {
                     timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber - 1) * 360f / challengeNumber);    // Spread the cards on screen...
@@ -94,18 +94,15 @@ public class Dealer : GameBase {
                     }   // Waits player plays the game
                 break;
             case Status.playerChoice:
-                //interfaceManager.dealerMessage = Messages.waitingChoice;
+                interfaceManager.control.gameStatus = Status.playerChoice;
                 timeToChoose += Time.unscaledDeltaTime;
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
             case Status.wrong:
-                //interfaceManager.dealerMessage = Messages.wrongCard;
                 aimedCard.status = Card.Highlight.wrong;   // If chosen card is wrong, highlight it first
                 Wait(1.5f, Status.right);   // Waits x seconds before shows right cards
                 break;
             case Status.right:
-                //interfaceManager.dealerMessage = Messages.rightCard;
-      //          int num = 0;
                 foreach (Card card in challengeCards)
                 {
                     if (card == objectiveCard)
@@ -119,14 +116,13 @@ public class Dealer : GameBase {
                             HideCard(card, 0f); // Oculta cartas que nao sejam as corretas e a errada
                         }
                     }
-       //             num++;
                 }   // Highlight the right cards and hides the cards not highlighted
                 objectiveCard.status = Card.Highlight.right;
 
                 Wait(2.5f, Status.endTurn);
                 break;
             case Status.endTurn:
-                //interfaceManager.dealerMessage = Messages.endTurn;
+                interfaceManager.control.gameStatus = Status.endTurn;
                 aimedCard = null;
                 foreach (Card card in cardsInGame)
                 {
@@ -145,7 +141,6 @@ public class Dealer : GameBase {
                     Wait(timeToWait, Status.newTurn);
                 break;
             case Status.waitingMotion:
-                //interfaceManager.dealerMessage = Messages.waitingMotion;
                 if (waitCounter < timeToWait)
                     waitCounter += Time.deltaTime;
                 else
@@ -158,12 +153,15 @@ public class Dealer : GameBase {
             case Status.endGame:
                 if (interfaceManager.control.status != Status.end)
                 {
+                    Debug.Log("Not end");
                     gameStatus = Status.newTurn;
                     DestroyDeck(challengeCards);
                     DestroyCard(objectiveCard);
                     cardsInGame.Clear();
                     packCounter = 0;
                 }
+                else
+                    Debug.Log("End?");
                 break;
         }
 
@@ -242,12 +240,14 @@ public class Dealer : GameBase {
 
                 if (aimedCard == objectiveCard)
                 {
+                    interfaceManager.control.gameStatus = Status.right;
                     soundEffect.clip = successSound;
                     soundEffect.Play();
                     return Status.right;
                 }
                 else
                 {
+                    interfaceManager.control.gameStatus = Status.wrong;
                     soundEffect.clip = failSound;
                     soundEffect.Play();
                     return Status.wrong;

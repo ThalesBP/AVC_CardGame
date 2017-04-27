@@ -147,7 +147,7 @@ public class GameBase : MonoBehaviour {
             {"Right choose", "Escolha certa"},
             {"Wrong choose", "Escolha errada"},
             {"Turn ended", "Turno terminando"},
-            {"Waiting motion", "Esperando movimento"},
+            {"Moving to", "Movendo para"},
             {"Match ended", "Partida encerrada"},
             {"Connecting", "Conectando"},
             {"Connected", "Conectado"},
