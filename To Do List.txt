@@ -3,9 +3,8 @@ Player choices log
 Cursor following robot movement
 Robot comunication
 Verificar e manipular possibilidade de pontuação do turno
-Navegação na interface
 -------------------------------------
 Partidas para coleta de dados / análise de dificuldade
 Criptografar a senha / Senha master pra recuperar
-Modularizar paineis (Getcomponent Hide Show)
 Procurar por comentários "obs" ou "to check" entre outros
+Contador visual para escolha da carta com o robo

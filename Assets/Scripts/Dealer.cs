@@ -82,7 +82,7 @@ public class Dealer : GameBase {
                 break;
             case Status.playerPlay:
                 interfaceManager.control.gameStatus = Status.playerPlay;
-                if ((FindCardPointed(cardsInGame) != null) && (player.GetAction()))
+                if ((FindCardPointed(cardsInGame) != null) && (player.Action))
                     {
                     timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber - 1) * 360f / challengeNumber);    // Spread the cards on screen...
                     timeToWait = ShowCards(challengeCards, timeToWait);   // ... and show them
@@ -182,7 +182,7 @@ public class Dealer : GameBase {
     /// <param name="deck">Deck of card to be checked.</param>
     private Card FindCardPointed(List<Card> deck)
     {
-        Ray camRay = Camera.main.ScreenPointToRay (player.GetPosition());
+        Ray camRay = Camera.main.ScreenPointToRay (player.Position);
         RaycastHit cardHit;
 
         if (Physics.Raycast(camRay, out cardHit, 50f, cardMask))
@@ -215,7 +215,7 @@ public class Dealer : GameBase {
                 aimedCard.scale.MoveTo(1.1f * Vector3.one, DeltaTime[Short]);
 
             }
-            if (player.GetAction())
+            if (player.Action)
             {
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
 

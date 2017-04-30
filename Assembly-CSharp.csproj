@@ -46,8 +46,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\AnkleBot.cs" />
      <Compile Include="Assets\Scripts\Card.cs" />
      <Compile Include="Assets\Scripts\Choice.cs" />
+     <Compile Include="Assets\Scripts\Connection.cs" />
      <Compile Include="Assets\Scripts\ControlManager.cs" />
      <Compile Include="Assets\Scripts\ControlPanel.cs" />
      <Compile Include="Assets\Scripts\DataManager.cs" />
@@ -58,7 +60,10 @@
      <Compile Include="Assets\Scripts\InterfaceManager.cs" />
      <Compile Include="Assets\Scripts\Logger.cs" />
      <Compile Include="Assets\Scripts\Motion.cs" />
+     <Compile Include="Assets\Scripts\NetworkClient.cs" />
+     <Compile Include="Assets\Scripts\NetworkClientTCP.cs" />
      <Compile Include="Assets\Scripts\ResultsPanel.cs" />
+     <Compile Include="Assets\Scripts\RobotCursor.cs" />
      <Compile Include="Assets\Scripts\Singleton.cs" />
      <Compile Include="Assets\Scripts\UserManager.cs" />
      <Compile Include="Assets\Scripts\UserPanel.cs" />

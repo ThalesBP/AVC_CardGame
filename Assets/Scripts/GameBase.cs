@@ -257,4 +257,27 @@ public class GameBase : MonoBehaviour {
     {
         return ((y2 - y1) * x - x1 * y2 + x2 * y1) / (x2 - x1);
     }
+
+    /// <summary>
+    /// Writes a time in a time format.
+    /// </summary>
+    /// <returns>The format.</returns>
+    /// <param name="time">Time.</param>
+    /// <param name="format">Format.</param>
+    /// <param name="round">Round.</param>
+    protected string TimeFormat(float time, string format, int round)
+    {
+        return Mathf.FloorToInt(time / 60).ToString ("D2") + ":" + (Round(time, round) % 60).ToString (format);
+    }
+
+    /// <summary>
+    /// Rounds the specified numbers do certain number of decimal places.
+    /// </summary>
+    /// <param name="number">Real number.</param>
+    /// <param name="decPlaces">Number of decimal places.</param>
+    protected float Round (float number, int decPlaces)
+    {
+        int aux = Mathf.FloorToInt(number* Mathf.Pow (10f, (float)decPlaces));
+        return aux / Mathf.Pow (10f, decPlaces);
+    }
 }

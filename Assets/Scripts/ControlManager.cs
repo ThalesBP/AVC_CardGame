@@ -8,56 +8,57 @@ using UnityEngine;
 public class ControlManager : Singleton<ControlManager> {
 
     [SerializeField]
-    private Vector2 Position;
+    private Vector2 position;
     [SerializeField]
-    private float ActionCounter, ActionCheck;
+    private float actionCounter, actionCheck;
     [SerializeField]
-    private bool ActionCounting, ActionTrigger;
+    private bool actionCounting, actionTrigger;
+
+    public Vector2 Position
+    {
+        get { return position; }
+    }
+
+    public bool Action
+    {
+        get { return GetAction(); }
+    }
 
 	// Use this for initialization
 	void Start () 
     {
-        ActionCounter = 0f;
-        ActionCounting = false;
+        actionCounter = 0f;
+        actionCounting = false;
 	}
 	
 	// Update is called once per frame
 	void Update () 
     {
-        Position = Input.mousePosition;
-        if (ActionCounting)
+        position = Input.mousePosition;
+        if (actionCounting)
         {
-            if (ActionCheck < ActionCounter)
+            if (actionCheck < actionCounter)
             {
-                ActionCheck = ActionCounter;
-                if (ActionCounter > 2f)
-                    ActionTrigger = true;
+                actionCheck = actionCounter;
+                if (actionCounter > 2f)
+                    actionTrigger = true;
             }
             else
             {
-                ActionCounting = false;
-                ActionCounter = ActionCheck = 0f;
+                actionCounting = false;
+                actionCounter = actionCheck = 0f;
             }
         }
-    }
-
-    /// <summary>
-    /// Gets the player's position.
-    /// </summary>
-    /// <returns>The position.</returns>
-    public Vector2 GetPosition()
-    {
-        return Position;
     }
 
     /// <summary>
     /// Gets the player's action.
     /// </summary>
     /// <returns><c>true</c>, if action was gotten, <c>false</c> otherwise.</returns>
-    public bool GetAction()
+    private bool GetAction()
     {
-        ActionCounting = true;
-        ActionCounter += Time.deltaTime;
+        actionCounting = true;
+        actionCounter += Time.deltaTime;
         return Input.GetMouseButton(0);
     }
 }
