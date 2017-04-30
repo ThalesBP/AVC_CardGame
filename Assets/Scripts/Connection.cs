@@ -34,7 +34,7 @@ public class Connection : MonoBehaviour {
 	private const int BIT_SIZE = 4; 	// Numero de bit da mascara; Deve ser multiplo de 2
 	private const int INFO_SIZE = 4;	// 4 Float; 8 Double
 	
-	private int n_dof;                  // Degrees of freedon
+	private int n_dof = 2;              // Degrees of freedon
 //	private int mask_size; 
 //	private byte[] activeMask;
 	private byte[][][] gameStade;
@@ -138,6 +138,11 @@ public class Connection : MonoBehaviour {
         }
     }
 
+    public bool connected
+    {
+        get { return clientHere.IsConnected(); }
+    }
+
 //================================
 	private NetworkClientTCP clientHere = new NetworkClientTCP();
 //================================
@@ -204,11 +209,6 @@ public class Connection : MonoBehaviour {
 //		activeMask[(BIT_SIZE * robot) / 8] |= (byte)(0x1 << (variable + robot*BIT_SIZE));
 		gameStade [robot] [variable] = BitConverter.GetBytes (mag);
 		return;
-	}
-
-	public bool IsConnected()
-	{
-		return clientHere.IsConnected ();
 	}
 
 	public void SetStatus(short status)

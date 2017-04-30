@@ -13,7 +13,6 @@ public class AnkleBot : MonoBehaviour {
     public float squareScale = 1f;
     public float boundaryDist;
 
-    Connection connection;
 
 	void Start () 
     {
@@ -24,17 +23,6 @@ public class AnkleBot : MonoBehaviour {
     {
 		
 	}
-
-    public void Connect()
-    {
-        connection = gameObject.AddComponent<Connection> ();
-    }
-
-    public void Disconnect()
-    {
-        if (connection != null) Destroy (connection);
-    }
-
 
     void Calibration(Vector2 position)
     {

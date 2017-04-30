@@ -44,6 +44,8 @@ public class ControlPanel : GameBase {
 
     public Status gameStatus = Status.newTurn;
 
+    public Connection connection;
+
     void Start () 
     {
         panel = GameObject.Find("ControlTabName").GetComponentInChildren<Text>(true);
@@ -62,12 +64,11 @@ public class ControlPanel : GameBase {
 
         gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>(true);
 	
-        connectButton.interactable = false;
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });
         stopButton.interactable = false;
         stopButton.onClick.AddListener(delegate { FinishGame(); });
         helpToggle.interactable = false;
-
+        connectButton.onClick.AddListener(delegate { Connect(); });
     }
 	
 	void Update () 
@@ -80,7 +81,13 @@ public class ControlPanel : GameBase {
         metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0") + "%";
         metric3.text = metric3Text[language] + "\n" + metric3Value.ToString("F0") + "%";
 
-        connect.text = connectText[language];
+        if (connection == null)
+            connect.text = connectText[language];
+        else if (connection.connected)
+            connect.text = disconnectText[language];
+        else
+            connect.text = connectingText[language];
+        
         stop.text = stopText[language];
         help.text = helpText[language];
         sliderText.text = slider.value.ToString("F0") + " " + cardsText[language];
@@ -93,12 +100,10 @@ public class ControlPanel : GameBase {
                 start.text = startText[language];
                 playTime.text = playTimeText[language];
                 gameTime = totalGameTime = 0f;
-//              gameMessage = Messages.waitingStart;
                 break;
             case Status.paused:
                 start.text = startText[language];
                 playTime.text = infTimeText[language];
-//              gameMessage = Messages.gamePaused;
                 break;
             case Status.playing:
                 start.text = pauseText[language];
@@ -194,4 +199,18 @@ public class ControlPanel : GameBase {
         }
     }
 
+    private void Connect()
+    {
+        connection = gameObject.AddComponent<Connection> ();
+        ControlManager.Instance.connection = connection;
+        connectButton.onClick.RemoveAllListeners();
+        connectButton.onClick.AddListener(delegate { Disconnect(); });
+    }
+
+    private void Disconnect()
+    {
+        if (connection != null) Destroy (connection);
+        connectButton.onClick.RemoveAllListeners();
+        connectButton.onClick.AddListener(delegate { Connect(); });
+    }
 }

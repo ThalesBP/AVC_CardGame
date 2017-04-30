@@ -14,6 +14,8 @@ public class ControlManager : Singleton<ControlManager> {
     [SerializeField]
     private bool actionCounting, actionTrigger;
 
+    public Connection connection;
+
     public Vector2 Position
     {
         get { return position; }
@@ -34,7 +36,21 @@ public class ControlManager : Singleton<ControlManager> {
 	// Update is called once per frame
 	void Update () 
     {
-        position = Input.mousePosition;
+        if (connection == null)
+        {
+            position = Input.mousePosition;
+        }
+        else
+        {
+            if (connection.connected)
+            {
+                position = connection.Position;
+            }
+            else
+            {
+                position = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            }
+        }
         if (actionCounting)
         {
             if (actionCheck < actionCounter)
@@ -59,6 +75,9 @@ public class ControlManager : Singleton<ControlManager> {
     {
         actionCounting = true;
         actionCounter += Time.deltaTime;
-        return Input.GetMouseButton(0);
+        if (connection == null)
+            return Input.GetMouseButton(0);
+        else
+            return actionTrigger;
     }
 }

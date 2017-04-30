@@ -81,6 +81,7 @@ public class GameBase : MonoBehaviour {
     // Control panel
     protected static readonly string[] controlPanelText = { "Control", "Controle" };
     protected static readonly string[] connectText = { "Connect", "Conectar" };
+    protected static readonly string[] connectingText = { "Connecting", "Conectando" };
     protected static readonly string[] disconnectText = { "Disconnect", "Desconectar" };
     protected static readonly string[] startText = { "Start", "Iniciar" };
     protected static readonly string[] restartText = { "Restart", "Reiniciar" };

@@ -23,7 +23,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
 	void Start () 
     {
-        Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
         countDownCounter = -1;
         Time.timeScale = 0f;
 
@@ -39,8 +38,14 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         #endregion
     }
 
-	void Update ()
+    void Update ()
     {
+
+        if (control.connection != null)
+            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+        else
+            Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
+        
         language = (int)chosenLanguage;
 		
         #region Checks current game status
