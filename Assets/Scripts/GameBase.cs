@@ -30,6 +30,7 @@ public class GameBase : MonoBehaviour {
     #endregion
 
     #region Time informations
+    protected static readonly float LoadingTime = 1.5f;
     protected static readonly float[] DeltaTime = { 0.1f, 0.25f, 0.5f, 0.75f, 1f, 1.5f };
     protected static readonly int VeryShort = 0;
     protected static readonly int Short = 1;
@@ -55,6 +56,9 @@ public class GameBase : MonoBehaviour {
     protected static readonly Color RedColor = Color.red;
     protected static readonly Color YellowText = new Color(1f, 206f/255f, 0f);
     protected static readonly Color BlackMatteColor = new Color(50f/255f, 50f/255f, 50f/255f, 0.5f);
+    protected static readonly Color Nude1 = new Color(232f/255f, 202f/255f, 179f/255f, 1f);
+    protected static readonly Color Nude2 = new Color(196f/255f, 144f/255f, 124f/255f, 1f);
+    protected static readonly Color Nude3 = new Color(111f/255f, 86f/255f, 84f/255f, 1f);
     #endregion
 
     #region Texts

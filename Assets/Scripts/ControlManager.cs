@@ -21,6 +21,11 @@ public class ControlManager : Singleton<ControlManager> {
         get { return position; }
     }
 
+    public float Loading
+    {
+        get { return actionCounter / LoadingTime; }
+    }
+
     public bool Action
     {
         get { return GetAction(); }
@@ -56,7 +61,7 @@ public class ControlManager : Singleton<ControlManager> {
             if (actionCheck < actionCounter)
             {
                 actionCheck = actionCounter;
-                if (actionCounter > 2f)
+                if (actionCounter > LoadingTime)
                     actionTrigger = true;
             }
             else
@@ -73,11 +78,13 @@ public class ControlManager : Singleton<ControlManager> {
     /// <returns><c>true</c>, if action was gotten, <c>false</c> otherwise.</returns>
     private bool GetAction()
     {
-        actionCounting = true;
-        actionCounter += Time.deltaTime;
         if (connection == null)
             return Input.GetMouseButton(0);
         else
+        {
             return actionTrigger;
+            actionCounting = true;
+            actionCounter += Time.deltaTime;
+        }
     }
 }

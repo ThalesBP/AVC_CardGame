@@ -42,9 +42,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     {
 
         if (control.connection != null)
-            Cursor.SetCursor(null, Vector2.zero, CursorMode.ForceSoftware);
+            Cursor.visible = true;
         else
-            Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
+            Cursor.visible = false;
         
         language = (int)chosenLanguage;
 		
