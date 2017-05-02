@@ -153,4 +153,18 @@ public class Choice {
         averageTimeToChoose = 0f;
         rangeOfTime = new float[] { 6000f, 0f };
     }
+
+    public static int CheckPoints(Card a, Card b)
+    {
+        int match = 0;
+
+        if (a.suit == b.suit)
+            match += 10;
+        if (a.value == b.value)
+            match += 15;
+        if (a.color == b.color)
+            match += 5;
+
+        return match;
+    }
 }

@@ -77,8 +77,42 @@ public class Dealer : GameBase {
                 }
                 challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
 
-                challengeCards = CreateDeck(challengeNumber);   // Creates a pack of challenge card with n cards
+                challengeCards = CreateHardDeck(challengeNumber);   // Creates a pack of challenge card with n cards
                 objectiveCard = CreateCard(challengeCards[0]); // Chose one card from challenge cards to be the objective card
+
+
+
+                int p30, p20, p15, p5, p0, pT;
+                p30 = p20 = p15 = p5 = p0 = pT = 0;
+
+                foreach (Card card in challengeCards)
+                {
+                    pT++;
+                    switch (Choice.CheckPoints(card, objectiveCard))
+                    {
+                        case 30:
+                            p30++;
+                            break;
+                        case 20:
+                            p20++;
+                            break;
+                        case 15:
+                            p15++;
+                            break;
+                        case 5:
+                            p5++;
+                            break;
+                        case 0:
+                            p0++;
+                            break;
+                    }
+                }
+                Debug.Log("30 Points: " + (100f * p30 / pT).ToString());
+                Debug.Log("20 Points: " + (100f * p20 / pT).ToString());
+                Debug.Log("15 Points: " + (100f * p15 / pT).ToString());
+                Debug.Log("5 Points: " + (100f * p5 / pT).ToString());
+                Debug.Log("0 Points: " + (100f * p0 / pT).ToString());
+                Debug.Log("Average Point: " + ((30f*p30 + 20f*p20 + 15f*p15 + 5f*p5) / (pT)).ToString() + " of 30");
                 break;
             case Status.playerPlay:
                 interfaceManager.control.gameStatus = Status.playerPlay;
@@ -394,7 +428,97 @@ public class Dealer : GameBase {
                 DestroyCard(cardAux);
         }
         return deckAux;
+    }
 
+    /// <summary>
+    /// Creates a random deck with n cards and a hard dificult.
+    /// </summary>
+    /// <returns>Random deck.</returns>
+    /// <param name="nCards">Number of cards.</param>
+    private List<Card> CreateHardDeck(int nCards)
+    {
+        List<Card> deckAux;
+        Card cardAux;
+        int[] posAux = new int[2];
+
+        posAux[0] = Random.Range(1, nCards);
+        posAux[1] = Random.Range(1, nCards);
+        while (posAux[1] == posAux[0])
+            posAux[1] = Random.Range(1, nCards);
+        
+        deckAux = new List<Card>();
+        cardAux = CreateCard();
+        deckAux.Add(cardAux);
+        
+        for (int iCard = 1; iCard < nCards; )
+        {
+            if (iCard == posAux[0])
+            {
+                switch (deckAux[0].suit)
+                {
+                    case (int)Suits.Club:
+                        cardAux = CreateCard((int)Suits.Spades, deckAux[0].value);
+                        break;
+                    case (int)Suits.Spades:
+                        cardAux = CreateCard((int)Suits.Club, deckAux[0].value);
+                        break;
+                    case (int)Suits.Heart:
+                        cardAux = CreateCard((int)Suits.Diamond, deckAux[0].value);
+                        break;
+                    case (int)Suits.Diamond:
+                        cardAux = CreateCard((int)Suits.Heart, deckAux[0].value);
+                        break;
+                    default:
+                        Debug.Log("Something wrong is not correct");
+                        break;
+                }
+
+                if (!deckAux.Contains(cardAux))
+                {
+                    deckAux.Add(cardAux);
+                    iCard++;
+                }
+                else
+                {
+                    DestroyCard(cardAux);
+                    posAux[0] = -1;
+                }
+            }
+            else if (iCard == posAux[1])
+            {
+                int valueAux;
+
+                valueAux = Random.Range(0, valueNames.Length);
+                while (valueAux == deckAux[0].value)
+                    valueAux = Random.Range(0, valueNames.Length);
+
+                cardAux = CreateCard(deckAux[0].suit, valueAux);
+
+                if (!deckAux.Contains(cardAux))
+                {
+                    deckAux.Add(cardAux);
+                    iCard++;
+                }
+                else
+                {
+                    DestroyCard(cardAux);
+                    posAux[1] = -1;
+                }
+            }
+            else
+            {
+                cardAux = CreateCard();
+
+                if (!deckAux.Contains(cardAux))
+                {
+                    deckAux.Add(cardAux);
+                    iCard++;
+                }
+                else
+                    DestroyCard(cardAux);
+            }
+        }
+        return deckAux;
     }
 
     /// <summary>
