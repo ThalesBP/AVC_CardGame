@@ -9,11 +9,13 @@ public class ControlManager : Singleton<ControlManager> {
 
     [SerializeField]
     private Vector2 position;
+    private Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
     [SerializeField]
     private float actionCounter, actionCheck;
     [SerializeField]
     private bool actionCounting, actionTrigger;
 
+    public float scale = 3000f;
     public Connection connection;
 
     public Vector2 Position
@@ -39,7 +41,7 @@ public class ControlManager : Singleton<ControlManager> {
 	}
 	
 	// Update is called once per frame
-	void Update () 
+	void FixedUpdate () 
     {
         if (connection == null)
         {
@@ -49,11 +51,15 @@ public class ControlManager : Singleton<ControlManager> {
         {
             if (connection.connected)
             {
-                position = connection.Position;
+                if (connection.Position != null)
+                {
+                    Debug.Log(connection.Position);
+                    position = connection.Position * scale + center;
+                }
             }
             else
             {
-                position = new Vector2(Screen.width / 2f, Screen.height / 2f);
+                position = center;
             }
         }
         if (actionCounting)
@@ -64,12 +70,12 @@ public class ControlManager : Singleton<ControlManager> {
                 if (actionCounter > LoadingTime)
                     actionTrigger = true;
             }
-            else
+/*            else
             {
                 actionCounting = false;
                 actionCounter = actionCheck = 0f;
             }
-        }
+  */      }
     }
 
     /// <summary>
@@ -82,9 +88,16 @@ public class ControlManager : Singleton<ControlManager> {
             return Input.GetMouseButton(0);
         else
         {
-            return actionTrigger;
             actionCounting = true;
             actionCounter += Time.deltaTime;
+            if (actionTrigger)
+            {
+                actionTrigger = false;
+                actionCounter = actionCheck = 0f;
+                return true;
+            }
+            else
+                return false;
         }
     }
 }

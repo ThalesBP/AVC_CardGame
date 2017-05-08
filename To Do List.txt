@@ -1,9 +1,9 @@
 More 2 game modes
 Player choices log
  * Verificar e manipular possibilidade de pontuação do turno
- * Cursor following robot movement
- * Robot comunication
 -------------------------------------
 Partidas para coleta de dados / análise de dificuldade
 Criptografar a senha / Senha master pra recuperar
 Procurar por comentários "obs" ou "to check" entre outros
+Mouse atrás do menu
+Desvio padrão das informações

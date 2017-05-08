@@ -19,6 +19,7 @@ public class Dealer : GameBase {
     private int challengeNumber;    // Number of card in challange - It may be useless
     private bool onCard;            // Checks if mouse is on a card
     private Status nextStatus;      // Save the next status after wait moves
+    [SerializeField]
     private Card aimedCard;
     /// <summary>
     /// Class to acess interface components.
@@ -107,13 +108,13 @@ public class Dealer : GameBase {
                             break;
                     }
                 }
-                Debug.Log("30 Points: " + (100f * p30 / pT).ToString());
+       /*         Debug.Log("30 Points: " + (100f * p30 / pT).ToString());
                 Debug.Log("20 Points: " + (100f * p20 / pT).ToString());
                 Debug.Log("15 Points: " + (100f * p15 / pT).ToString());
                 Debug.Log("5 Points: " + (100f * p5 / pT).ToString());
                 Debug.Log("0 Points: " + (100f * p0 / pT).ToString());
                 Debug.Log("Average Point: " + ((30f*p30 + 20f*p20 + 15f*p15 + 5f*p5) / (pT)).ToString() + " of 30");
-                break;
+          */      break;
             case Status.playerPlay:
                 interfaceManager.control.gameStatus = Status.playerPlay;
                 if ((FindCardPointed(cardsInGame) != null) && (player.Action))
@@ -249,6 +250,18 @@ public class Dealer : GameBase {
                 aimedCard.scale.MoveTo(1.1f * Vector3.one, DeltaTime[Short]);
 
             }
+            else
+            {
+                if (aimedCard != cardAux)
+                {
+                    Debug.Log(aimedCard);
+                    Debug.Log(cardAux);
+                    aimedCard.scale.MoveTo(Vector3.one, DeltaTime[VeryShort]);
+                    aimedCard = cardAux;
+                    aimedCard.scale.MoveTo(1.1f * Vector3.one, DeltaTime[Short]);
+                }
+            }
+
             if (player.Action)
             {
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
@@ -261,7 +274,9 @@ public class Dealer : GameBase {
                 if (Mathf.Abs(gameSpeed_aux - interfaceManager.control.gameSpeed) > TimeChoiceLimits[0])
                     interfaceManager.control.gameSpeed += TimeChoiceLimits[0] * Mathf.Sign(gameSpeed_aux - interfaceManager.control.gameSpeed);
                 else
-                    interfaceManager.control.gameSpeed = Mathf.Clamp(gameSpeed_aux, GameSpeedLimits[0], GameSpeedLimits[1]);
+                    interfaceManager.control.gameSpeed = gameSpeed_aux;
+
+                interfaceManager.control.gameSpeed = Mathf.Clamp(interfaceManager.control.gameSpeed, GameSpeedLimits[0], GameSpeedLimits[1]);
 
                 float precisionRate;
                 if ((bool)choices[choices.Count - 1])

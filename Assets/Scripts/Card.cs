@@ -50,15 +50,15 @@ public class Card : GameBase {
         highlight.SetActive(false);
 
         // Set visual text quality
-        foreach (TextMesh value in valueTexts)
+        foreach (TextMesh text in valueTexts)
         {
-            value.characterSize = charSize_S;
-            value.fontSize = fontSize_S;
+            text.characterSize = charSize_S;
+            text.fontSize = fontSize_S;
         }
-        foreach (TextMesh value in suitTexts)
+        foreach (TextMesh text in suitTexts)
         {
-            value.characterSize = charSize_S;
-            value.fontSize = fontSize_S;
+            text.characterSize = charSize_S;
+            text.fontSize = fontSize_S;
         }
         suitTexts[2].characterSize = charSize_M;    // Central suit has different size
         suitTexts[2].fontSize = fontSize_M;
@@ -155,17 +155,17 @@ public class Card : GameBase {
                 break;    
         }
 
-        foreach (TextMesh value in valueTexts)
+        foreach (TextMesh text in valueTexts)
         {
-            value.text = valueName;
-            value.color = colorRGB;
+            text.text = valueName;
+            text.color = colorRGB;
         }
 
 
-        foreach (TextMesh suit in suitTexts)
+        foreach (TextMesh text in suitTexts)
         {
-            suit.text = suitSymbol;
-            suit.color = colorRGB;
+            text.text = suitSymbol;
+            text.color = colorRGB;
         }
 
     }
@@ -198,7 +198,7 @@ public class Card : GameBase {
                 return true;
         }
 
-        if ((cardA.suit != cardB.suit) || (cardA.value != cardB.value) || (cardA.color == cardB.color))
+        if ((cardA.suit != cardB.suit) || (cardA.value != cardB.value) || (cardA.color != cardB.color))
             return true;
         else
             return false;

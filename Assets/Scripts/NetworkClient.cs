@@ -14,8 +14,8 @@ public abstract class NetworkClient
 	protected Socket client = null;
 	
 //	public const int BUFFER_SIZE = 34;
-    protected byte[] inputBuffer; // = new byte[ BUFFER_SIZE ];
-    protected byte[] outputBuffer; // = new byte[ BUFFER_SIZE ]; 
+    protected byte[] inputBuffer;// = new byte[ BUFFER_SIZE ];
+    protected byte[] outputBuffer;// = new byte[ BUFFER_SIZE ]; 
 
 	private void connectCallback( IAsyncResult ar ) 
 	{
@@ -58,7 +58,12 @@ public abstract class NetworkClient
 	{
         inputBuffer = new byte[ bufferSize ];
         outputBuffer = new byte[ bufferSize ]; 
-
+      /*  for (int i = 0; i < bufferSize; i++)
+        {
+            inputBuffer[i] = 0;
+            outputBuffer[i] = 0;
+        }*/
+        
 		if( !client.Connected || host != currentHost || remotePort != currentRemotePort ) 
 		{
 			Debug.Log( "Trying to connect to host " + host + " and port " + remotePort.ToString() );

@@ -41,23 +41,25 @@ public class Choice {
 
         if (suitMatch)
         {
-            pointMatch += 10;
+            pointMatch += 5;
             suitCounter++;
-        }
-        if (valueMatch)
-        {
-            pointMatch += 15;
-            valueCounter++;
-        }
+        } 
         if (colorMatch)
         {
             pointMatch += 5;
             colorCounter++;
         }
+        if (valueMatch)
+        {
+            pointMatch += 10;
+            valueCounter++;
+        }
 
-        if (pointMatch == 30)
+        if (pointMatch == 20)
+        {
+            pointMatch = 30;
             totalMatches++;
-
+        }
         this.timeToChoose = timeToChoose;
 
         if (orderCounter > 0)

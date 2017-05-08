@@ -15,28 +15,15 @@ using System.Linq;
 
 public class Connection : MonoBehaviour {
 
-	enum ConnectStatus {waiting, connecting, connected, disconnected};
+    public enum GameStatus {Paused, Starting, Playing, Stopped, Restarting};
+    enum ConnectStatus {waiting, connecting, connected, disconnected};
     enum RobotIndex {centerspring, freespace, stiff, damp};
     enum GameIndex {position, velocity, acc, force};
+    enum Axis {vertical, horizontal};
 
-	// Indice relativo da variavel
-/*	public const int CENTERSPRING = 0; 	// Game
-	public const int FREESPACE = 1; 	// Game
-	public const int STIFF = 2;			// Game
-	public const int DAMP = 3;			// Game
+	private const int N_VAR = 4; 		// Numero de variaveis envolvidas
+	private const int  N_DOF = 2;        // Degrees of freedon
 
-	public const int POSITION = 0; 		// Robo
-	public const int VELOCITY = 1; 		// Robo
-	public const int ACC = 2;			// Robo
-	public const int FORCE = 3;			// Robo
-*/
-	public const int N_VAR = 4; 		// Numero de variaveis envolvidas
-	private const int BIT_SIZE = 4; 	// Numero de bit da mascara; Deve ser multiplo de 2
-	private const int INFO_SIZE = 4;	// 4 Float; 8 Double
-	
-	private int n_dof = 2;              // Degrees of freedon
-//	private int mask_size; 
-//	private byte[] activeMask;
 	private byte[][][] gameStade;
     private byte[] gameStatus;
     private float[][] robotStade;
@@ -45,7 +32,6 @@ public class Connection : MonoBehaviour {
 	private float delayCount;
 
 	private Thread connectingThread;
-	//private volatile bool stopThread;
 
 	//public bool connected;
 	ConnectStatus connectStatus;
@@ -62,7 +48,7 @@ public class Connection : MonoBehaviour {
     {
         get 
         {
-            return new Vector2(robotStade[(int)GameIndex.position][0], robotStade[(int)GameIndex.position][1]);
+            return  new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.position], robotStade[(int)Axis.vertical][(int)GameIndex.position]);
         }
     }
 
@@ -70,7 +56,7 @@ public class Connection : MonoBehaviour {
     {
         get 
         {
-            return new Vector2(robotStade[(int)GameIndex.velocity][0], robotStade[(int)GameIndex.velocity][1]);
+            return new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.velocity], robotStade[(int)Axis.vertical][(int)GameIndex.velocity]);
         }
     }
 
@@ -78,7 +64,7 @@ public class Connection : MonoBehaviour {
     {
         get 
         {
-            return new Vector2(robotStade[(int)GameIndex.acc][0], robotStade[(int)GameIndex.acc][1]);
+            return new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.acc], robotStade[(int)Axis.vertical][(int)GameIndex.acc]);
         }
     }
 
@@ -86,19 +72,33 @@ public class Connection : MonoBehaviour {
     {
         get 
         {
-            return new Vector2(robotStade[(int)GameIndex.force][0], robotStade[(int)GameIndex.force][1]);
+            return new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.force], robotStade[(int)Axis.vertical][(int)GameIndex.force]);
+        }
+    }
+
+    public GameStatus Status
+    {
+        get
+        { 
+            return (GameStatus)RobotStatus;
+        }
+        set 
+        {
+            value = Status;
+            SetStatus((short)Status);
         }
     }
 
     public Vector2 CenterSpring
     {
-        get{ 
+        get
+        { 
             return CenterSpring; 
         }
         set 
         {
-            SetStatus(0, CenterSpring.x, (int)RobotIndex.centerspring);
-            SetStatus(1, CenterSpring.y, (int)RobotIndex.centerspring);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.centerspring, CenterSpring.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.centerspring, CenterSpring.y);
         }
     }
 
@@ -109,8 +109,8 @@ public class Connection : MonoBehaviour {
         }
         set 
         {
-            SetStatus(0, FreeSpace.x, (int)RobotIndex.freespace);
-            SetStatus(1, FreeSpace.y, (int)RobotIndex.freespace);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.freespace, FreeSpace.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.freespace, FreeSpace.y);
         }
     }
 
@@ -121,8 +121,8 @@ public class Connection : MonoBehaviour {
         }
         set 
         {
-            SetStatus(0, Stiffness.x, (int)RobotIndex.stiff);
-            SetStatus(1, Stiffness.y, (int)RobotIndex.stiff);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.stiff, Stiffness.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.stiff, Stiffness.y);
         }
     }
 
@@ -133,16 +133,16 @@ public class Connection : MonoBehaviour {
         }
         set 
         {
-            SetStatus(0, Damping.x, (int)RobotIndex.damp);
-            SetStatus(1, Damping.y, (int)RobotIndex.damp);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.damp, Damping.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.damp, Damping.y);
         }
     }
 
-    public bool connected
-    {
+    public bool connected;
+/*    {
         get { return clientHere.IsConnected(); }
     }
-
+*/
 //================================
 	private NetworkClientTCP clientHere = new NetworkClientTCP();
 //================================
@@ -151,7 +151,6 @@ public class Connection : MonoBehaviour {
 
 	void Start()
 	{
-//		stopThread = false;
 		connectingThread = new Thread (Connect);
 		connectingThread.Start ();
 		if (clientHere.IsConnected ())
@@ -163,19 +162,15 @@ public class Connection : MonoBehaviour {
 
 	void FixedUpdate()
 	{
+        connected = clientHere.IsConnected();
 		switch (connectStatus)
 		{
 			case ConnectStatus.connected:
 				SendMsg ();
-				ReadMsg ();
+                ReadMsg ();
 				break;
 		}
 	}
-
-    /*public const int N_VAR = 4;         // Numero de variaveis envolvidas
-    private const int BIT_SIZE = 4;     // Numero de bit da mascara; Deve ser multiplo de 2
-    private const int INFO_SIZE = 4;    // 4 Float; 8 Double
-*/
 
 	void Connect()
 	{
@@ -184,30 +179,41 @@ public class Connection : MonoBehaviour {
 		{
 			switch (connectStatus)
 			{
-				case ConnectStatus.waiting:
-					Debug.Log ("Starting connection");
-					clientHere.Connect ("192.168.0.66", 8000, 0, BIT_SIZE + N_VAR * INFO_SIZE); // Here 192.168.0.67
+                case ConnectStatus.waiting:
+                    Debug.Log("Starting connection");
+                    clientHere.Connect("192.168.0.66", 8000, 0, sizeof(short) + N_VAR * sizeof(float) * N_DOF); // Here 192.168.0.67
 					//	clientHere.SendString ("Connected!"); 
 
-					InitializeVariables ();
-					connectStatus = ConnectStatus.connecting;
+                    InitializeVariables();
+                    connectStatus = ConnectStatus.connecting;
 					break;
-				case ConnectStatus.connecting:
-					Debug.Log ("Trying to connect");
-					if (clientHere.IsConnected ())
-						connectStatus = ConnectStatus.connected;
+                case ConnectStatus.connecting:
+                    Debug.Log("Trying to connect");
+                    if (clientHere.IsConnected())
+                    {
+                        connectStatus = ConnectStatus.connected;
+                        Debug.Log("Connected");
+                    }
 					break;
-				default:
-					inLoop = false;
+                case ConnectStatus.connected:
+                    inLoop = false;
+                    break;
+                default:
+                    Debug.Log("Erro!!");
 					break;
 			}
 		}
 	}
 
-	public void SetStatus(int robot, float mag, int variable)
+    /// <summary>
+    /// Sets the status.
+    /// </summary>
+    /// <param name="dof">Dof.</param>
+    /// <param name="variable">Variable.</param>
+    /// <param name="mag">Mag.</param>
+    public void SetStatus(int dof, int variable, float mag)
 	{
-//		activeMask[(BIT_SIZE * robot) / 8] |= (byte)(0x1 << (variable + robot*BIT_SIZE));
-		gameStade [robot] [variable] = BitConverter.GetBytes (mag);
+        gameStade [dof] [variable] = BitConverter.GetBytes (mag);
 		return;
 	}
 
@@ -216,9 +222,9 @@ public class Connection : MonoBehaviour {
 		gameStatus = BitConverter.GetBytes((short)(status + 1));
 	}
 
-	public float ReadStatus(int robot, int variable)
+	public float ReadStatus(int dof, int variable)
 	{
-		return robotStade [robot] [variable];
+        return robotStade [dof] [variable];
 	}
 
 	public short ReadStatus()
@@ -228,23 +234,22 @@ public class Connection : MonoBehaviour {
 
 	private void SendMsg ()
 	{
-		byte[] msg = new byte[sizeof(short) + (N_VAR * INFO_SIZE) * n_dof];
+        byte[] msg = new byte[sizeof(short) + (N_VAR * sizeof(float)) * N_DOF];
 		System.Buffer.BlockCopy (gameStatus, 0, msg, 0, sizeof(short));
-//		System.Buffer.BlockCopy (activeMask, 0, msg, 0, activeMask.Length);
-		for (int i = 0; i < n_dof; i++) 
+        for (int i_dof = 0; i_dof < N_DOF; i_dof++) 
 		{
-			for (int j = 0; j < N_VAR; j++)
+            for (int i_var = 0; i_var < N_VAR; i_var++)
 			{
-				System.Buffer.BlockCopy (gameStade [i][j], 0, msg, sizeof(short) + INFO_SIZE * (j + N_VAR * i), gameStade [i][j].Length);
+                System.Buffer.BlockCopy (gameStade [i_dof][i_var], 0, msg, sizeof(short) + sizeof(float) * (i_var + N_VAR * i_dof), gameStade [i_dof][i_var].Length);
 			}
 		}
 		clientHere.SendByte (msg);
-		return;
+        return;
 	}
 
 	private void ReadMsg()
 	{
-		byte[] buffer = clientHere.ReceiveByte ();
+        byte[] buffer = clientHere.ReceiveByte ();
 
 		// Check if message is different than zero
 		bool check = false;
@@ -257,30 +262,30 @@ public class Connection : MonoBehaviour {
 			}
 		}
 
-		if (check)
-		{
-			robotStatus = BitConverter.ToInt16 (buffer, 0);
-			for (int i = 0; i < n_dof; i++)
-			{
-				for (int j = 0; j < N_VAR; j++)
-				{
-					robotStade[i][j] = BitConverter.ToSingle (buffer, sizeof(short) + INFO_SIZE*(j + N_VAR*i));
-				}
-				//				Debug.Log ("Robot " + (i+1) + "- Pos: " + robotStade[i][0].ToString() + ", Vel:" + robotStade[i][1].ToString() + ", Acc:" + robotStade[i][2].ToString() + ", For:" + robotStade[i][3].ToString());
-			}
+        if (check)
+        {
+            robotStatus = BitConverter.ToInt16(buffer, 0);
+            for (int i_dof = 0; i_dof < N_DOF; i_dof++)
+            {
+                for (int i_var = 0; i_var < N_VAR; i_var++)
+                {
+                    robotStade[i_dof][i_var] = BitConverter.ToSingle(buffer, sizeof(short) + sizeof(float) * (i_var + N_VAR * i_dof));
+                }
+                //				Debug.Log ("Robot " + (i+1) + "- Pos: " + robotStade[i][0].ToString() + ", Vel:" + robotStade[i][1].ToString() + ", Acc:" + robotStade[i][2].ToString() + ", For:" + robotStade[i][3].ToString());
+            }
 /*			for (int j = 0; j < N_VAR; j++)
 			{
-				for (int i = 0; i < n_dof; i++)
+				for (int i = 0; i < N_DOF; i++)
 				{
 					File.AppendAllText(textFile, robotStade[i][j] + "\t");
 				}
 			}
 			File.AppendAllText(textFile, Environment.NewLine);*/
 
-			if (robotStatus == 0)
-				Debug.Log ("Disconnected?");
-	//			connectStatus = ConnectStatus.disconnected;
-		}
+            if (robotStatus == 0)
+                Debug.Log("Disconnected?");
+            //			connectStatus = ConnectStatus.disconnected;
+        }
 		return;
 	}
 
@@ -290,17 +295,19 @@ public class Connection : MonoBehaviour {
 	private void InitializeVariables()
 	{
 		gameStatus = new byte[sizeof(short)];
-        gameStade = new byte[n_dof][][];
-        robotStade = new float[n_dof][];
+        gameStade = new byte[N_DOF][][];
+        robotStatus = 0;
+        robotStade = new float[N_DOF][];
 
-        SetStatus ((short)n_dof);
-        for (int i = 0; i < n_dof; i++) 
+        SetStatus (0);
+        for (int i_dof = 0; i_dof < N_DOF; i_dof++) 
 		{
-			gameStade[i] = new byte[N_VAR][];
-			robotStade[i] = new float[N_VAR];
-			for (int j = 0; j < N_VAR; j++)
+            gameStade[i_dof] = new byte[N_VAR][];
+            robotStade[i_dof] = new float[N_VAR];
+            for (int i_var = 0; i_var < N_VAR; i_var++)
 			{
-				SetStatus (i, 0f, j);
+                robotStade[i_dof][i_var] = 0f;
+                SetStatus (i_dof, i_var, 0f);
 			}
 		}
 		return;
