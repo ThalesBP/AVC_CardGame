@@ -41,11 +41,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     void Update ()
     {
 
-        if (control.connection != null)
-            Cursor.visible = true;
-        else
+        if (control.connection == null)
             Cursor.visible = false;
-        
+        else
+            Cursor.visible = true;
+//        else
+//            Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
+
         language = (int)chosenLanguage;
 		
         #region Checks current game status

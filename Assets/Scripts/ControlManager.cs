@@ -41,7 +41,7 @@ public class ControlManager : Singleton<ControlManager> {
 	}
 	
 	// Update is called once per frame
-	void FixedUpdate () 
+	void Update () 
     {
         if (connection == null)
         {
@@ -70,12 +70,7 @@ public class ControlManager : Singleton<ControlManager> {
                 if (actionCounter > LoadingTime)
                     actionTrigger = true;
             }
-/*            else
-            {
-                actionCounting = false;
-                actionCounter = actionCheck = 0f;
-            }
-  */      }
+        }
     }
 
     /// <summary>

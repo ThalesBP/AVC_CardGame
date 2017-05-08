@@ -29,7 +29,8 @@ public class Connection : MonoBehaviour {
     private float[][] robotStade;
 	private short robotStatus;
 
-	private float delayCount;
+    private const float stepTime = 0.02f;
+	private float timeCounter = 0;
 
 	private Thread connectingThread;
 
@@ -160,16 +161,22 @@ public class Connection : MonoBehaviour {
 	}
 
 
-	void FixedUpdate()
+	void Update()
 	{
-        connected = clientHere.IsConnected();
-		switch (connectStatus)
-		{
-			case ConnectStatus.connected:
-				SendMsg ();
-                ReadMsg ();
-				break;
-		}
+        if (timeCounter > stepTime)
+        {
+            connected = clientHere.IsConnected();
+            switch (connectStatus)
+            {
+                case ConnectStatus.connected:
+                    SendMsg();
+                    ReadMsg();
+                    break;
+            }
+            timeCounter = 0f;
+        }
+        else
+            timeCounter += Time.unscaledDeltaTime;
 	}
 
 	void Connect()
