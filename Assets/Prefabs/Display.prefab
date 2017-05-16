@@ -419,6 +419,7 @@ GameObject:
   - component: {fileID: 222502265025787756}
   - component: {fileID: 114389419619337028}
   - component: {fileID: 114891498594817750}
+  - component: {fileID: 223125352370430892}
   m_Layer: 5
   m_Name: Cursor
   m_TagString: Untagged
@@ -6593,8 +6594,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114585431317576758}
   m_HandleRect: {fileID: 224480837982674932}
   m_Direction: 2
-  m_Value: 0.00000056514
-  m_Size: 0.8312499
+  m_Value: 0
+  m_Size: 0.83125
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9675,6 +9676,25 @@ CanvasRenderer:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1984492237568904}
+--- !u!223 &223125352370430892
+Canvas:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1153727677521172}
+  m_Enabled: 1
+  serializedVersion: 2
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 32767
+  m_TargetDisplay: 0
 --- !u!223 &223220303109626482
 Canvas:
   m_ObjectHideFlags: 1
