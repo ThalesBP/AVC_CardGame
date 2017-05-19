@@ -15,6 +15,7 @@ public class ControlManager : Singleton<ControlManager> {
     [SerializeField]
     private bool actionCounting, actionTrigger;
 
+    public bool forceActionCounter = false;
     public float scale = 3000f;
     public Connection connection;
 
@@ -79,7 +80,7 @@ public class ControlManager : Singleton<ControlManager> {
     /// <returns><c>true</c>, if action was gotten, <c>false</c> otherwise.</returns>
     private bool GetAction()
     {
-        if (connection == null)
+        if ((connection == null) && (!forceActionCounter))
             return Input.GetMouseButton(0);
         else
         {

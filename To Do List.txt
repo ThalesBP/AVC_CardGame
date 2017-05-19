@@ -1,9 +1,21 @@
+Jogo:
 More 2 game modes
-Player choices log
- * Verificar e manipular possibilidade de pontuação do turno
-Verificar controle do robô
+Verificar e manipular possibilidade de pontuação do turno
 Adicionar listen no slidebar
-Partidas para coleta de dados / análise de dificuldade
 Criptografar a senha / Senha master pra recuperar
 Procurar por comentários "obs" ou "to check" entre outros
+Ajuste de dificuldade
+
+Log:
+Player choices log
+Partidas para coleta de dados / análise de dificuldade
 Desvio padrão das informações
+
+Visual:
+Indicador pra tomar uma ação de recomeço
+Mouse rotacionar com o pé
+Nota musical pra cada carta
+
+Robô:
+Verificar controle do robô
+Calibration

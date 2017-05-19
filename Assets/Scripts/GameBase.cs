@@ -38,7 +38,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly int Long = 3;
     protected static readonly int VeryLong = 4;
     protected static readonly int MuchLonger = 4;
-    protected static readonly int CountDown = 1;    // 3 seconds
+    protected static readonly int CountDown = 3;    // 3 seconds
     protected static readonly float[] GameSpeedLimits = { 1f, 3f };
     protected static readonly float[] TimeChoiceLimits = { 0.5f, 4.5f };
     #endregion

@@ -193,6 +193,7 @@ public class ControlPanel : GameBase {
                 break;
             case Status.end:
                 status = Status.begin;
+                playTimeField.interactable = true;
                 results.visibility.Hide();
                 Choice.ResetChoice();
                 break;
