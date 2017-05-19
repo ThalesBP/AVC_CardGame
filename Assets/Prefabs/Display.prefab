@@ -3772,8 +3772,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114619157571918598}
   m_HandleRect: {fileID: 224539756983564346}
   m_Direction: 0
-  m_Value: 0
-  m_Size: 1
+  m_Value: 0.8333333
+  m_Size: 0.99999964
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4048,7 +4048,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -6595,7 +6595,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 224480837982674932}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.83125
+  m_Size: 0.83125013
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8442,7 +8442,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screen: {fileID: 223220303109626482}
-  loading: {fileID: 0}
 --- !u!114 &114908321960637976
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8545,7 +8544,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 114819963388331248}
   toggleTransition: 1
   graphic: {fileID: 114989230753004214}
@@ -10870,10 +10869,10 @@ RectTransform:
   m_Father: {fileID: 224821742094932278}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 10, y: -15}
-  m_SizeDelta: {x: 25, y: 25}
+  m_AnchorMin: {x: 0.07, y: 0.5}
+  m_AnchorMax: {x: 0.07, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!224 &224394801188739812
 RectTransform:
@@ -11405,7 +11404,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.000045590554, y: 27}
+  m_AnchoredPosition: {x: -0.000019073486, y: 27}
   m_SizeDelta: {x: 0, y: 160}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224612525681625322

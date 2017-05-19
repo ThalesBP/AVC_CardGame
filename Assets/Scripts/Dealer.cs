@@ -199,11 +199,16 @@ public class Dealer : GameBase {
                     Debug.Log("End?");
                 break;
         }
+        float orderCounter;
+        if (Choice.orderCounter == 0)
+            orderCounter = 1f;
+        else
+            orderCounter = 1f/Choice.orderCounter;
 
         interfaceManager.scoreValue = Choice.totalPoints;
-        interfaceManager.control.metric1Value = 100f * Choice.suitCounter / Choice.orderCounter;
-        interfaceManager.control.metric2Value = 100f * Choice.valueCounter / Choice.orderCounter;
-        interfaceManager.control.metric3Value = 100f * Choice.colorCounter / Choice.orderCounter;
+        interfaceManager.control.metric1Value = 100f * Choice.suitCounter * orderCounter;
+        interfaceManager.control.metric2Value = 100f * Choice.valueCounter * orderCounter;
+        interfaceManager.control.metric3Value = 100f * Choice.colorCounter * orderCounter;
 
         if (interfaceManager.control.status == Status.end)
             GameEnd();
