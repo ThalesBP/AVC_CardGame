@@ -26,7 +26,7 @@ public class ControlManager : Singleton<ControlManager> {
 
     public float Loading
     {
-        get { return actionCounter / LoadingTime; }
+        get { return actionCounter / LoadingTime[Medium]; }
     }
 
     public bool Action
@@ -68,7 +68,7 @@ public class ControlManager : Singleton<ControlManager> {
             if (actionCheck < actionCounter)
             {
                 actionCheck = actionCounter;
-                if (actionCounter > LoadingTime)
+                if (actionCounter > LoadingTime[Medium])
                     actionTrigger = true;
             }
         }

@@ -55,11 +55,16 @@ public class Choice {
             valueCounter++;
         }
 
+        // Extra point for exact answer
         if (pointMatch == 20)
         {
-            pointMatch = 30;
+            pointMatch += 10;
             totalMatches++;
         }
+
+        // Extra point for faster answer
+        pointMatch += Mathf.Clamp( Mathf.FloorToInt((11f - 2f*timeToChoose)), 0, 10);
+
         this.timeToChoose = timeToChoose;
 
         if (orderCounter > 0)
