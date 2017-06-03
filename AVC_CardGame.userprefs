@@ -1,8 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Motion.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Choice.cs">
     <Files>
-      <File FileName="Assets\Scripts\Dealer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Dealer.cs" Line="478" Column="18" />
+      <File FileName="Assets\Scripts\Choice.cs" Line="29" Column="38" />
       <File FileName="Assets\Scripts\ControlManager.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\RobotCursor.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\GameBase.cs" Line="1" Column="1" />

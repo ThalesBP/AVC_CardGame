@@ -23,6 +23,12 @@ public class Choice {
     public int numOptions;
     public float timeToChoose;
 
+    private const int suitScore = 5;
+    private const int colorScore = 5;
+    private const int valueScore = 10;
+    private const int extraScore = 10;
+    private const int timeScore = 10;
+
     /// <summary>
     /// Initializes a new instance of the <see cref="Choice"/> class comparing the card chosen with objective card and the number of options.
     /// </summary>
@@ -41,29 +47,29 @@ public class Choice {
 
         if (suitMatch)
         {
-            pointMatch += 5;
+            pointMatch += suitScore;
             suitCounter++;
         } 
         if (colorMatch)
         {
-            pointMatch += 5;
+            pointMatch += colorScore;
             colorCounter++;
         }
         if (valueMatch)
         {
-            pointMatch += 10;
+            pointMatch += valueScore;
             valueCounter++;
         }
 
         // Extra point for exact answer
-        if (pointMatch == 20)
+        if (pointMatch == suitScore + colorScore + valueScore)
         {
-            pointMatch += 10;
+            pointMatch += extraScore;
             totalMatches++;
+        
+            // Extra point for faster answer
+            pointMatch += Mathf.Clamp( Mathf.FloorToInt((timeScore + 1f - 2f*timeToChoose)), 0, timeScore);
         }
-
-        // Extra point for faster answer
-        pointMatch += Mathf.Clamp( Mathf.FloorToInt((11f - 2f*timeToChoose)), 0, 10);
 
         this.timeToChoose = timeToChoose;
 
@@ -166,11 +172,14 @@ public class Choice {
         int match = 0;
 
         if (a.suit == b.suit)
-            match += 10;
+            match += suitScore;
         if (a.value == b.value)
-            match += 15;
+            match += valueScore;
         if (a.color == b.color)
-            match += 5;
+            match += colorScore;
+
+        if (match == suitScore + valueScore + colorScore)
+            match += extraScore + Mathf.RoundToInt(timeScore/2f);
 
         return match;
     }

@@ -37,8 +37,8 @@ public class ControlManager : Singleton<ControlManager> {
 	// Use this for initialization
 	void Start () 
     {
-        actionCounter = 0f;
-        actionCounting = false;
+        actionCounter = actionCheck = 0f;
+        actionCounting = actionTrigger = false;
 	}
 	
 	// Update is called once per frame
@@ -67,9 +67,14 @@ public class ControlManager : Singleton<ControlManager> {
         {
             if (actionCheck < actionCounter)
             {
-                actionCheck = actionCounter;
+                actionCheck = actionCounter - 0.03f;
                 if (actionCounter > LoadingTime[Medium])
                     actionTrigger = true;
+            }
+            else
+            {
+                actionCounting = false;
+                actionCounter = actionCheck = 0f;
             }
         }
     }
@@ -89,7 +94,7 @@ public class ControlManager : Singleton<ControlManager> {
             if (actionTrigger)
             {
                 actionTrigger = false;
-                actionCounter = actionCheck = 0f;
+                actionCounter = actionCheck = 0f;       
                 return true;
             }
             else

@@ -269,6 +269,9 @@ public class Dealer : GameBase {
 
             if (player.Action)
             {
+                if (player.forceActionCounter)
+                    timeToChoose -= LoadingTime[Medium];
+                
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
 
                 onCard = false;

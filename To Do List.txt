@@ -1,10 +1,13 @@
 Jogo:
+Gerador de carta
 More 2 game modes
 Verificar e manipular possibilidade de pontuação do turno
 Adicionar listen no slidebar
 Criptografar a senha / Senha master pra recuperar
 Procurar por comentários "obs" ou "to check" entre outros
 Ajuste de dificuldade
+Premeditar posição carta desafio correta
+Subtrair loading time do time to choose quando conectado.
 
 Log:
 Player choices log
