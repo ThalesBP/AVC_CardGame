@@ -285,4 +285,24 @@ public class GameBase : MonoBehaviour {
     {
         return ((y2 - y1) * x - x1 * y2 + x2 * y1) / (x2 - x1);
     }
+
+    public Vector2 Statistics (List<float> list)
+    {
+        float avg = 0f;
+        float sd = 0f;
+
+        foreach (float number in list)
+        {
+            avg += number;
+        }
+        avg /= list.Count;
+
+        foreach (float number in list)
+        {
+            sd += (number - avg) * (number - avg);
+        }
+        sd /= list.Count;
+        sd = Mathf.Sqrt(sd);
+        return new Vector2(avg, sd);
+    }
 }
