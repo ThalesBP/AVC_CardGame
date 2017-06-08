@@ -374,6 +374,7 @@ public class Dealer : GameBase {
         cardObjAux.transform.SetParent(this.transform);
         cardAux = cardObjAux.GetComponent<Card>();
         cardAux.UpdateInfos(suit, value);
+        cardAux.UpdateInfos(Card.SuitType.multiSuit);
 
         cardsInGame.Add(cardAux);
 

@@ -27,6 +27,8 @@ public class GameBase : MonoBehaviour {
     protected static float charSize_M = refSize / fontSize_M;
     protected static int fontSize_S = 60;           // fontSize and charSize for Small size
     protected static float charSize_S =  refSize / fontSize_S;
+    protected static float scaleSuit = 0.5f, xPos = 0.00365f, yPos = 0.0055f;   // Multisuits references
+    protected static Vector3 scaleCard = new Vector3(0.04f, 0.03f, 0.4f);
     #endregion
 
     #region Time informations
@@ -286,6 +288,10 @@ public class GameBase : MonoBehaviour {
         return ((y2 - y1) * x - x1 * y2 + x2 * y1) / (x2 - x1);
     }
 
+    /// <summary>
+    /// Retunrs a vector with [mean, standard deviation].
+    /// </summary>
+    /// <param name="list">List of values.</param>
     public Vector2 Statistics (List<float> list)
     {
         float avg = 0f;
@@ -304,5 +310,23 @@ public class GameBase : MonoBehaviour {
         sd /= list.Count;
         sd = Mathf.Sqrt(sd);
         return new Vector2(avg, sd);
+    }
+
+    public List<Vector3> SplitVertical(float top, float offset, int number)
+    {
+        List<Vector3> positions = new List<Vector3>();
+        if (number == 1)
+        {
+            positions.Add(new Vector3(0f, offset, 0f));
+            return positions;
+        }
+
+        float step = Mathf.Abs(top) * 2f / (number - 1f);
+
+        for (int iStep = 0; iStep < number; iStep++)
+        {
+            positions.Add(new Vector3(0f, offset, -Mathf.Abs(top) + step * iStep));
+        }
+        return positions;
     }
 }

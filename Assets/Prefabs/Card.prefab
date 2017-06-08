@@ -797,6 +797,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
+  status: 0
+  suitType: 0
+  valueType: 0
   suitName: 
   suitSymbol: 
   valueName: 
@@ -815,10 +818,12 @@ MonoBehaviour:
   highlight: {fileID: 1506462517789248}
   wrongCardMat: {fileID: 2100000, guid: 547967a96457cce4fb21f8a850e17159, type: 2}
   rightCardMat: {fileID: 2100000, guid: 1cd14828818fb7e49b33a75a64d150ce, type: 2}
-  status: 0
   position: {fileID: 0}
   rotation: {fileID: 0}
   scale: {fileID: 0}
+  scaleSuit: 0.5
+  xPos: 3.65
+  yPos: 5.5
 --- !u!222 &222439512156143712
 CanvasRenderer:
   m_ObjectHideFlags: 1
@@ -849,7 +854,7 @@ RectTransform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1921799268104742}
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:

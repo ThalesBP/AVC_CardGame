@@ -11,7 +11,11 @@ public class Card : GameBase {
     /// Card status used to highlight or not, for example.
     /// </summary>
     public enum  Highlight {free, right, wrong};
+    public enum SuitType {noSuit, miniSuit, singleSuit, multiSuit};
+    public enum ValueType {noValue, doubleValue, bigValue};
     public Highlight status;   // Highlight status
+    public SuitType suitType;
+    public ValueType valueType;
 
     #region Card Infos
     public string suitName, suitSymbol, valueName, colorName;   // This card textes and symbols
@@ -20,7 +24,6 @@ public class Card : GameBase {
     #endregion
 
     #region Design Infos
-    [HideInInspector]
     public List<TextMesh> valueTexts, suitTexts;    // Text in 3D cards
     [HideInInspector]
     public GameObject highlight;    // Object that highlights the card as right or wrong
@@ -46,6 +49,8 @@ public class Card : GameBase {
         scale.MoveTo(transform.localScale);
 
         status = Highlight.free;
+        suitType = SuitType.singleSuit;
+        valueType = ValueType.doubleValue;
         cardMeshRender = highlight.GetComponent<MeshRenderer>();
         highlight.SetActive(false);
 
@@ -84,6 +89,7 @@ public class Card : GameBase {
                 cardMeshRender.material = wrongCardMat;
                 break;
         }
+
     }
 
     #region Update Infos functions
@@ -128,9 +134,123 @@ public class Card : GameBase {
         UpdateInfos();
     }
 
+    /// <summary>
+    /// Updates the infos based on a card.
+    /// </summary>
+    /// <param name="card">Card to be based on.</param>
     public void UpdateInfos(Card card)
     {
         UpdateInfos(card.suit, card.value, card.color);
+    }
+
+    public void UpdateInfos(SuitType type)
+    {
+        suitType = type;
+        switch (type)
+        {
+            case SuitType.noSuit:
+                foreach (TextMesh text in suitTexts)
+                {
+                    text.gameObject.SetActive(false);
+                }
+                break;
+            case SuitType.miniSuit:
+                foreach (TextMesh text in suitTexts)
+                {
+                    if ((text.gameObject.name == "SuitUp") || (text.gameObject.name == "SuitDown"))
+                        text.gameObject.SetActive(true);
+                    else
+                        text.gameObject.SetActive(false);
+                }
+                break;
+            case SuitType.singleSuit:
+                foreach (TextMesh text in suitTexts)
+                {
+                    text.gameObject.SetActive(true);
+                }
+                while (suitTexts.Count > 3)
+                {
+                    suitTexts.RemoveAt(suitTexts.Count - 1);
+                }
+                suitTexts[suitTexts.Count - 1].transform.localPosition = Vector3.zero;
+                suitTexts[suitTexts.Count - 1].transform.localScale = scaleCard;
+                break;
+            case SuitType.multiSuit:
+                foreach (TextMesh text in suitTexts)
+                {
+                    if ((text.gameObject.name == "SuitUp") || (text.gameObject.name == "SuitDown"))
+                        text.gameObject.SetActive(false);
+                    else
+                        text.gameObject.SetActive(true);
+                }
+                while (suitTexts.Count < 3 + value)
+                {
+                    GameObject aux = suitTexts[suitTexts.Count - 1].gameObject;
+                    aux = Instantiate<GameObject>(aux, aux.transform);
+                    aux.transform.parent = suitTexts[suitTexts.Count - 1].transform.parent;
+                    aux.transform.name = "SuitCenter" + (suitTexts.Count - 2).ToString();
+
+                    suitTexts.Add(aux.GetComponent<TextMesh>());
+//                    suitTexts[suitTexts.Count - 1].transform.localPosition = Vector3.zero;
+  //                  suitTexts[suitTexts.Count - 1].transform.localScale = new Vector3(0.04f, 0.03f, 0.4f);
+                }
+
+                List<Vector3> suitPos = new List<Vector3>();
+                switch (value)
+                {
+                    case 0:
+                        suitPos = SplitVertical(yPos, 0f, 1);
+                        break;
+                    case 1:
+                        suitPos = SplitVertical(yPos, 0f, 2);
+                        break;
+                    case 2:
+                        suitPos = SplitVertical(yPos, 0f, 3);
+                        break;
+                    case 3:
+                        suitPos = SplitVertical(yPos, -xPos, 2);
+                        suitPos.AddRange(SplitVertical(yPos, xPos, 2));
+                        break;
+                    case 4:
+                        suitPos = SplitVertical(yPos, -xPos, 2);
+                        suitPos.AddRange(SplitVertical(yPos, xPos, 2));
+                        suitPos.AddRange(SplitVertical(yPos, 0f, 1));
+                        break;
+                    case 5:
+                        suitPos = SplitVertical(yPos, -xPos, 3);
+                        suitPos.AddRange(SplitVertical(yPos, xPos, 3));
+                        break;
+                    case 6:
+                        suitPos = SplitVertical(yPos, -xPos, 3);
+                        suitPos.AddRange(SplitVertical(yPos, xPos, 3));
+                        suitPos.AddRange(SplitVertical(yPos / 2f, 0f, 2));
+                        suitPos.RemoveAt(suitPos.Count - 1);
+                        break;
+                    case 7:
+                        suitPos = SplitVertical(yPos, -xPos, 3);
+                        suitPos.AddRange(SplitVertical(yPos, xPos, 3));
+                        suitPos.AddRange(SplitVertical(yPos / 2f, 0f, 2));
+                        break;
+                    case 8:
+                        suitPos = SplitVertical(yPos, -xPos, 4);
+                        suitPos.AddRange(SplitVertical(yPos, xPos, 4));
+                        suitPos.AddRange(SplitVertical(yPos, 0f, 1));
+                        break;
+                    case 9:
+                        suitPos = SplitVertical(yPos, -xPos, 4);
+                        suitPos.AddRange(SplitVertical(yPos, xPos, 4));
+                        suitPos.AddRange(SplitVertical(yPos * 3f / 4f, 0f, 2));
+                        break;
+                }
+
+                if (value < 10)
+                    for (int iSuit = 0; iSuit <= value; iSuit++)
+                    {
+                        suitTexts[iSuit + 2].transform.localScale = scaleSuit * scaleCard;
+                        suitTexts[iSuit + 2].transform.localPosition = suitPos[iSuit];
+                    }
+                break;
+        }
     }
 
     /// <summary>
