@@ -12,6 +12,7 @@ public class Dealer : GameBase {
     public GameObject cardPrefab;   // Card prefab to be instantiated
     public ControlManager player;   // Reads player's position
 
+    [SerializeField]
     private float waitCounter;      // Counter for waiting function
     private float timeToWait;       // Aux variable for sums time to wait
     private float timeToChoose;     // Time player takes to choose
@@ -56,6 +57,7 @@ public class Dealer : GameBase {
         timeToChoose = 0f;
         packCounter = 0;
         soundEffect = gameObject.GetComponent<AudioSource>();
+        interfaceManager.control.slider.onValueChanged.AddListener(delegate {EndTurn();} );
     }
 
 	void Update () 
@@ -64,18 +66,7 @@ public class Dealer : GameBase {
         {
             case Status.newTurn:
                 interfaceManager.control.gameStatus = Status.endTurn;
-                if (challengeCards.Count > 0)
-                {
-                    gameStatus = Status.playerPlay;
-                    DestroyDeck(challengeCards);
-                    DestroyCard(objectiveCard);
-                    cardsInGame.Clear();
-                    packCounter = 0;
-                }   // Cards must be cleared after frist phase
-                else
-                {
-                    Wait(CountDown + DeltaTime[VeryShort], Status.playerPlay);
-                }
+                Wait(interfaceManager.CountDownCounter + DeltaTime[VeryShort], Status.playerPlay);
                 challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
 
                 challengeCards = CreateHardDeck(challengeNumber);   // Creates a pack of challenge card with n cards
@@ -173,8 +164,16 @@ public class Dealer : GameBase {
                 if (interfaceManager.control.status == Status.end)
                     Wait(timeToWait, Status.endGame);
                 else 
-                    Wait(timeToWait, Status.newTurn);
+                    Wait(timeToWait, Status.destroy);
                 break;
+            case Status.destroy:
+                interfaceManager.control.gameStatus = Status.destroy;
+                DestroyDeck(challengeCards);
+                DestroyCard(objectiveCard);
+                cardsInGame.Clear();
+                packCounter = 0;
+                gameStatus = Status.newTurn;
+                goto case Status.newTurn;
             case Status.waitingMotion:
                 if (waitCounter < timeToWait)
                     waitCounter += Time.deltaTime;
@@ -189,11 +188,7 @@ public class Dealer : GameBase {
                 if (interfaceManager.control.status != Status.end)
                 {
                     Debug.Log("Not end");
-                    gameStatus = Status.newTurn;
-                    DestroyDeck(challengeCards);
-                    DestroyCard(objectiveCard);
-                    cardsInGame.Clear();
-                    packCounter = 0;
+                    gameStatus = Status.destroy;
                 }
                 else
                     Debug.Log("End?");
@@ -211,7 +206,7 @@ public class Dealer : GameBase {
         interfaceManager.control.metric3Value = 100f * Choice.colorCounter * orderCounter;
 
         if (interfaceManager.control.status == Status.end)
-            GameEnd();
+            EndTurn();
     }
 
     #region Generic functions
@@ -299,14 +294,14 @@ public class Dealer : GameBase {
                 {
                     interfaceManager.control.gameStatus = Status.right;
                     soundEffect.clip = successSound;
-                    soundEffect.Play();
+//                    soundEffect.Play();
                     return Status.right;
                 }
                 else
                 {
                     interfaceManager.control.gameStatus = Status.wrong;
                     soundEffect.clip = failSound;
-                    soundEffect.Play();
+//                    soundEffect.Play();
                     return Status.wrong;
                 }
             }
@@ -335,14 +330,34 @@ public class Dealer : GameBase {
         gameStatus = Status.waitingMotion;
     }
 
-    private void GameEnd()
-    {
-        if (gameStatus == Status.waitingMotion)
-            nextStatus = Status.endTurn;
-        else
-            gameStatus = Status.endTurn;
-    }
 
+    private void EndTurn()
+    {
+        switch (gameStatus)
+        {
+            case Status.waitingMotion:
+                switch (nextStatus)
+                {
+                    case Status.endTurn:
+                        break;
+                    case Status.playerPlay:
+                        gameStatus = Status.destroy;
+                        break;
+                    case Status.destroy:
+                        break;
+                    default:
+                        nextStatus = Status.endTurn;
+                        break;
+                }
+                break;
+            case Status.playerPlay:
+                gameStatus = Status.destroy;
+                break;
+            default:
+                gameStatus = Status.endTurn;
+                break;
+        }
+    }
     #endregion
 
     #region Create and Destroy card functions

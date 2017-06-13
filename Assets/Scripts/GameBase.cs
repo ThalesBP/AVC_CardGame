@@ -134,6 +134,7 @@ public class GameBase : MonoBehaviour {
         right,              // Player choose the right
         wrong,               // Player choose the wrong
         endTurn,            // Turn has ended
+        destroy,            // Destroy objects
         waitingMotion,      // Waiting current motion
         endGame,            // End current match
         connecting,         // Trying to connect to robot
@@ -154,6 +155,7 @@ public class GameBase : MonoBehaviour {
             {"Right choose", "Escolha certa"},
             {"Wrong choose", "Escolha errada"},
             {"Turn ended", "Turno terminando"},
+            {"Destroying elements", "Destruindo elementos"},
             {"Moving to", "Movendo para"},
             {"Match ended", "Partida encerrada"},
             {"Connecting", "Conectando"},

@@ -17,13 +17,14 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     private Text scorePoints;
     private Text timeCounter;
 
+    [SerializeField]
     private int countDownCounter;   // Counter for count down
     public int CountDownCounter {get {return countDownCounter;}}
     public int scoreValue;
 
 	void Start () 
     {
-        countDownCounter = -1;
+        countDownCounter = CountDown;
         Time.timeScale = 0f;
 
         #region General Interface Initialization
