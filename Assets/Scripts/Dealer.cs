@@ -7,6 +7,11 @@ using UnityEngine;
 /// </summary>
 public class Dealer : GameBase {
 
+    public enum GameMode {Basic, Memory, MultiSuits, CountSuits}
+
+    [SerializeField]
+    GameMode mode = GameMode.Basic;
+
     [SerializeField]
     private Status gameStatus;      // interfaceManager.controls the game phases
     public GameObject cardPrefab;   // Card prefab to be instantiated
@@ -72,9 +77,7 @@ public class Dealer : GameBase {
                 challengeCards = CreateHardDeck(challengeNumber);   // Creates a pack of challenge card with n cards
                 objectiveCard = CreateCard(challengeCards[0]); // Chose one card from challenge cards to be the objective card
 
-
-
-                int p30, p20, p15, p5, p0, pT;
+  /*              int p30, p20, p15, p5, p0, pT;
                 p30 = p20 = p15 = p5 = p0 = pT = 0;
 
                 foreach (Card card in challengeCards)
@@ -105,19 +108,62 @@ public class Dealer : GameBase {
                 Debug.Log("5 Points: " + (100f * p5 / pT).ToString());
                 Debug.Log("0 Points: " + (100f * p0 / pT).ToString());
                 Debug.Log("Average Point: " + ((30f*p30 + 20f*p20 + 15f*p15 + 5f*p5) / (pT)).ToString() + " of 30");
-          */      break;
+          */      
+                break;
             case Status.playerPlay:
                 interfaceManager.control.gameStatus = Status.playerPlay;
                 if ((FindCardPointed(cardsInGame) != null) && (player.Action))
+                {
+                    switch (mode)
                     {
-                    timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber - 1) * 360f / challengeNumber);    // Spread the cards on screen...
-                    timeToWait = ShowCards(challengeCards, timeToWait);   // ... and show them
+                        case GameMode.Memory:
+                            ChangeCards(cardsInGame, Card.ValueType.doubleValue);
+                            ChangeCards(cardsInGame, Card.SuitType.singleSuit);
 
-                    objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], challengeCards.Count * DeltaTime[Short]);   // Highlightes objective card in center
+                            if (objectiveCard.showed)
+                            {
+                                timeToWait = HideCard(objectiveCard, 0f);
 
-                    timeToWait = ShowCard(objectiveCard, timeToWait);   // Also shows objective card
-                    Wait(timeToWait, Status.playerChoice);
-                    }   // Waits player plays the game
+                                timeToWait = ShowCards(challengeCards, timeToWait);   // ... and show them
+
+                                Wait(timeToWait, Status.playerChoice);
+                            }
+                            else
+                            {
+                                timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber - 1) * 360f / challengeNumber);    // Spread the cards on screen...
+                                timeToWait = objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
+
+                                timeToWait = ShowCard(objectiveCard, timeToWait);   // Also shows objective card
+
+                                Wait(timeToWait, Status.playerPlay);
+                            }
+                            break;
+                        case GameMode.Basic:
+                            ChangeCards(cardsInGame, Card.ValueType.doubleValue);
+                            ChangeCards(cardsInGame, Card.SuitType.singleSuit);
+                            goto default;
+                        case GameMode.MultiSuits:
+                            ChangeCards(cardsInGame, Card.ValueType.doubleValue);
+                            ChangeCards(cardsInGame, Card.SuitType.complete);
+                            goto default;
+                        case GameMode.CountSuits:
+                            objectiveCard.UpdateInfos(Card.ValueType.noValue);
+                            objectiveCard.UpdateInfos(Card.SuitType.multiSuit);
+                            ChangeCards(challengeCards, Card.ValueType.doubleValue);
+                            ChangeCards(challengeCards, Card.SuitType.miniSuit);
+                            goto default;
+                        default:
+                            timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber - 1) * 360f / challengeNumber);    // Spread the cards on screen...
+                            objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
+
+                            timeToWait = ShowCards(challengeCards, timeToWait);   // ... and show them
+
+                            timeToWait = ShowCard(objectiveCard, timeToWait);   // Also shows objective card
+
+                            Wait(timeToWait, Status.playerChoice);
+                            break;
+                    }
+                }   // Waits player plays the game
                 break;
             case Status.playerChoice:
                 interfaceManager.control.gameStatus = Status.playerChoice;
@@ -290,6 +336,8 @@ public class Dealer : GameBase {
                 Choice.precision = (Choice.precision * (Choice.orderCounter - 1) + precisionRate) / Choice.orderCounter;
             //    interfaceManager.metric3Value = 100f * Choice.precision;
 
+                ShowCard(objectiveCard, 0f);
+
                 if (aimedCard == objectiveCard)
                 {
                     interfaceManager.control.gameStatus = Status.right;
@@ -330,7 +378,9 @@ public class Dealer : GameBase {
         gameStatus = Status.waitingMotion;
     }
 
-
+    /// <summary>
+    /// Ends the turn.
+    /// </summary>
     private void EndTurn()
     {
         switch (gameStatus)
@@ -584,6 +634,7 @@ public class Dealer : GameBase {
     float HideCard(Card card, float delay)
     {
         card.rotation.MoveTo(new Vector3(0f, 180f, 0f), DeltaTime[Long], delay);
+        card.showed = false;
         return DeltaTime[Long] + delay;
     }
 
@@ -596,6 +647,7 @@ public class Dealer : GameBase {
     float ShowCard(Card card, float delay)
     {
         card.rotation.MoveTo(Vector3.zero, DeltaTime[Long], delay);
+        card.showed = true;
         return DeltaTime[Long] + delay;
     }
 
@@ -685,13 +737,14 @@ public class Dealer : GameBase {
     float SpreadCards(List<Card> deck, float angle)
     {
         float angShare;
-       
+        float timeToDo = 0f;
+
         angShare = 2f * Mathf.PI / deck.Count;
         foreach (Card card in deck)
         {
-            card.position.MoveTo(new Vector3(spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), 0), DeltaTime[Long], deck.IndexOf(card) * DeltaTime[Short]);
+            timeToDo = card.position.MoveTo(new Vector3(spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), 0), DeltaTime[Long], deck.IndexOf(card) * DeltaTime[Short]);
         }
-        return (deck.Count * DeltaTime[Short]);
+        return (timeToDo);
     }
     #endregion
 
@@ -746,6 +799,32 @@ public class Dealer : GameBase {
             pickedCards.Add(PickCard(deck));
         }
         return pickedCards;
+    }
+
+    /// <summary>
+    /// Changes the type of the suit in each card.
+    /// </summary>
+    /// <param name="deck">Deck to be changed.</param>
+    /// <param name="type">Type of suit.</param>
+    private void ChangeCards(List<Card> deck, Card.SuitType type)
+    {
+        foreach (Card card in deck)
+        {
+            card.UpdateInfos(type);
+        }
+    }
+
+    /// <summary>
+    /// Changes the type of the value in each card.
+    /// </summary>
+    /// <param name="deck">Deck to be changed.</param>
+    /// <param name="type">Type of value.</param>
+    private void ChangeCards(List<Card> deck, Card.ValueType type)
+    {
+        foreach (Card card in deck)
+        {
+            card.UpdateInfos(type);
+        }
     }
     #endregion
 

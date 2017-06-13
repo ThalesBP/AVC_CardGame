@@ -11,7 +11,7 @@ public class Card : GameBase {
     /// Card status used to highlight or not, for example.
     /// </summary>
     public enum  Highlight {free, right, wrong};
-    public enum SuitType {noSuit, miniSuit, singleSuit, multiSuit};
+    public enum SuitType {noSuit, miniSuit, singleSuit, multiSuit, complete};
     public enum ValueType {noValue, doubleValue, bigValue};
     public Highlight status;   // Highlight status
     public SuitType suitType;
@@ -21,6 +21,7 @@ public class Card : GameBase {
     public string suitName, suitSymbol, valueName, colorName;   // This card textes and symbols
     public int suit, value, color;  // This card ìndexes
     public Color colorRGB;  // Color of this card
+    public bool showed;
     #endregion
 
     #region Design Infos
@@ -43,6 +44,7 @@ public class Card : GameBase {
         rotation = gameObject.AddComponent<Motion>();
         scale = gameObject.AddComponent<Motion>();
         suit = value = color = 0;
+        showed = false;
 
         position.MoveTo(transform.position);
         rotation.MoveTo(transform.rotation.eulerAngles);
@@ -143,6 +145,10 @@ public class Card : GameBase {
         UpdateInfos(card.suit, card.value, card.color);
     }
 
+    /// <summary>
+    /// Updates the suit types of the card.
+    /// </summary>
+    /// <param name="type">Suit type.</param>
     public void UpdateInfos(SuitType type)
     {
         suitType = type;
@@ -166,14 +172,17 @@ public class Card : GameBase {
             case SuitType.singleSuit:
                 foreach (TextMesh text in suitTexts)
                 {
-                    text.gameObject.SetActive(true);
+                    if (suitTexts.IndexOf(text) > 2)
+                        text.gameObject.SetActive(false);
+                    else 
+                        text.gameObject.SetActive(true);
                 }
                 while (suitTexts.Count > 3)
                 {
                     suitTexts.RemoveAt(suitTexts.Count - 1);
                 }
-                suitTexts[suitTexts.Count - 1].transform.localPosition = Vector3.zero;
-                suitTexts[suitTexts.Count - 1].transform.localScale = scaleCard;
+                suitTexts[2].transform.localPosition = Vector3.zero;
+                suitTexts[2].transform.localScale = centralScale;
                 break;
             case SuitType.multiSuit:
                 foreach (TextMesh text in suitTexts)
@@ -183,6 +192,12 @@ public class Card : GameBase {
                     else
                         text.gameObject.SetActive(true);
                 }
+                goto default;
+            case SuitType.complete:
+                foreach (TextMesh text in suitTexts)
+                    text.gameObject.SetActive(true);
+                goto default;
+            default:
                 while (suitTexts.Count < 3 + value)
                 {
                     GameObject aux = suitTexts[suitTexts.Count - 1].gameObject;
@@ -246,9 +261,40 @@ public class Card : GameBase {
                 if (value < 10)
                     for (int iSuit = 0; iSuit <= value; iSuit++)
                     {
-                        suitTexts[iSuit + 2].transform.localScale = scaleSuit * scaleCard;
+                        suitTexts[iSuit + 2].transform.localScale = scaleSuit * centralScale;
                         suitTexts[iSuit + 2].transform.localPosition = suitPos[iSuit];
                     }
+                break;
+        }
+    }
+
+    /// <summary>
+    /// Updates the value types of the card.
+    /// </summary>
+    /// <param name="type">Value type.</param>
+    public void UpdateInfos(ValueType type)
+    {
+        switch (type)
+        {
+            case ValueType.noValue:
+                valueTexts[0].gameObject.SetActive(false);
+                valueTexts[1].gameObject.SetActive(false);
+                break;
+            case ValueType.doubleValue:
+                valueTexts[0].gameObject.SetActive(true);
+                valueTexts[0].transform.localPosition = valuePos;
+                valueTexts[0].transform.localScale = valueScale;
+
+                valueTexts[1].gameObject.SetActive(true);
+                valueTexts[1].transform.localPosition = -valuePos;
+                valueTexts[1].transform.localScale = valueScale;
+                break;
+            case ValueType.bigValue:
+                valueTexts[0].gameObject.SetActive(true);
+                valueTexts[0].transform.localPosition = Vector3.zero;
+                valueTexts[0].transform.localScale = centralScale;
+
+                valueTexts[1].gameObject.SetActive(false);
                 break;
         }
     }

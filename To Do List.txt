@@ -1,17 +1,15 @@
 Jogo:
-Gerador de carta
-More 2 game modes
-Verificar e manipular possibilidade de pontuação do turno
-Adicionar listen no slidebar
 Criptografar a senha / Senha master pra recuperar
 Procurar por comentários "obs" ou "to check" entre outros
 Ajuste de dificuldade
-Premeditar posição carta desafio correta
-Subtrair loading time do time to choose quando conectado.
+Nao usar TimeToWait global
+-----
+Verificar e manipular possibilidade de pontuação do turno
 
 Log:
 Player choices log
 Partidas para coleta de dados / análise de dificuldade
+-----
 Desvio padrão das informações
 
 Visual:

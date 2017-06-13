@@ -105,9 +105,10 @@ public class Motion : GameBase {
     /// Moves the card immediately to a position.
     /// </summary>
     /// <param name="destiny">Destiny place to move.</param>
-    public void MoveTo(Vector3 destiny)
+    public float MoveTo(Vector3 destiny)
     {
         value = initial = final = destiny;
+        return 0f;
     }
 
     /// <summary>
@@ -115,7 +116,7 @@ public class Motion : GameBase {
     /// </summary>
     /// <param name="destiny">Destiny place to reach.</param>
     /// <param name="deltaTime">Time it takes to reach it.</param>
-    public void MoveTo(Vector3 destiny, float deltaTime)
+    public float MoveTo(Vector3 destiny, float deltaTime)
     {
         if (deltaTime > 0)
         {
@@ -124,9 +125,10 @@ public class Motion : GameBase {
             final = destiny;
             status = MotionStatus.moving;
             lerpScale = (counter - delay) / delta;
+            return deltaTime;
         }
         else
-            MoveTo(destiny);
+            return MoveTo(destiny);
     }
 
     /// <summary>
@@ -135,10 +137,10 @@ public class Motion : GameBase {
     /// <param name="destiny">Destiny place to reach.</param>
     /// <param name="deltaTime">Time it takes to reach it.</param>
     /// <param name="delayTime">Time it waits to start moving.</param>
-    public void MoveTo(Vector3 destiny, float deltaTime, float delayTime)
+    public float MoveTo(Vector3 destiny, float deltaTime, float delayTime)
     {
         delay = delayTime;
-        MoveTo(destiny, deltaTime);
+        return MoveTo(destiny, deltaTime) + delayTime;
     }
     #endregion
 }

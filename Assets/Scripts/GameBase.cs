@@ -28,7 +28,9 @@ public class GameBase : MonoBehaviour {
     protected static int fontSize_S = 60;           // fontSize and charSize for Small size
     protected static float charSize_S =  refSize / fontSize_S;
     protected static float scaleSuit = 0.5f, xPos = 0.00365f, yPos = 0.0055f;   // Multisuits references
-    protected static Vector3 scaleCard = new Vector3(0.04f, 0.03f, 0.4f);
+    protected static Vector3 centralScale = new Vector3(0.04f, 0.03f, 0.4f);
+    protected static Vector3 valuePos = new Vector3(0f, -0.007f, -0.008f);
+    protected static Vector3 valueScale = new Vector3(0.015f, 0.01f, 0.4f);
     #endregion
 
     #region Time informations
@@ -40,7 +42,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly int Long = 3;
     protected static readonly int VeryLong = 4;
     protected static readonly int MuchLonger = 4;
-    protected static readonly int CountDown = 3;    // 3 seconds
+    protected static readonly int CountDown = 1;    // 3 seconds
     protected static readonly float[] GameSpeedLimits = { 1f, 3f };
     protected static readonly float[] TimeChoiceLimits = { 0.5f, 4.5f };
     #endregion
