@@ -3,6 +3,8 @@ Criptografar a senha / Senha master pra recuperar
 Procurar por comentários "obs" ou "to check" entre outros
 Ajuste de dificuldade
 Nao usar TimeToWait global
+Escolher prioridade de posição da resposta certa (interface)
+Ajuda visual: perguntar qual melhor forma
 -----
 Verificar e manipular possibilidade de pontuação do turno
 
@@ -20,3 +22,6 @@ Nota musical pra cada carta
 Robô:
 Verificar controle do robô
 Calibration
+
+Graficos:
+Visualizar tendencia num triângulo nipe / valor / cor por apaciente

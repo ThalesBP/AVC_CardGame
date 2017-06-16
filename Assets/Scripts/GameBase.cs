@@ -333,4 +333,19 @@ public class GameBase : MonoBehaviour {
         }
         return positions;
     }
+
+    /// <summary>
+    /// Returns the array's values as string.
+    /// </summary>
+    static public string ArrayToString(float [] array)
+    {
+        string text = array[0].ToString();
+
+        for (int i = 1; i < array.Length; i++)
+        {
+            text = text + ", " + array[i].ToString();
+        }
+
+        return text;
+    }
 }

@@ -48,6 +48,12 @@ public class Dealer : GameBase {
     private AudioSource soundEffect;
     public AudioClip successSound, failSound;
 
+    public float[] mainAngles;
+    public float[] subAngles;
+
+    public ChallengeManager mainChallenge;
+    public List<ChallengeManager> subChallenges;
+
     void Start () 
     {
         choices = new List<Choice>();
@@ -63,6 +69,17 @@ public class Dealer : GameBase {
         packCounter = 0;
         soundEffect = gameObject.GetComponent<AudioSource>();
         interfaceManager.control.slider.onValueChanged.AddListener(delegate {EndTurn();} );
+
+        mainAngles = new float[] {0f, 90f, 180f, 270f};
+        subAngles  = new float[] {-36f, -18f, 0f, 18f, 36f};
+
+        mainChallenge = new ChallengeManager(new float[] { 0.2f, 0.5f, 0.2f, 0.1f });
+
+        subChallenges = new List<ChallengeManager>();
+        for (int i = 0; i < mainChallenge.Size; i++)
+        {
+            subChallenges.Add(new ChallengeManager(new float[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f }));
+        }
     }
 
 	void Update () 
@@ -130,7 +147,7 @@ public class Dealer : GameBase {
                             }
                             else
                             {
-                                timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber - 1) * 360f / challengeNumber);    // Spread the cards on screen...
+                                timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber) * 360f / challengeNumber);    // Spread the cards on screen...
                                 timeToWait = objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
 
                                 timeToWait = ShowCard(objectiveCard, timeToWait);   // Also shows objective card
@@ -153,7 +170,11 @@ public class Dealer : GameBase {
                             ChangeCards(challengeCards, Card.SuitType.miniSuit);
                             goto default;
                         default:
-                            timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber - 1) * 360f / challengeNumber);    // Spread the cards on screen...
+                            int challenge = mainChallenge.Challenge;
+                            int challenge2 = subChallenges[challenge].Challenge;
+
+                            timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
+//                            timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber) * 360f / challengeNumber);    // Spread the cards on screen...
                             objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
 
                             timeToWait = ShowCards(challengeCards, timeToWait);   // ... and show them
