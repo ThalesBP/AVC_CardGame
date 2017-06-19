@@ -11,13 +11,17 @@ public class ControlManager : Singleton<ControlManager> {
     private Vector2 position;
     private Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
     [SerializeField]
+    private Vector2 scale = 3000f * Vector2.one;
+    [SerializeField]
     private float actionCounter, actionCheck;
     [SerializeField]
     private bool actionCounting, actionTrigger;
 
     public bool forceActionCounter = false;
-    public float scale = 3000f;
+    //public float scale = 3000f;
     public Connection connection;
+
+    public Logger Log;
 
     public Vector2 Position
     {
@@ -39,6 +43,9 @@ public class ControlManager : Singleton<ControlManager> {
     {
         actionCounter = actionCheck = 0f;
         actionCounting = actionTrigger = false;
+
+        Log = gameObject.AddComponent<Logger>();
+        Log.StartFiles("Thales Bueno");
 	}
 	
 	// Update is called once per frame
@@ -47,6 +54,9 @@ public class ControlManager : Singleton<ControlManager> {
         if (connection == null)
         {
             position = Input.mousePosition;
+
+            if (forceActionCounter)
+                Log.Register(Time.time, position);
         }
         else
         {
@@ -55,7 +65,7 @@ public class ControlManager : Singleton<ControlManager> {
                 if (connection.Position != null)
                 {
                     Debug.Log(connection.Position);
-                    position = connection.Position * scale + center;
+                    position = Vector2.Scale(connection.Position, scale) + center;
                 }
             }
             else

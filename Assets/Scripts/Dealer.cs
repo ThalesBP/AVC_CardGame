@@ -301,6 +301,22 @@ public class Dealer : GameBase {
     }
 
     /// <summary>
+    /// Finds the card pointed by mouse in a deck or return null.
+    /// </summary>
+    /// <returns>The card pointed or null.</returns>
+    /// <param name="deck">Deck of card to be checked.</param>
+    private Vector2 FindPlacePointed()
+    {
+        Ray camRay = Camera.main.ScreenPointToRay (player.Position);
+        RaycastHit hit;
+
+        if (Physics.Raycast(camRay, out hit, 50f, cardMask))
+            return hit.point;
+        else
+            return Vector2.zero;
+    }
+
+    /// <summary>
     /// Waits the card choise.
     /// </summary>
     /// <returns>WaitingPlayer if have no choice or the result: right / wrong card</returns>
@@ -335,6 +351,8 @@ public class Dealer : GameBase {
                     timeToChoose -= LoadingTime[Medium];
                 
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
+
+                player.Log.Register(choices[choices.Count - 1], aimedCard.position.Value, FindPlacePointed());
 
                 onCard = false;
                 timeToChoose = 0f;

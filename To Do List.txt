@@ -5,6 +5,7 @@ Ajuste de dificuldade
 Nao usar TimeToWait global
 Escolher prioridade de posição da resposta certa (interface)
 Ajuda visual: perguntar qual melhor forma
+Verificar bug quando tira o mouse no loading
 -----
 Verificar e manipular possibilidade de pontuação do turno
 
@@ -16,12 +17,14 @@ Desvio padrão das informações
 
 Visual:
 Indicador pra tomar uma ação de recomeço
-Mouse rotacionar com o pé
 Nota musical pra cada carta
+-----
+Mouse rotacionar com o pé (corrigir centro do mouse)
 
 Robô:
 Verificar controle do robô
-Calibration
+Calibration (implementar com joystic)
+Enviar média de valores no intervalo
 
 Graficos:
 Visualizar tendencia num triângulo nipe / valor / cor por apaciente

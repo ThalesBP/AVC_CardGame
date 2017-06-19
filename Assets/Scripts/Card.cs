@@ -405,12 +405,12 @@ public class Card : GameBase {
     }
 
     /// <summary>
-    /// Serves as a hash function for a Card object ordering based first in suit then in value.
+    /// Serves as a hash function for a Card object ordering based first in value then in suit.
     /// </summary>
     /// <returns>A hash code for this instance that is suitable for use in hashing algorithms and data structures such as a hash table.</returns>
     public override int GetHashCode()
     {
-        return (suit * valueName.Length + value);
+        return (suit + value * suitName.Length);
     }
 
     #endregion

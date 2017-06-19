@@ -15,9 +15,9 @@ public class Choice {
     public static float averageTimeToChoose = 0f;
     public static float[] rangeOfTime = { 0, 0f };
 
-    public string objectiveCard = "";
-    public string choiceCard = "";
-    public bool suitMatch, valueMatch, colorMatch;
+    public int objectiveCard;
+    public int choiceCard;
+    public bool suitMatch, valueMatch, colorMatch, match;
     public int pointMatch;
     public int order;
     public int numOptions;
@@ -38,8 +38,9 @@ public class Choice {
     public Choice(Card objective, Card choice, int nOptions, float timeToChoose)
     {
         pointMatch = 0;
-        objectiveCard = objective.ToString(0);
-        choiceCard = choice.ToString(0);
+        numOptions = nOptions;
+        objectiveCard = objective.GetHashCode();
+        choiceCard = choice.GetHashCode();
 
         suitMatch = objective.suit == choice.suit;
         valueMatch = objective.value == choice.value;
@@ -64,12 +65,15 @@ public class Choice {
         // Extra point for exact answer
         if (pointMatch == suitScore + colorScore + valueScore)
         {
+            match = true;
             pointMatch += extraScore;
             totalMatches++;
         
             // Extra point for faster answer
-            pointMatch += Mathf.Clamp( Mathf.FloorToInt((timeScore + 1f - 2f*timeToChoose)), 0, timeScore);
+            pointMatch += Mathf.Clamp(Mathf.FloorToInt((timeScore + 1f - 2f * timeToChoose)), 0, timeScore);
         }
+        else
+            match = false;
 
         this.timeToChoose = timeToChoose;
 
@@ -91,7 +95,7 @@ public class Choice {
 
     public Choice () 
     {
-        objectiveCard = choiceCard = "null";
+        objectiveCard = choiceCard = -1;
         pointMatch = 0;
 
         suitMatch = false;
