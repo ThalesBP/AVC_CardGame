@@ -68,7 +68,21 @@
      <Compile Include="Assets\Scripts\Singleton.cs" />
      <Compile Include="Assets\Scripts\UserManager.cs" />
      <Compile Include="Assets\Scripts\UserPanel.cs" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-50 - Movements.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-52 - Choices.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-44 - Choices.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-20 16-58 - Choices.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-53 - Movements.txt" />
      <None Include="Assets\Shaders\Text3D.shader" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-48 - Choices.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-49 - Choices.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-49 - Movements.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-53 - Choices.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-44 - Movements.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-48 - Movements.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-52 - Movements.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-24 10-50 - Choices.txt" />
+     <None Include="Assets\Logs\Thales Bueno\Thales Bueno - 17-06-20 16-58 - Movements.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
