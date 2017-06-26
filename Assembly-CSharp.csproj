@@ -68,10 +68,7 @@
      <Compile Include="Assets\Scripts\Singleton.cs" />
      <Compile Include="Assets\Scripts\UserManager.cs" />
      <Compile Include="Assets\Scripts\UserPanel.cs" />
-     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Right foot - 17-06-26 14-37-47 - Choices.txt" />
      <None Include="Assets\Shaders\Text3D.shader" />
-     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Right foot - 17-06-26 14-37-47 - GameMessage.txt" />
-     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Right foot - 17-06-26 14-37-47 - Movements.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

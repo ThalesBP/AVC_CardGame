@@ -10,13 +10,13 @@ public class ChallengeManager {
 
     public float[] Plan
     {
-        set
-        {
-            AdaptPlan(value);
-        }
         get
         {
             return rehabPlan;
+        }
+        set
+        {
+            AdaptPlan(value);
         }
     }
 

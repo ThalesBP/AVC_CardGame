@@ -71,6 +71,7 @@ public class Dealer : GameBase {
         packCounter = 0;
         soundEffect = gameObject.GetComponent<AudioSource>();
         interfaceManager.control.slider.onValueChanged.AddListener(delegate {EndTurn();} );
+        interfaceManager.user.playerButton.onClick.AddListener(delegate { mainChallenge.Plan = interfaceManager.user.Plan; });
 
         mainAngles = new float[] {0f, 90f, 180f, 270f};
         subAngles  = new float[] {-36f, -18f, 0f, 18f, 36f};

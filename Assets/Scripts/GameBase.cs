@@ -113,6 +113,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] loginText = { "Log In", "Entrar" };
     protected static readonly string[] logoutText = { "Log Out", "Sair" };
     protected static readonly string[] playerSelectText = { "Player Select", "Selecionar Jogador" };
+    protected static readonly string[] sessionPlanText = { "Session Plan", "Plano da Sessão" };
     protected static readonly string[] chooseText = { "Choose", "Escolher" };
     protected static readonly string[] changeText = { "Change", "Mudar" };
 

@@ -20,12 +20,17 @@ public class UserPanel : GameBase {
     private Text login;
     private Text playerSelect;
     private Text choose;
+    private Text plan;
+    private Text left;
+    private Text top;
+    private Text botton;
+    private Text right;
     private Text descriptionEdit;
 
     private UserManager users;
     public HideShow visibility;
     public Dropdown managerDropdown, playerDropdown, memberDropdown, languageDropdown;
-    public InputField managerField, playerField, passwordField, playerInfoField;
+    public InputField managerField, playerField, passwordField, playerInfoField, leftField, topField, bottonField, rightField;
     public Button managerButton, managerEditButton, playerButton, playerEditButton;
     public RawImage managerEditImage, playerEditImage;
     public Texture editTexture, deleteTexture, cancelTexture;
@@ -33,6 +38,37 @@ public class UserPanel : GameBase {
     private bool passwordWrong = false, userWrong = false;
 
     public bool locked = false;
+
+    public float[] Plan
+    {
+        get 
+        { 
+            float leftValue, topValue, bottonValue, rightValue;
+            leftValue = topValue = bottonValue = rightValue = 0f;;
+
+            if (leftField.text != "")
+                leftValue = float.Parse(leftField.text);
+            if (rightField.text != "")
+                rightValue = float.Parse(rightField.text);
+            if (topField.text != "")
+                topValue = float.Parse(topField.text);
+            if (bottonField.text != "")
+                bottonValue = float.Parse(bottonField.text);
+
+            float total = leftValue + topValue + bottonValue + rightValue;
+            if (total == 0f)
+                total = 100f;
+            else
+                total = total / 100f;
+
+            leftValue = leftValue / total;
+            rightValue = rightValue / total;
+            topValue = topValue / total;
+            bottonValue = bottonValue / total;
+
+            return new float [] { rightValue, topValue, leftValue, bottonValue };
+        }
+    }
 
 	void Start () 
     {
@@ -44,6 +80,11 @@ public class UserPanel : GameBase {
         login = GameObject.Find("Login").GetComponentInChildren<Text>(true);
         playerSelect = GameObject.Find("PlayerDescription").GetComponentInChildren<Text>(true);
         choose = GameObject.Find("Choose").GetComponentInChildren<Text>(true);
+        plan = GameObject.Find("PlanTitle").GetComponentInChildren<Text>(true);
+        left = GameObject.Find("Left_factor").GetComponentInChildren<Text>(true);
+        top = GameObject.Find("Top_factor").GetComponentInChildren<Text>(true);
+        botton = GameObject.Find("Botton_factor").GetComponentInChildren<Text>(true);
+        right = GameObject.Find("Right_factor").GetComponentInChildren<Text>(true);
         descriptionEdit = GameObject.Find("PlayerInfoPlaceholder").GetComponentInChildren<Text>(true);
 
         users = gameObject.AddComponent<UserManager>();
@@ -237,6 +278,40 @@ public class UserPanel : GameBase {
         playerSelect.text = playerSelectText[language];
         descriptionEdit.text = insertInfoText[language];
 
+        plan.text = sessionPlanText[language];
+
+        /*
+        float leftValue, topValue, bottonValue, rightValue;
+        leftValue = topValue = bottonValue = rightValue = 0f;;
+
+        if (leftField.text != "")
+            leftValue = float.Parse(leftField.text);
+        if (rightField.text != "")
+            rightValue = float.Parse(rightField.text);
+        if (topField.text != "")
+            topValue = float.Parse(topField.text);
+        if (bottonField.text != "")
+            bottonValue = float.Parse(bottonField.text);
+
+        float total = leftValue + topValue + bottonValue + rightValue;
+        if (total == 0f)
+            total = 1f;
+        else
+            total = total / 100f;
+
+        left.text = (leftValue / total).ToString("F1") + "%";
+        right.text = (rightValue / total).ToString("F1") + "%";
+        top.text = (topValue / total).ToString("F1") + "%";
+        botton.text = (bottonValue / total).ToString("F1") + "%";
+        */
+
+        float[] planFactors = Plan;
+
+        right.text = planFactors[0].ToString("F1") + "%";
+        top.text = planFactors[1].ToString("F1") + "%";
+        left.text = planFactors[2].ToString("F1") + "%";
+        botton.text = planFactors[3].ToString("F1") + "%";
+
         for (int option = 0; option < memberDropdown.options.Count; option++)
         {
             memberDropdown.options[option].text = limbTexts[option + 2, language];
@@ -293,12 +368,16 @@ public class UserPanel : GameBase {
     /// <summary>
     /// Updates the player activity.
     /// </summary>
-    void UpdatePlayerActivity(bool dropdown, bool button, bool edit, bool memeber, bool selectMode)
+    void UpdatePlayerActivity(bool dropdown, bool button, bool edit, bool options, bool selectMode)
     {
         playerDropdown.interactable = dropdown;
         playerButton.interactable = button;
         playerEditButton.interactable = edit;
-        memberDropdown.interactable = memeber;
+        memberDropdown.interactable = options;
+        leftField.interactable = options;
+        topField.interactable = options;
+        bottonField.interactable = options;
+        rightField.interactable = options;
         playerDropdown.gameObject.SetActive(selectMode);
         playerField.gameObject.SetActive(!selectMode);
         playerInfoField.gameObject.SetActive(!selectMode);
