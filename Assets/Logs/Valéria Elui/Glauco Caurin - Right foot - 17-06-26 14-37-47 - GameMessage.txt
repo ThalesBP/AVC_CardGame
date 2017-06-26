@@ -1,0 +1,2 @@
+Time	Message
+0.01637447	Game running - Waiting player starts

@@ -1,0 +1,1 @@
+Choice	Time	N cards	Objective	Choice	Match	Time to Choose	Game Speed	Obj Mag	Obj Ang	Cho Mag	Cho Ang

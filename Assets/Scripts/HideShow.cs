@@ -13,7 +13,7 @@ public class HideShow : MonoBehaviour {
     [SerializeField]
     private bool moving;
 	public float slideTime, distance, slideTimeLerp;
-    public bool showed;
+    public bool showed, locked;
 
 	[SerializeField] private Axis axis;
 
@@ -21,7 +21,7 @@ public class HideShow : MonoBehaviour {
 	void Start () 
 	{
 		transf = GetComponent<RectTransform> ();
-        moving = false;
+        moving = locked = false;
 		show = transf.anchoredPosition;
 		if (axis == Axis.horizontal)
 			hide = transf.anchoredPosition + Vector2.Scale (transf.sizeDelta, Vector2.right * distance);
@@ -48,7 +48,7 @@ public class HideShow : MonoBehaviour {
     /// </summary>
 	public void Show () 
 	{
-        if (!showed)
+        if (!showed && !locked)
         {
             showed = true;
             target = show;
@@ -62,7 +62,7 @@ public class HideShow : MonoBehaviour {
     /// </summary>
 	public void Hide () 
 	{
-        if (showed)
+        if (showed && !locked)
         {
             showed = false;
             target = hide;
@@ -88,12 +88,15 @@ public class HideShow : MonoBehaviour {
     /// <param name="posRel">Position relative to showed in percent.</param>
     public void MoveTo (float posRel)
     {
-        if (axis == Axis.horizontal)
-            target = transf.anchoredPosition + Vector2.Scale (transf.sizeDelta, Vector2.right * (1f - 0.01f*posRel));
-        else
-            target = transf.anchoredPosition + Vector2.Scale (transf.sizeDelta, Vector2.up * (1f - 0.01f*posRel));
-        showed = true;
-        moving = true;
-        slideTimeLerp = 0;
+        if (!locked)
+        {
+            if (axis == Axis.horizontal)
+                target = transf.anchoredPosition + Vector2.Scale(transf.sizeDelta, Vector2.right * (1f - 0.01f * posRel));
+            else
+                target = transf.anchoredPosition + Vector2.Scale(transf.sizeDelta, Vector2.up * (1f - 0.01f * posRel));
+            showed = true;
+            moving = true;
+            slideTimeLerp = 0;
+        }
     }
 }

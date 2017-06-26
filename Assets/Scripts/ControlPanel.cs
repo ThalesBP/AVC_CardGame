@@ -8,6 +8,7 @@ public class ControlPanel : GameBase {
     private int language;
 
     public Status status = Status.begin;
+    public Status gameStatus = Status.newTurn;
 
     private Text panel;
 
@@ -42,12 +43,12 @@ public class ControlPanel : GameBase {
     public Toggle helpToggle;
     public Slider slider;
 
-    public Status gameStatus = Status.newTurn;
-
     public Connection connection;
 
     void Start () 
     {
+        visibility = GetComponent<HideShow>();
+
         panel = GameObject.Find("ControlTabName").GetComponentInChildren<Text>(true);
 
         connect = GameObject.Find("Connect").GetComponentInChildren<Text>(true);

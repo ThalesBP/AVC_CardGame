@@ -9,7 +9,6 @@ Ajuda visual: perguntar qual melhor forma
 Verificar e manipular possibilidade de pontuação do turno
 
 Log:
-Player choices log (Salvar posições do robô)
 Partidas para coleta de dados / análise de dificuldade
 -----
 Desvio padrão das informações

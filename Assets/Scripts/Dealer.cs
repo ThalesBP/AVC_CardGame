@@ -62,6 +62,8 @@ public class Dealer : GameBase {
         challengeCards = new List<Card>();
         cardsInGame = new List<Card>();
         player = gameObject.AddComponent<ControlManager>();
+        player.connection = interfaceManager.control.connection;
+
         onCard = false;
         waitCounter = 0f;
         timeToWait = 0f;
@@ -352,7 +354,7 @@ public class Dealer : GameBase {
                 
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
 
-                player.Log.Register(choices[choices.Count - 1], aimedCard.position.Value, FindPlacePointed());
+                interfaceManager.log.Register(interfaceManager.control.gameTime, choices[choices.Count - 1], aimedCard.position.Value, FindPlacePointed());
 
                 onCard = false;
                 timeToChoose = 0f;

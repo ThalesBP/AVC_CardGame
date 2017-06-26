@@ -11,52 +11,72 @@ using System.Text;
 /// </summary>
 public class Logger : MonoBehaviour {
 
-    private string movementFile, chooseFile, logTime;
+    private string movementFile, chooseFile, messageFile, previousMessage;
     private Vector2 pos, vel, acc;
     private float time1, time0;
 
 	// Use this for initialization
 	void Start () 
     {
-	}
-	
-	// Update is called once per time step
-	void FixedUpdate () 
-    {
-		
+        previousMessage = "";
 	}
 
     /// <summary>
-    /// Starts the positions's file.
+    /// Starts the files.
     /// </summary>
-    /// <param name="name">Name.</param>
-    public void StartFiles(string name)
+    /// <param name="manager">Manager name.</param>
+    /// <param name="player">Player name.</param>
+    public void StartFiles(string manager, string player, string member)
     {
         pos = vel = acc = Vector2.zero;
 
-        logTime = DateTime.Now.ToString("yy-MM-dd HH-mm");
+        string logTime = DateTime.Now.ToString("yy-MM-dd HH-mm-ss");
 
-        movementFile = Application.dataPath + "\\Logs\\" + name + "\\"  + name + " - " + logTime + " - Movements.txt";
-        Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + name);
+        movementFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - Movements.txt";
+        Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
         File.WriteAllText (movementFile, "Time\t" +
             "Pos X\tPos Y\t" +
             "Vel X\tVel Y\t" +
-            "Acc X\tAcc Y\t" +
+            "Acc X\tAcc Y" +
             Environment.NewLine);
         
-        chooseFile = Application.dataPath + "\\Logs\\" + name + "\\"  + name + " - " + logTime + " - Choices.txt";
-        Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + name);
+        chooseFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - Choices.txt";
+        Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
         File.WriteAllText (chooseFile, "Choice\t" +
+            "Time\t" +
             "N cards\t" +
             "Objective\t" +
             "Choice\t" +
             "Match\t" +
             "Time to Choose\t" +
+            "Game Speed\t" +
             "Obj Mag\tObj Ang\t" +
-            "Cho Mag\tCho Ang\t" +
+            "Cho Mag\tCho Ang" +
+            Environment.NewLine);
+
+        messageFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - GameMessage.txt";
+        Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
+        File.WriteAllText (messageFile, "Time\t" +
+            "Message" +
             Environment.NewLine);
     }
 
+    /// <summary>
+    /// Register the specified time and message.
+    /// </summary>
+    /// <param name="time">Time.</param>
+    /// <param name="message">Message.</param>
+    public void Register(float time, string message)
+    {
+        if (!String.Equals(message, previousMessage))
+        {
+            File.AppendAllText(messageFile,
+                time + "\t"
+                + message +
+                Environment.NewLine);
+            previousMessage = message;
+        }
+    }
 
     /// <summary>
     /// Registers based in the specified time and position.
@@ -92,7 +112,7 @@ public class Logger : MonoBehaviour {
     /// <param name="choice">Current choice.</param>
     /// <param name="angObjective">Objective position.</param>
     /// <param name="angChoice">Choice position.</param>
-    public void Register(Choice choice, Vector2 objPos, Vector2 choicePos)
+    public void Register(float time, Choice choice, Vector2 objPos, Vector2 choicePos)
     {
         int match = 0;
 
@@ -106,11 +126,13 @@ public class Logger : MonoBehaviour {
 
         File.AppendAllText(chooseFile, 
             choice.order + "\t"
+            + time + "\t"
             + choice.numOptions + "\t" 
             + choice.objectiveCard + "\t"
             + choice.choiceCard + "\t"
             + match + "\t"
             + choice.timeToChoose + "\t"
+            + Time.timeScale + "\t"
             + obj.x  + "\t" + obj.y + "\t"
             + cho.x  + "\t" + cho.y
         );

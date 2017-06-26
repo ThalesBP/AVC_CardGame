@@ -21,8 +21,6 @@ public class ControlManager : Singleton<ControlManager> {
     //public float scale = 3000f;
     public Connection connection;
 
-    public Logger Log;
-
     public Vector2 Position
     {
         get { return position; }
@@ -43,9 +41,6 @@ public class ControlManager : Singleton<ControlManager> {
     {
         actionCounter = actionCheck = 0f;
         actionCounting = actionTrigger = false;
-
-        Log = gameObject.AddComponent<Logger>();
-        Log.StartFiles("Thales Bueno");
 	}
 	
 	// Update is called once per frame
@@ -54,9 +49,6 @@ public class ControlManager : Singleton<ControlManager> {
         if (connection == null)
         {
             position = Input.mousePosition;
-
-            if (forceActionCounter)
-                Log.Register(Time.time, position);
         }
         else
         {

@@ -5,7 +5,7 @@ using System.Collections;
 public class DataManager : Singleton<DataManager> {
 
 	public float hit, miss, time, lazy, plantar, dorsi, inver, ever;
-	public Text hitText, timeText, pdfText, ievText;
+	public Text hitText, currentTimeText, pdfText, ievText;
 	public Text rateHitText, rateTimeText, rangePdfText, rangeIevText;
 
 	void Start()
@@ -23,7 +23,7 @@ public class DataManager : Singleton<DataManager> {
 		rangeIevText.text = ((inver - ever) * 180 / Mathf.PI).ToString ("F1") + "º";
 
 		hitText.text = hit.ToString("F1") + " / " + miss.ToString ("F1");
-		timeText.text = time.ToString("F1") + " / " + lazy.ToString ("F1");
+		currentTimeText.text = time.ToString("F1") + " / " + lazy.ToString ("F1");
 		pdfText.text = (plantar * 180 / Mathf.PI).ToString("F1") + "º / " + (dorsi * 180 / Mathf.PI).ToString("F1") + "º";
 		ievText.text = (inver * 180 / Mathf.PI).ToString("F1") + "º / " + (ever * 180 / Mathf.PI).ToString("F1") + "º";
 	}

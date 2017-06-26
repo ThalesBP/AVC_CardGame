@@ -3516,6 +3516,7 @@ MonoBehaviour:
   distance: 1
   slideTimeLerp: 0
   showed: 0
+  locked: 0
   axis: 1
 --- !u!114 &114132344427258808
 MonoBehaviour:
@@ -3772,8 +3773,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114619157571918598}
   m_HandleRect: {fileID: 224539756983564346}
   m_Direction: 0
-  m_Value: 1
-  m_Size: 0.99999976
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4077,6 +4078,8 @@ MonoBehaviour:
   fontSizeAdjust_M: 100
   language: 0
   control: {fileID: 114206150266398672}
+  user: {fileID: 114776350726222770}
+  log: {fileID: 0}
   mouseDefault: {fileID: 2800000, guid: a60e523e9b500984aa8225ab8d01eb3f, type: 3}
   playStatus: {fileID: 0}
   countDownCounter: 0
@@ -4109,6 +4112,7 @@ MonoBehaviour:
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
   status: 0
+  gameStatus: 4
   gameSpeed: 1
   gameTime: 0
   totalGameTime: 0
@@ -4123,7 +4127,6 @@ MonoBehaviour:
   playTimeField: {fileID: 114970829029709872}
   helpToggle: {fileID: 114913183249333032}
   slider: {fileID: 114332536943541510}
-  gameStatus: 4
   connection: {fileID: 0}
 --- !u!114 &114210808927519156
 MonoBehaviour:
@@ -6595,7 +6598,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114585431317576758}
   m_HandleRect: {fileID: 224480837982674932}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.8312501
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7813,6 +7816,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
+  visibility: {fileID: 0}
   managerDropdown: {fileID: 114736963793432320}
   playerDropdown: {fileID: 114671189677807310}
   memberDropdown: {fileID: 114493179211995340}
@@ -7831,6 +7835,7 @@ MonoBehaviour:
   deleteTexture: {fileID: 2800000, guid: d2f8ace7165043a4da20e704150e4db3, type: 3}
   cancelTexture: {fileID: 2800000, guid: 3300691ea0be19b418db55d16e99e2c8, type: 3}
   playerDescription: {fileID: 114300122876230314}
+  locked: 0
 --- !u!114 &114778403954723424
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -7847,6 +7852,7 @@ MonoBehaviour:
   distance: 2
   slideTimeLerp: 0
   showed: 0
+  locked: 0
   axis: 0
 --- !u!114 &114778793601985304
 MonoBehaviour:
@@ -8315,6 +8321,7 @@ MonoBehaviour:
   distance: 1
   slideTimeLerp: 0
   showed: 0
+  locked: 0
   axis: 1
 --- !u!114 &114874845389206580
 MonoBehaviour:
@@ -9973,12 +9980,11 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224934363499538658}
-  - {fileID: 224823503759645644}
   m_Father: {fileID: 224885250847090928}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.75}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.75}
   m_AnchoredPosition: {x: -16, y: 0}
   m_SizeDelta: {x: 32, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11152,11 +11158,12 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224720759194485572}
+  - {fileID: 224823503759645644}
   m_Father: {fileID: 224657010835607966}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 0, y: 0.75}
+  m_AnchorMin: {x: 0, y: 0.75}
+  m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -16, y: 0}
   m_SizeDelta: {x: 32, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -11407,7 +11414,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.000019073486, y: 27.000061}
+  m_AnchoredPosition: {x: 0.0000020608568, y: -0.000015258789}
   m_SizeDelta: {x: 0, y: 160}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224612525681625322
@@ -12030,7 +12037,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224903565007051368}
-  m_Father: {fileID: 224058043457190486}
+  m_Father: {fileID: 224492913298026030}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.9}

@@ -8,6 +8,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public int language;
 
     public ControlPanel control;
+    public UserPanel user;
+    public Logger log;
     public Texture2D mouseDefault;
 
     public Text playStatus;
@@ -22,7 +24,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public int CountDownCounter {get {return countDownCounter;}}
     public int scoreValue;
 
-	void Start () 
+    UnityEngine.Events.UnityAction StartLogAction;
+    UnityEngine.Events.UnityAction RestartAction;
+
+    void Start () 
     {
         countDownCounter = CountDown;
         Time.timeScale = 0f;
@@ -36,11 +41,23 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         scorePoints = GameObject.Find("ScorePoints").GetComponentInChildren<Text>(true);
         timeCounter = GameObject.Find("TimeCounter").GetComponentInChildren<Text>(true);
+
+        log = gameObject.AddComponent<Logger>();
+
+        StartLogAction = delegate {StartLog();};
+        RestartAction = delegate {Restart();};
+
+        control.startButton.onClick.AddListener(StartLogAction);
+        control.stopButton.onClick.AddListener(delegate { StopLog(); });
         #endregion
     }
 
     void Update ()
     {
+        if (user.locked)
+            control.startButton.interactable = true;
+        else
+            control.startButton.interactable = false;
 
         if (control.connection == null)
             Cursor.visible = false;
@@ -95,8 +112,11 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 else
                 {
                     control.gameTime += Time.unscaledDeltaTime;
+                    log.Register(control.gameTime, ControlManager.Instance.Position);
+                    log.Register(control.gameTime, gameMessageTexts[(int)control.status, language] + " - " + gameMessageTexts[(int)control.gameStatus, language]);
                 }
                 playStatus.transform.localScale = statusScale;
+
                 break;
             case Status.end:
                 playStatus.text = endOfGameText[language];
@@ -130,5 +150,26 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public void StartCountDown(int time)
     {
         countDownCounter = time + 1;
+    }
+
+    private void StartLog()
+    {
+        log.StartFiles(user.managerDropdown.captionText.text, user.playerDropdown.captionText.text, user.memberDropdown.captionText.text); 
+        control.startButton.onClick.RemoveListener(StartLogAction);
+        user.visibility.MoveTo(-10f);
+        user.visibility.locked = true;
+    }
+
+    private void StopLog()
+    {
+        user.visibility.locked = false;
+        control.startButton.onClick.AddListener(RestartAction);
+    }
+
+    private void Restart()
+    {
+        user.visibility.locked = false;
+        control.startButton.onClick.RemoveListener(RestartAction);
+        control.startButton.onClick.AddListener(StartLogAction);
     }
 }

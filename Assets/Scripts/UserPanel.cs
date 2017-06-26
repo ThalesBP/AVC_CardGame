@@ -23,7 +23,7 @@ public class UserPanel : GameBase {
     private Text descriptionEdit;
 
     private UserManager users;
-    private HideShow visibility;
+    public HideShow visibility;
     public Dropdown managerDropdown, playerDropdown, memberDropdown, languageDropdown;
     public InputField managerField, playerField, passwordField, playerInfoField;
     public Button managerButton, managerEditButton, playerButton, playerEditButton;
@@ -31,6 +31,8 @@ public class UserPanel : GameBase {
     public Texture editTexture, deleteTexture, cancelTexture;
     public Text playerDescription;
     private bool passwordWrong = false, userWrong = false;
+
+    public bool locked = false;
 
 	void Start () 
     {
@@ -240,6 +242,8 @@ public class UserPanel : GameBase {
             memberDropdown.options[option].text = limbTexts[option + 2, language];
         }
         memberDropdown.RefreshShownValue();
+
+        locked = (managerStatus == UserStatus.locked) && (playerStatus == UserStatus.locked);
 	}
 
     #region Interface functions
