@@ -18,6 +18,7 @@ public class ControlManager : Singleton<ControlManager> {
     private bool actionCounting, actionTrigger;
 
     public bool forceActionCounter = false;
+    public bool joystick = false;
     //public float scale = 3000f;
     public Connection connection;
 
@@ -48,7 +49,10 @@ public class ControlManager : Singleton<ControlManager> {
     {
         if (connection == null)
         {
-            position = Input.mousePosition;
+            if (joystick)
+                position = new Vector2(Input.GetAxis("Horizontal") * 300f, Input.GetAxis("Vertical") * 300f) + center;
+            else
+                position = Input.mousePosition;
         }
         else
         {

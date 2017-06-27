@@ -59,7 +59,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         else
             control.startButton.interactable = false;
 
-        if (control.connection == null)
+        if ((control.connection == null) && (!ControlManager.Instance.joystick))
             Cursor.visible = false;
         else
             Cursor.visible = true;

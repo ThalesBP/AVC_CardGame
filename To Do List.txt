@@ -3,10 +3,11 @@ Criptografar a senha / Senha master pra recuperar
 Procurar por comentários "obs" ou "to check" entre outros
 Ajuste de dificuldade
 Nao usar TimeToWait global
-Ajuda visual: perguntar qual melhor forma
 Log do plano de jogo e tabela de histórico
 Opção de calibragem - procedimento
 Solução pra "pé frouxo"
+-----
+Ajuda visual: perguntar qual melhor forma
 
 Log:
 Partidas para coleta de dados / análise de dificuldade
