@@ -200,7 +200,11 @@ public class Dealer : GameBase {
             case Status.playerChoice:
                 interfaceManager.control.gameStatus = Status.playerChoice;
                 if (Time.timeScale != 0f)
+                {
                     timeToChoose += Time.unscaledDeltaTime;
+                    if (interfaceManager.control.helpToggle.isOn)
+                        challengeCards[0].HighlightTimer(LoadingTime[MostLogner], 0.75f);
+                }
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
             case Status.wrong:
@@ -359,6 +363,9 @@ public class Dealer : GameBase {
 
             if (player.Action)
             {
+                challengeCards[0].status = Card.Highlight.free;
+                challengeCards[0].timeToTwinkle = 0f;
+
                 if (player.forceActionCounter)
                     timeToChoose -= LoadingTime[Medium];
                 

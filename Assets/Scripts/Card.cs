@@ -102,6 +102,11 @@ public class Card : GameBase {
     }
 
     #region Time functions
+    /// <summary>
+    /// Highlights the card time based.
+    /// </summary>
+    /// <param name="delay">Delay before starts to twinkle.</param>
+    /// <param name="deltaTime">Delta time between status change.</param>
     public void HighlightTimer(float delay, float deltaTime)
     {
         timeToTwinkle += Time.unscaledDeltaTime;

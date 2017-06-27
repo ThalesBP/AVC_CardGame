@@ -34,7 +34,7 @@ public class GameBase : MonoBehaviour {
     #endregion
 
     #region Time informations
-    protected static readonly float[] LoadingTime = {0.1f, 0.5f, 1.25f, 2.5f, 3.5f, 5f};
+    protected static readonly float[] LoadingTime = {0.1f, 0.5f, 1.25f, 2.5f, 3.5f, 5f, 8f};
     protected static readonly float[] DeltaTime = { 0.1f, 0.25f, 0.5f, 0.75f, 1f, 1.5f };
     protected static readonly int VeryShort = 0;
     protected static readonly int Short = 1;
@@ -42,6 +42,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly int Long = 3;
     protected static readonly int VeryLong = 4;
     protected static readonly int MuchLonger = 5;
+    protected static readonly int MostLogner = 6;
     protected static readonly int CountDown = 1;    // 3 seconds
     protected static readonly float[] GameSpeedLimits = { 1f, 3f };
     protected static readonly float[] TimeChoiceLimits = { 0.5f, 4.5f };

@@ -68,7 +68,6 @@ public class ControlPanel : GameBase {
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });
         stopButton.interactable = false;
         stopButton.onClick.AddListener(delegate { FinishGame(); });
-        helpToggle.interactable = false;
         connectButton.onClick.AddListener(delegate { Connect(); });
     }
 	
