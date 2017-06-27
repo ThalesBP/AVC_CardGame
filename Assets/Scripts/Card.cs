@@ -10,7 +10,7 @@ public class Card : GameBase {
     /// <summary>
     /// Card status used to highlight or not, for example.
     /// </summary>
-    public enum  Highlight {free, right, wrong};
+    public enum  Highlight {free, right, wrong, contrast};
     public enum SuitType {noSuit, miniSuit, singleSuit, multiSuit, complete};
     public enum ValueType {noValue, doubleValue, bigValue};
     public Highlight status;   // Highlight status
@@ -29,12 +29,13 @@ public class Card : GameBase {
     [HideInInspector]
     public GameObject highlight;    // Object that highlights the card as right or wrong
     [HideInInspector]
-    public Material wrongCardMat, rightCardMat; //  Materials for highlight object
+    public Material wrongCardMat, rightCardMat, contrastMat; //  Materials for highlight object
     private MeshRenderer cardMeshRender;    // Mesh render of highlight object
     #endregion
 
     #region Motion's variables
     public Motion position, rotation, scale;
+    public float timeToTwinkle;       // Timer counter before player plays
     #endregion
 
     void Awake()
@@ -69,6 +70,8 @@ public class Card : GameBase {
         }
         suitTexts[2].characterSize = charSize_M;    // Central suit has different size
         suitTexts[2].fontSize = fontSize_M;
+
+        timeToTwinkle = 0f;
     }
 
     void Update()
@@ -90,9 +93,32 @@ public class Card : GameBase {
                 highlight.SetActive(true);
                 cardMeshRender.material = wrongCardMat;
                 break;
+            case Highlight.contrast:
+                highlight.SetActive(true);
+                cardMeshRender.material = contrastMat;
+                break;
         }
 
     }
+
+    #region Time functions
+    public void HighlightTimer(float delay, float deltaTime)
+    {
+        timeToTwinkle += Time.unscaledDeltaTime;
+
+        if (timeToTwinkle > delay)
+        if (timeToTwinkle > delay + deltaTime)
+        if (timeToTwinkle > delay + 2f * deltaTime)
+            timeToTwinkle = delay;
+        else
+            status = Card.Highlight.free;
+        else
+            status = Card.Highlight.contrast;
+        else
+            status = Card.Highlight.free;
+    }
+
+    #endregion
 
     #region Update Infos functions
     /// <summary>

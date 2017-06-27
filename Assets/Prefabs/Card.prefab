@@ -808,6 +808,7 @@ MonoBehaviour:
   value: 0
   color: 0
   colorRGB: {r: 0, g: 0, b: 0, a: 0}
+  showed: 0
   valueTexts:
   - {fileID: 102437490151012904}
   - {fileID: 102349394065926436}
@@ -818,12 +819,10 @@ MonoBehaviour:
   highlight: {fileID: 1506462517789248}
   wrongCardMat: {fileID: 2100000, guid: 547967a96457cce4fb21f8a850e17159, type: 2}
   rightCardMat: {fileID: 2100000, guid: 1cd14828818fb7e49b33a75a64d150ce, type: 2}
+  contrastMat: {fileID: 2100000, guid: 3a4d3a43c9724824b9ca2ef26fe63a31, type: 2}
   position: {fileID: 0}
   rotation: {fileID: 0}
   scale: {fileID: 0}
-  scaleSuit: 0.5
-  xPos: 3.65
-  yPos: 5.5
 --- !u!222 &222439512156143712
 CanvasRenderer:
   m_ObjectHideFlags: 1

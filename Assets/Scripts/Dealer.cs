@@ -134,6 +134,9 @@ public class Dealer : GameBase {
                 interfaceManager.control.gameStatus = Status.playerPlay;
                 if ((FindCardPointed(cardsInGame) != null) && (player.Action))
                 {
+                    objectiveCard.status = Card.Highlight.free;
+                    objectiveCard.timeToTwinkle = 0f;
+
                     switch (mode)
                     {
                         case GameMode.Memory:
@@ -188,10 +191,16 @@ public class Dealer : GameBase {
                             break;
                     }
                 }   // Waits player plays the game
+                else
+                {
+                    if (Time.timeScale != 0f)
+                        objectiveCard.HighlightTimer(LoadingTime[VeryLong], 1f);
+                }
                 break;
             case Status.playerChoice:
                 interfaceManager.control.gameStatus = Status.playerChoice;
-                timeToChoose += Time.unscaledDeltaTime;
+                if (Time.timeScale != 0f)
+                    timeToChoose += Time.unscaledDeltaTime;
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
             case Status.wrong:

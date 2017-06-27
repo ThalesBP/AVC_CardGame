@@ -52,8 +52,12 @@ public class ChallengeManager {
             float sum = 0f;
             foreach (float value in plan)
                 sum += value;
+
             for (int i = 0; i < rehabPlan.Length; i++)
-                rehabPlan[i] = plan[i] / sum;
+                if (sum == 0)
+                    rehabPlan[i] = 1f / rehabPlan.Length;
+                else 
+                    rehabPlan[i] = plan[i] / sum;
         }
         else
         {
