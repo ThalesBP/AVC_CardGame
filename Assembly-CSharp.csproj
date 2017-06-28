@@ -46,7 +46,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\AnkleBot.cs" />
+     <Compile Include="Assets\Scripts\AnkleMovement.cs" />
      <Compile Include="Assets\Scripts\Card.cs" />
      <Compile Include="Assets\Scripts\ChallengeManager.cs" />
      <Compile Include="Assets\Scripts\Choice.cs" />

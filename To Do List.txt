@@ -11,6 +11,7 @@ Ajuda visual: perguntar qual melhor forma
 
 Log:
 Partidas para coleta de dados / análise de dificuldade
+O quanto seguiu o plano (real)
 -----
 Desvio padrão das informações
 
@@ -21,8 +22,7 @@ Mouse rotacionar com o pé (corrigir centro do mouse)
 
 Robô:
 Verificar controle do robô
-Calibration (implementar com joystic)
-Enviar média de valores no intervalo
+Calibration
 
 Graficos:
 Visualizar tendencia num triângulo nipe / valor / cor por apaciente

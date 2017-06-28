@@ -10,8 +10,10 @@ public class ControlManager : Singleton<ControlManager> {
     [SerializeField]
     private Vector2 position;
     private Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
+
     [SerializeField]
     private Vector2 scale = 3000f * Vector2.one;
+
     [SerializeField]
     private float actionCounter, actionCheck;
     [SerializeField]
@@ -19,7 +21,6 @@ public class ControlManager : Singleton<ControlManager> {
 
     public bool forceActionCounter = false;
     public bool joystick = false;
-    //public float scale = 3000f;
     public Connection connection;
 
     public Vector2 Position
