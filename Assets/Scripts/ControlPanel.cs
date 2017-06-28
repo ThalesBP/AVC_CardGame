@@ -13,6 +13,7 @@ public class ControlPanel : GameBase {
     private Text panel;
 
     private Text connect;
+    private Text calibrate;
     private Text start;
     private Text stop;
     private Text playTime;
@@ -38,12 +39,14 @@ public class ControlPanel : GameBase {
 
     public HideShow visibility;
     public ResultsPanel results;
-    public Button connectButton, startButton, stopButton;
+    public Button connectButton, calibrateButton, startButton, stopButton;
     public InputField playTimeField;
     public Toggle helpToggle;
     public Slider slider;
 
     public Connection connection;
+    public bool calibrating;
+    private bool connected;
 
     void Start () 
     {
@@ -52,6 +55,7 @@ public class ControlPanel : GameBase {
         panel = GameObject.Find("ControlTabName").GetComponentInChildren<Text>(true);
 
         connect = GameObject.Find("Connect").GetComponentInChildren<Text>(true);
+        calibrate = GameObject.Find("Calibrate").GetComponentInChildren<Text>(true);
         start = GameObject.Find("Start").GetComponentInChildren<Text>(true);
         stop = GameObject.Find("Stop").GetComponentInChildren<Text>(true);
         playTime = GameObject.Find("PlayTimePlaceholder").GetComponentInChildren<Text>(true);
@@ -64,11 +68,14 @@ public class ControlPanel : GameBase {
         metric3 = GameObject.Find("Metric3").GetComponentInChildren<Text>(true);
 
         gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>(true);
-	
+
+        calibrateButton.onClick.AddListener(delegate { Calibrate(); });
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });
         stopButton.interactable = false;
         stopButton.onClick.AddListener(delegate { FinishGame(); });
         connectButton.onClick.AddListener(delegate { Connect(); });
+
+        connected = calibrating = false;
     }
 	
 	void Update () 
@@ -82,12 +89,29 @@ public class ControlPanel : GameBase {
         metric3.text = metric3Text[language] + "\n" + metric3Value.ToString("F0") + "%";
 
         if (connection == null)
+        {
+            connected = true;
             connect.text = connectText[language];
+        }
         else if (connection.connected)
+        {
+            connected = true;
             connect.text = disconnectText[language];
+        }
         else
+        {
+            connected = false;
             connect.text = connectingText[language];
-        
+        }
+
+        if (calibrating)
+            calibrate.text = calibratingText[language];
+        else
+            calibrate.text = calibrateText[language];
+
+        calibrateButton.interactable = false;
+
+
         stop.text = stopText[language];
         help.text = helpText[language];
         sliderText.text = slider.value.ToString("F0") + " " + cardsText[language];
@@ -100,10 +124,14 @@ public class ControlPanel : GameBase {
                 start.text = startText[language];
                 playTime.text = playTimeText[language];
                 gameTime = totalGameTime = 0f;
+
+                calibrateButton.interactable = connected;
                 break;
             case Status.paused:
                 start.text = startText[language];
                 playTime.text = infTimeText[language];
+
+                calibrateButton.interactable = connected;
                 break;
             case Status.playing:
                 start.text = pauseText[language];
@@ -128,11 +156,13 @@ public class ControlPanel : GameBase {
                 Time.timeScale = gameSpeed;
     //            gameMessage = Messages.showingResults;
     //            gameMessages.text = gameMessageTexts[(int)gameMessage, language];
+
                 break;
         }
    //     gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
 	}
 
+    #region Game Control
     /// <summary>
     /// Pauses the game.
     /// </summary>
@@ -199,7 +229,9 @@ public class ControlPanel : GameBase {
                 break;
         }
     }
+    #endregion
 
+    #region Robot Control
     private void Connect()
     {
         connection = gameObject.AddComponent<Connection> ();
@@ -214,4 +246,21 @@ public class ControlPanel : GameBase {
         connectButton.onClick.RemoveAllListeners();
         connectButton.onClick.AddListener(delegate { Connect(); });
     }
+
+    private void Calibrate()
+    {
+        if (calibrating)
+        {
+            calibrating = false;
+            startButton.interactable = true;
+        }
+        else
+        {
+            calibrating = true;
+            startButton.interactable = false;
+
+            ControlManager.Instance.ankle.Reset();
+        }
+    }
+    #endregion
 }

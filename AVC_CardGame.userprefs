@@ -4,9 +4,13 @@
     <Files>
       <File FileName="Assets\Scripts\Dealer.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\Card.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ControlManager.cs" Line="65" Column="18" />
-      <File FileName="Assets\Scripts\Connection.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ControlPanel.cs" Line="262" Column="1" />
+      <File FileName="Assets\Scripts\ControlManager.cs" Line="48" Column="58" />
       <File FileName="Assets\Scripts\Logger.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\AnkleMovement.cs" Line="5" Column="43" />
+      <File FileName="Assets\Scripts\InterfaceManager.cs" Line="85" Column="5" />
+      <File FileName="Assets\Scripts\GameBase.cs" Line="76" Column="96" />
+      <File FileName="Assets\Scripts\HideShow.cs" Line="94" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

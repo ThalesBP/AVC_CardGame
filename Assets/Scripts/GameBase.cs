@@ -73,6 +73,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] readyText = { "READY?", "PRONTO?" };
     protected static readonly string[] goText = { "Go!", "Vai!" };
     protected static readonly string[] endOfGameText = { "End of game", "Fim de jogo" };
+    protected static readonly string[] moveCirclesText = { "Move in circles", "Mova em círculos" };
     // Results
     protected static readonly string[] hitRateText = { "Hit Rate", "Taxa de Acerto" };
     protected static readonly string[] timeRateText = { "Time to Choose", "Tempo de Escolha" };
@@ -92,6 +93,8 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] connectText = { "Connect", "Conectar" };
     protected static readonly string[] connectingText = { "Connecting", "Conectando" };
     protected static readonly string[] disconnectText = { "Disconnect", "Desconectar" };
+    protected static readonly string[] calibrateText = { "Calibrate", "Calibrar" };
+    protected static readonly string[] calibratingText = { "Calibrating", "Calibrando" };
     protected static readonly string[] startText = { "Start", "Iniciar" };
     protected static readonly string[] restartText = { "Restart", "Reiniciar" };
     protected static readonly string[] pausedText = { "Paused", "Pausado" };
@@ -144,7 +147,8 @@ public class GameBase : MonoBehaviour {
         connecting,         // Trying to connect to robot
         connected,          // Connected to robot
         disconnecting,      // Disconnecting to robot
-        disconnected        // Disconnected to robot
+        disconnected,       // Disconnected to robot
+        calibrating         // Calibrating movement
     };
 
     protected static readonly string[,] gameMessageTexts =
@@ -165,7 +169,8 @@ public class GameBase : MonoBehaviour {
             {"Connecting", "Conectando"},
             {"Connected", "Conectado"},
             {"Disconnecting", "Desconectando"},
-            {"Disconnected", "Desconectado"}
+            {"Disconnected", "Desconectado"},
+            {"Calibrating", "Calibrando"}
     };
 
     #endregion

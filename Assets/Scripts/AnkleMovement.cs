@@ -13,7 +13,7 @@ public class AnkleMovement : MonoBehaviour {
 
     void Start()
     {
-        min = max = bases = origin = Vector2.zero;
+        Reset();
     }
 
     void Calibration(Vector2 position)
@@ -28,6 +28,14 @@ public class AnkleMovement : MonoBehaviour {
             min.x = position.x;
         bases = elipseScale * (max - min) / 2;
         origin = (max + min) / 2;
+    }
+
+    public void Reset()
+    {
+        min = new Vector2(-Mathf.Epsilon, -Mathf.Epsilon);
+        max = new Vector2(Mathf.Epsilon, Mathf.Epsilon);
+        bases = max;
+        origin = Vector2.zero;
     }
 
     /// <summary>
@@ -107,7 +115,7 @@ public class AnkleMovement : MonoBehaviour {
     /// </summary>
     /// <returns>The position in Elliptic Space.</returns>
     /// <param name="position">Position in Square Space.</param>
-    Vector2 SquareToElipse(Vector2 position, float sideSize)
+    public Vector2 SquareToElipse(Vector2 position, float sideSize)
     {
         float range;
         float cosAng, sinAng;
@@ -133,7 +141,7 @@ public class AnkleMovement : MonoBehaviour {
     /// </summary>
     /// <returns>The position in Elliptic Space.</returns>
     /// <param name="position">Position in Square Space.</param>
-    Vector2 CircleToElipse(Vector2 position, float sideSize)
+    public Vector2 CircleToElipse(Vector2 position, float sideSize)
     {
         float range;
         float cosAng, sinAng;

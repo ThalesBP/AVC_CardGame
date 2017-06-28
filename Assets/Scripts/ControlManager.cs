@@ -12,7 +12,7 @@ public class ControlManager : Singleton<ControlManager> {
     private Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
 
     [SerializeField]
-    private Vector2 scale = 3000f * Vector2.one;
+    private float scale = 0.45f * Screen.height;
 
     [SerializeField]
     private float actionCounter, actionCheck;
@@ -22,6 +22,7 @@ public class ControlManager : Singleton<ControlManager> {
     public bool forceActionCounter = false;
     public bool joystick = false;
     public Connection connection;
+    public AnkleMovement ankle;
 
     public Vector2 Position
     {
@@ -43,6 +44,8 @@ public class ControlManager : Singleton<ControlManager> {
     {
         actionCounter = actionCheck = 0f;
         actionCounting = actionTrigger = false;
+
+        ankle = gameObject.AddComponent<AnkleMovement>();
 	}
 	
 	// Update is called once per frame
@@ -62,7 +65,7 @@ public class ControlManager : Singleton<ControlManager> {
                 if (connection.Position != null)
                 {
                     Debug.Log(connection.Position);
-                    position = Vector2.Scale(connection.Position, scale) + center;
+                    position = scale * ankle.ElipseToCircle(connection.Position) + center;
                 }
             }
             else

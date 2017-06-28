@@ -72,11 +72,17 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         switch (control.status)
         {
             case Status.begin:
-                playStatus.text = readyText[language];
+                if (control.calibrating)
+                    playStatus.text = moveCirclesText[language];
+                else
+                    playStatus.text = readyText[language];
                 StartCountDown(CountDown);
                 break;
             case Status.paused:
-                playStatus.text = pausedText[language];
+                if (control.calibrating)
+                    playStatus.text = moveCirclesText[language];
+                else
+                    playStatus.text = pausedText[language];
                 statusScale.MoveTo(Vector3.one);
                 playStatus.color = YellowText;
                 statusBoarder.effectColor = Color.black;
