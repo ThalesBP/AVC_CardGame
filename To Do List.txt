@@ -2,10 +2,10 @@ Jogo:
 Criptografar a senha / Senha master pra recuperar
 Procurar por comentários "obs" ou "to check" entre outros
 Ajuste de dificuldade
-Nao usar TimeToWait global
 Solução pra "pé frouxo"
 Selecionar modo de jogo
 -----
+Nao usar TimeToWait global ?
 Ajuda visual: perguntar qual melhor forma
 
 Log:
@@ -22,6 +22,7 @@ Mouse rotacionar com o pé (corrigir centro do mouse)
 
 Robô:
 Verificar controle do robô
+-----
 Calibration
 
 Graficos:

@@ -126,6 +126,7 @@ MonoBehaviour:
   cardPrefab: {fileID: 1921799268104742, guid: 2fe6ed2b873708f4bac81311e93e7f0a, type: 2}
   player: {fileID: 0}
   waitCounter: 0
+  nextStatus: 0
   aimedCard: {fileID: 0}
   interfaceManager: {fileID: 1928835614}
   cardsInGame: []
@@ -707,12 +708,12 @@ Prefab:
     - target: {fileID: 224480837982674932, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0.39406252
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224603450149834756, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 160.00003
+      value: 97.00703
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e435aa7d892158f48a2138903352a7a3, type: 2}

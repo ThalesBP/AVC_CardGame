@@ -355,4 +355,29 @@ public class GameBase : MonoBehaviour {
 
         return text;
     }
+
+    /// <summary>
+    /// Verifies the closer angle among a array of angles.
+    /// </summary>
+    /// <returns>The closer angle index.</returns>
+    /// <param name="angles">Array of Angles.</param>
+    /// <param name="angle">Angle target.</param>
+    static public int VerifyCloserAngle(float[] angles, float angle)
+    {
+        float diff = Mathf.Infinity;
+        int index = Random.Range(0, angles.Length);
+
+        for (int i = 0; i < angles.Length; i++)
+        {
+            if (Mathf.Abs(Mathf.DeltaAngle(angle, angles[i])) < diff)
+            {
+                diff = Mathf.Abs(Mathf.DeltaAngle(angle, angles[i]));
+                index = i;
+            }
+        }
+
+        Debug.Log(index + " : " + angle + " : " + angles[index]);
+
+        return index;
+    }
 }

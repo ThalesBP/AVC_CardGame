@@ -89,14 +89,20 @@ public class ChallengeManager {
             diff[i] = rehabStat[i] - rehabPlan[i];
         }
 
-        rehabStory.Add(Min(diff));
+        return Min(diff);
+    }
+
+    /// <summary>
+    /// Adds a choice.
+    /// </summary>
+    public void AddChoice(int choice)
+    {
+        rehabStory.Add(choice);
 
         for (int index = 0; index < rehabStat.Length; index++)
         {
             rehabStat[index] = 1f * CountIndex(rehabStory, index) / rehabStory.Count;
         }
-
-        return rehabStory[rehabStory.Count - 1];
     }
 
     /// <summary>
@@ -147,7 +153,7 @@ public class ChallengeManager {
     /// <summary>
     /// Retunr the max element's index.
     /// </summary>
-    public int Max(float[] list)
+    private int Max(float[] list)
     {
         float extreme = 0f;
         List<int> index = new List<int>();

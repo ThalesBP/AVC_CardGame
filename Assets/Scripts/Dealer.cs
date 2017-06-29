@@ -357,7 +357,19 @@ public class Dealer : GameBase {
                 
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
 
-                interfaceManager.log.Register(interfaceManager.control.gameTime, choices[choices.Count - 1], aimedCard.position.Value, FindPlacePointed());
+                Vector2 choicePosition = FindPlacePointed();
+
+                interfaceManager.log.Register(interfaceManager.control.gameTime, choices[choices.Count - 1], aimedCard.position.Value, choicePosition);
+
+                // Verifies the closest angle in the plan
+                float angle = Mathf.Atan2(choicePosition.y, choicePosition.x) * Mathf.Rad2Deg;
+                int ang = VerifyCloserAngle(mainAngles, angle);
+                angle -= mainAngles[ang];
+                int ang2 = VerifyCloserAngle(subAngles, angle);
+                Debug.Log(mainAngles[ang] + subAngles[ang2]);
+
+                interfaceManager.mainChallenge.AddChoice(ang);
+                interfaceManager.subChallenges[ang].AddChoice(ang2);
 
                 onCard = false;
                 timeToChoose = 0f;
