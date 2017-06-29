@@ -101,7 +101,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
                 if (!logging)
                 {
-                    log.StartFiles(user.managerDropdown.captionText.text, user.playerDropdown.captionText.text, user.memberDropdown.captionText.text); 
+                    log.StartFiles(user.managerDropdown.captionText.text, user.playerDropdown.captionText.text, user.memberDropdown.captionText.text, user.memberDropdown.value); 
                     user.visibility.MoveTo(-10f);
                     user.visibility.locked = true;
                     logging = true;
@@ -136,8 +136,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 else
                 {
                     control.gameTime += Time.unscaledDeltaTime;
-                    log.Register(control.gameTime, ControlManager.Instance.Position);
-                    log.Register(control.gameTime, gameMessageTexts[(int)control.status, language] + " - " + gameMessageTexts[(int)control.gameStatus, language]);
+                    if (control.connection == null)
+                        log.Register(control.gameTime, ControlManager.Instance.Position);
+                    else 
+                        log.Register(control.gameTime, control.connection.Position);
                 }
                 playStatus.transform.localScale = statusScale;
 
@@ -171,6 +173,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             timeCounter.text = timeText[language] + "\n" + control.gameTime.ToString("F1");
         }
         #endregion
+
+        log.Register(control.gameTime, gameMessageTexts[(int)control.status, language] + " - " + gameMessageTexts[(int)control.gameStatus, language]);
 	}
 
     /// <summary>

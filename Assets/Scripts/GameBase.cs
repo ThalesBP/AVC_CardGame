@@ -124,10 +124,10 @@ public class GameBase : MonoBehaviour {
     public enum Limbs { rightHand, leftHand, rightFoot, leftFoot };
     protected static readonly string[,] limbTexts = 
         {
-            {"Right hand", "Mão direita" },
-            {"Left hand", "Mão esquerda" },
+            {"Left foot", "Pé esquerdo" },
             {"Right foot", "Pé direito" },
-            {"Left foot", "Pé esquerdo" }
+            {"Left hand", "Mão esquerda" },
+            {"Right hand", "Mão direita" }
         };
 
     public enum Status {
@@ -375,8 +375,6 @@ public class GameBase : MonoBehaviour {
                 index = i;
             }
         }
-
-        Debug.Log(index + " : " + angle + " : " + angles[index]);
 
         return index;
     }

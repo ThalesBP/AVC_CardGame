@@ -29,7 +29,3 @@ D:\Users\Thales\Documents\Faculdade\2015 - 201x - Mestrado\AVC_CardGame\Temp\bin
 D:\Users\Thales\Documents\Faculdade\2015 - 201x - Mestrado\AVC_CardGame\Temp\bin\Debug\UnityEngine.VR.xml
 D:\Users\Thales\Documents\Faculdade\2015 - 201x - Mestrado\AVC_CardGame\obj\Debug\Assembly-CSharp.dll
 D:\Users\Thales\Documents\Faculdade\2015 - 201x - Mestrado\AVC_CardGame\obj\Debug\Assembly-CSharp.pdb
-D:\Users\Thales\Documents\Faculdade\2015 - 201x - Mestrado\AVC_CardGame\Temp\bin\Debug\UnityEngine.Advertisements.dll
-D:\Users\Thales\Documents\Faculdade\2015 - 201x - Mestrado\AVC_CardGame\Temp\bin\Debug\UnityEngine.Purchasing.dll
-D:\Users\Thales\Documents\Faculdade\2015 - 201x - Mestrado\AVC_CardGame\Temp\bin\Debug\UnityEngine.Advertisements.xml
-D:\Users\Thales\Documents\Faculdade\2015 - 201x - Mestrado\AVC_CardGame\Temp\bin\Debug\UnityEngine.Purchasing.xml

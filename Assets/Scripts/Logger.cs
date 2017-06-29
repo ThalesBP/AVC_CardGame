@@ -14,6 +14,7 @@ public class Logger : MonoBehaviour {
     private string logTime, movementFile, chooseFile, messageFile, previousMessage, historicFile;
     private Vector2 pos, vel, acc;
     private float time1, time0;
+    private int sideMember;
 
 	// Use this for initialization
 	void Start () 
@@ -24,11 +25,18 @@ public class Logger : MonoBehaviour {
     /// <summary>
     /// Starts the files.
     /// </summary>
-    /// <param name="manager">Manager name.</param>
-    /// <param name="player">Player name.</param>
-    public void StartFiles(string manager, string player, string member)
+    /// <param name="manager">Manager.</param>
+    /// <param name="player">Player.</param>
+    /// <param name="member">Member.</param>
+    /// <param name="side">Side - 0: Left / 1: Right.</param>
+    public void StartFiles(string manager, string player, string member, int side)
     {
         pos = vel = acc = Vector2.zero;
+
+        if (side == 0)
+            sideMember = -1;
+        else
+            sideMember = 1;
 
         logTime = DateTime.Now.ToString("yy-MM-dd HH-mm-ss");
         Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
@@ -200,16 +208,19 @@ public class Logger : MonoBehaviour {
             (100f * Choice.colorCounter / Choice.orderCounter) + "\t" +
             ControlManager.Instance.ankle.Max.y + "\t" +
             ControlManager.Instance.ankle.Min.y + "\t" +
-            ControlManager.Instance.ankle.Min.x + "\t" +
-            ControlManager.Instance.ankle.Max.x + "\t" +
+            ControlManager.Instance.ankle.Min.x * sideMember + "\t" +
+            ControlManager.Instance.ankle.Max.x * sideMember + "\t" +
             (100f * history.Plan[1]) + "\t" +
             (100f * history.Plan[3]) + "\t" +
-            (100f * history.Plan[2])+ "\t" +
-            (100f * history.Plan[0]) + "\t" +
+
+            (100f * history.Plan[1 + sideMember])+ "\t" +
+            (100f * history.Plan[1 - sideMember]) + "\t" +
+
             (100f * history.Done[1]) + "\t" +
             (100f * history.Done[3]) + "\t" +
-            (100f * history.Done[2]) + "\t" +
-            (100f * history.Done[0]) + "\t" +
+
+            (100f * history.Done[1 + sideMember]) + "\t" +
+            (100f * history.Done[1 - sideMember]) + "\t" +
             Environment.NewLine);
     }
 }

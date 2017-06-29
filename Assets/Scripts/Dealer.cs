@@ -366,7 +366,6 @@ public class Dealer : GameBase {
                 int ang = VerifyCloserAngle(mainAngles, angle);
                 angle -= mainAngles[ang];
                 int ang2 = VerifyCloserAngle(subAngles, angle);
-                Debug.Log(mainAngles[ang] + subAngles[ang2]);
 
                 interfaceManager.mainChallenge.AddChoice(ang);
                 interfaceManager.subChallenges[ang].AddChoice(ang2);

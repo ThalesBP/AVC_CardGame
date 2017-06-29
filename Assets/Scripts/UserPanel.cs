@@ -314,7 +314,7 @@ public class UserPanel : GameBase {
 
         for (int option = 0; option < memberDropdown.options.Count; option++)
         {
-            memberDropdown.options[option].text = limbTexts[option + 2, language];
+            memberDropdown.options[option].text = limbTexts[option, language];
         }
         memberDropdown.RefreshShownValue();
 
