@@ -153,7 +153,6 @@ public class ControlPanel : GameBase {
             case Status.end:
                 start.text = restartText[language];
                 playTime.text = infTimeText[language];
-                Time.timeScale = gameSpeed;
     //            gameMessage = Messages.showingResults;
     //            gameMessages.text = gameMessageTexts[(int)gameMessage, language];
 
@@ -202,6 +201,7 @@ public class ControlPanel : GameBase {
         stopButton.interactable = false;
         results.visibility.Show();
 
+        Time.timeScale = gameSpeed;
         status = Status.end;
     }
 

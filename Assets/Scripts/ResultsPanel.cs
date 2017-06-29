@@ -12,11 +12,6 @@ public class ResultsPanel : GameBase {
     private Text[] info1;
     private Text[] info2;
 
-    public float hitRateValue;
-    public float timeRateValue;
-    public float info1Value;
-    public float info2Value;
-
     public HideShow visibility;
 
 	void Start () 

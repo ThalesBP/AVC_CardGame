@@ -3476,10 +3476,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
-  hitRateValue: 0
-  timeRateValue: 0
-  info1Value: 0
-  info2Value: 0
   visibility: {fileID: 114778403954723424}
 --- !u!114 &114049037414822336
 MonoBehaviour:
@@ -7587,7 +7583,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 224480837982674932}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.39406255
+  m_Size: 0.39406252
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13352,7 +13348,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0000038146973, y: 96.95001}
+  m_AnchoredPosition: {x: -0.0000038146973, y: 96.950005}
   m_SizeDelta: {x: 0, y: 160}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224612525681625322

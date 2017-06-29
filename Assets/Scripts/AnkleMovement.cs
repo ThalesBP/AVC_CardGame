@@ -112,7 +112,7 @@ public class AnkleMovement : MonoBehaviour {
     {
         Calibration(position);
 
-        float range, r;
+        float range;
         float cosAng, sinAng;
         Vector2 circle = Vector2.zero;
 

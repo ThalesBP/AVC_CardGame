@@ -24,8 +24,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public int CountDownCounter {get {return countDownCounter;}}
     public int scoreValue;
 
-    UnityEngine.Events.UnityAction StartLogAction;
-    UnityEngine.Events.UnityAction RestartAction;
+    private bool logging = false;
+
+    public ChallengeManager mainChallenge;
+    public List<ChallengeManager> subChallenges;
 
     void Start () 
     {
@@ -44,18 +46,27 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
         log = gameObject.AddComponent<Logger>();
 
-        StartLogAction = delegate {StartLog();};
-        RestartAction = delegate {Restart();};
+        user.playerButton.onClick.AddListener(delegate { mainChallenge.Plan = user.Plan; });
 
-        control.startButton.onClick.AddListener(StartLogAction);
-        control.stopButton.onClick.AddListener(delegate { StopLog(); });
+        mainChallenge = new ChallengeManager(new float[] { 0.2f, 0.5f, 0.2f, 0.1f });
+
+        subChallenges = new List<ChallengeManager>();
+        for (int i = 0; i < mainChallenge.Size; i++)
+        {
+            subChallenges.Add(new ChallengeManager(new float[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f }));
+        }
         #endregion
     }
 
     void Update ()
     {
         if (user.locked)
-            control.startButton.interactable = true;
+        {
+            if (control.gameStatus == Status.waitingMotion)
+                control.startButton.interactable = false;
+            else
+                control.startButton.interactable = true;
+        }
         else
             control.startButton.interactable = false;
 
@@ -63,8 +74,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             Cursor.visible = false;
         else
             Cursor.visible = true;
-//        else
-//            Cursor.SetCursor(mouseDefault, Vector2.zero, CursorMode.ForceSoftware);
 
         language = (int)chosenLanguage;
 		
@@ -89,6 +98,15 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 StartCountDown(CountDown);
                 break;
             case Status.playing:
+
+                if (!logging)
+                {
+                    log.StartFiles(user.managerDropdown.captionText.text, user.playerDropdown.captionText.text, user.memberDropdown.captionText.text); 
+                    user.visibility.MoveTo(-10f);
+                    user.visibility.locked = true;
+                    logging = true;
+                }
+
                 if (countDownCounter >= 0)
                 {
                     if (statusScale.Idle)
@@ -125,6 +143,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
                 break;
             case Status.end:
+                if (logging)
+                {
+                    log.Register(user.memberDropdown.captionText.text, control.gameTime, mainChallenge);
+                    user.visibility.locked = false;
+                    logging = false;
+                }
                 playStatus.text = endOfGameText[language];
                 statusScale.MoveTo(Vector3.one);
                 playStatus.color = YellowText;
@@ -156,26 +180,5 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public void StartCountDown(int time)
     {
         countDownCounter = time + 1;
-    }
-
-    private void StartLog()
-    {
-        log.StartFiles(user.managerDropdown.captionText.text, user.playerDropdown.captionText.text, user.memberDropdown.captionText.text); 
-        control.startButton.onClick.RemoveListener(StartLogAction);
-        user.visibility.MoveTo(-10f);
-        user.visibility.locked = true;
-    }
-
-    private void StopLog()
-    {
-        user.visibility.locked = false;
-        control.startButton.onClick.AddListener(RestartAction);
-    }
-
-    private void Restart()
-    {
-        user.visibility.locked = false;
-        control.startButton.onClick.RemoveListener(RestartAction);
-        control.startButton.onClick.AddListener(StartLogAction);
     }
 }

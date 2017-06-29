@@ -11,7 +11,7 @@ using System.Text;
 /// </summary>
 public class Logger : MonoBehaviour {
 
-    private string movementFile, chooseFile, messageFile, previousMessage;
+    private string logTime, movementFile, chooseFile, messageFile, previousMessage, historicFile;
     private Vector2 pos, vel, acc;
     private float time1, time0;
 
@@ -30,19 +30,20 @@ public class Logger : MonoBehaviour {
     {
         pos = vel = acc = Vector2.zero;
 
-        string logTime = DateTime.Now.ToString("yy-MM-dd HH-mm-ss");
+        logTime = DateTime.Now.ToString("yy-MM-dd HH-mm-ss");
+        Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
 
         movementFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - Movements.txt";
-        Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
-        File.WriteAllText (movementFile, "Time\t" +
+        File.WriteAllText (movementFile, 
+            "Time\t" +
             "Pos X\tPos Y\t" +
             "Vel X\tVel Y\t" +
             "Acc X\tAcc Y" +
             Environment.NewLine);
         
         chooseFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - Choices.txt";
-        Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
-        File.WriteAllText (chooseFile, "Choice\t" +
+        File.WriteAllText (chooseFile, 
+            "Choice\t" +
             "Time\t" +
             "N cards\t" +
             "Objective\t" +
@@ -55,10 +56,50 @@ public class Logger : MonoBehaviour {
             Environment.NewLine);
 
         messageFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - GameMessage.txt";
-        Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
-        File.WriteAllText (messageFile, "Time\t" +
+        File.WriteAllText (messageFile, 
+            "Time\t" +
             "Message" +
             Environment.NewLine);
+
+
+
+        historicFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - Historic.txt";
+        if(!File.Exists(historicFile))
+            File.WriteAllText (historicFile,
+                manager + "\t" + player + "\t" +
+                "Game Results\t\t\t\t\t" +
+                "Time to Choose\t\t\t" +
+                "Card Matches\t\t\t" +
+                "Movements Amplitude\t\t\t\t" +
+                "Movements Plan\t\t\t\t" +
+                "Movements Done\t\t\t\t" +
+                Environment.NewLine +
+                "Date\t" +
+                "Member\t" +
+                "Score\t" + 
+                "Win Rate\t" +
+                "Matches\t" +
+                "Turns\t" +
+                "Game Time\t" +
+                "Average Time\t" +
+                "Slowest Time\t" +
+                "Fastest Time\t" +
+                "Suit Matches\t" +
+                "Value Matches\t" +
+                "Color Mathes\t" +
+                "Plantar flexion\t" +
+                "Dorsiflexion\t" +
+                "Inversion\t" +
+                "Eversion\t" +
+                "Plantar flexion\t" +
+                "Dorsiflexion\t" +
+                "Inversion\t" +
+                "Eversion\t" +
+                "Plantar flexion\t" +
+                "Dorsiflexion\t" +
+                "Inversion\t" +
+                "Eversion\t" +
+                Environment.NewLine);
     }
 
     /// <summary>
@@ -139,5 +180,36 @@ public class Logger : MonoBehaviour {
 
         File.AppendAllText(chooseFile, Environment.NewLine);
 
+    }
+
+    public void Register(string member, float gameTime, ChallengeManager history)
+    {
+        File.AppendAllText(historicFile, 
+            logTime + "\t" +
+            member + "\t" +
+            Choice.totalPoints + "\t" +
+            (100f * Choice.totalMatches / Choice.orderCounter) + "\t" +
+            Choice.totalMatches + "\t" +
+            Choice.orderCounter + "\t" +
+            gameTime + "\t" +
+            Choice.averageTimeToChoose + "\t" +
+            Choice.rangeOfTime[0] + "\t" +
+            Choice.rangeOfTime[1] + "\t" +
+            (100f * Choice.suitCounter / Choice.orderCounter) + "\t" +
+            (100f * Choice.valueCounter / Choice.orderCounter) + "\t" +
+            (100f * Choice.colorCounter / Choice.orderCounter) + "\t" +
+            ControlManager.Instance.ankle.Max.y + "\t" +
+            ControlManager.Instance.ankle.Min.y + "\t" +
+            ControlManager.Instance.ankle.Min.x + "\t" +
+            ControlManager.Instance.ankle.Max.x + "\t" +
+            (100f * history.Plan[1]) + "\t" +
+            (100f * history.Plan[3]) + "\t" +
+            (100f * history.Plan[2])+ "\t" +
+            (100f * history.Plan[0]) + "\t" +
+            (100f * history.Done[1]) + "\t" +
+            (100f * history.Done[3]) + "\t" +
+            (100f * history.Done[2]) + "\t" +
+            (100f * history.Done[0]) + "\t" +
+            Environment.NewLine);
     }
 }

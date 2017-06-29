@@ -20,6 +20,14 @@ public class ChallengeManager {
         }
     }
 
+    public float[] Done
+    {
+        get
+        {
+            return rehabStat;
+        }
+    }
+
     public int Size
     {
         get 

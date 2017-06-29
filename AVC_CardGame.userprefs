@@ -1,16 +1,18 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\ControlManager.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Logger.cs">
     <Files>
-      <File FileName="Assets\Scripts\Dealer.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\Dealer.cs" Line="279" Column="38" />
       <File FileName="Assets\Scripts\Card.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\ControlPanel.cs" Line="262" Column="1" />
-      <File FileName="Assets\Scripts\ControlManager.cs" Line="48" Column="58" />
-      <File FileName="Assets\Scripts\Logger.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts\AnkleMovement.cs" Line="5" Column="43" />
-      <File FileName="Assets\Scripts\InterfaceManager.cs" Line="85" Column="5" />
+      <File FileName="Assets\Scripts\InterfaceManager.cs" Line="46" Column="12" />
+      <File FileName="Assets\Scripts\ControlPanel.cs" Line="148" Column="18" />
+      <File FileName="Assets\Scripts\ResultsPanel.cs" Line="38" Column="1" />
+      <File FileName="Assets\Scripts\ControlManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Scripts\ChallengeManager.cs" Line="28" Column="10" />
+      <File FileName="Assets\Scripts\Logger.cs" Line="207" Column="50" />
+      <File FileName="Assets\Scripts\AnkleMovement.cs" Line="115" Column="20" />
       <File FileName="Assets\Scripts\GameBase.cs" Line="76" Column="96" />
-      <File FileName="Assets\Scripts\HideShow.cs" Line="94" Column="1" />
+      <File FileName="Assets\Scripts\HideShow.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

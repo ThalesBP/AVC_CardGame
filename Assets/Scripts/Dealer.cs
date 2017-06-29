@@ -24,6 +24,8 @@ public class Dealer : GameBase {
     private int packCounter;        // Counter for positioning cards in a pack
     private int challengeNumber;    // Number of card in challange - It may be useless
     private bool onCard;            // Checks if mouse is on a card
+
+    [SerializeField]
     private Status nextStatus;      // Save the next status after wait moves
     [SerializeField]
     private Card aimedCard;
@@ -51,9 +53,6 @@ public class Dealer : GameBase {
     public float[] mainAngles;
     public float[] subAngles;
 
-    public ChallengeManager mainChallenge;
-    public List<ChallengeManager> subChallenges;
-
     void Start () 
     {
         choices = new List<Choice>();
@@ -70,19 +69,10 @@ public class Dealer : GameBase {
         timeToChoose = 0f;
         packCounter = 0;
         soundEffect = gameObject.GetComponent<AudioSource>();
-        interfaceManager.control.slider.onValueChanged.AddListener(delegate {EndTurn();} );
-        interfaceManager.user.playerButton.onClick.AddListener(delegate { mainChallenge.Plan = interfaceManager.user.Plan; });
+//        interfaceManager.control.slider.onValueChanged.AddListener(delegate {EndTurn();} );
 
         mainAngles = new float[] {0f, 90f, 180f, 270f};
         subAngles  = new float[] {-36f, -18f, 0f, 18f, 36f};
-
-        mainChallenge = new ChallengeManager(new float[] { 0.2f, 0.5f, 0.2f, 0.1f });
-
-        subChallenges = new List<ChallengeManager>();
-        for (int i = 0; i < mainChallenge.Size; i++)
-        {
-            subChallenges.Add(new ChallengeManager(new float[] { 0.2f, 0.2f, 0.2f, 0.2f, 0.2f }));
-        }
     }
 
 	void Update () 
@@ -90,48 +80,24 @@ public class Dealer : GameBase {
         switch (gameStatus)
         {
             case Status.newTurn:
-                interfaceManager.control.gameStatus = Status.endTurn;
+                interfaceManager.control.gameStatus = Status.newTurn;
+
+                if (interfaceManager.control.status == Status.end)
+                    gameStatus = Status.endGame;
+
                 Wait(interfaceManager.CountDownCounter + DeltaTime[VeryShort], Status.playerPlay);
+
                 challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
 
                 challengeCards = CreateHardDeck(challengeNumber);   // Creates a pack of challenge card with n cards
                 objectiveCard = CreateCard(challengeCards[0]); // Chose one card from challenge cards to be the objective card
-
-  /*              int p30, p20, p15, p5, p0, pT;
-                p30 = p20 = p15 = p5 = p0 = pT = 0;
-
-                foreach (Card card in challengeCards)
-                {
-                    pT++;
-                    switch (Choice.CheckPoints(card, objectiveCard))
-                    {
-                        case 30:
-                            p30++;
-                            break;
-                        case 20:
-                            p20++;
-                            break;
-                        case 15:
-                            p15++;
-                            break;
-                        case 5:
-                            p5++;
-                            break;
-                        case 0:
-                            p0++;
-                            break;
-                    }
-                }
-       /*         Debug.Log("30 Points: " + (100f * p30 / pT).ToString());
-                Debug.Log("20 Points: " + (100f * p20 / pT).ToString());
-                Debug.Log("15 Points: " + (100f * p15 / pT).ToString());
-                Debug.Log("5 Points: " + (100f * p5 / pT).ToString());
-                Debug.Log("0 Points: " + (100f * p0 / pT).ToString());
-                Debug.Log("Average Point: " + ((30f*p30 + 20f*p20 + 15f*p15 + 5f*p5) / (pT)).ToString() + " of 30");
-          */      
                 break;
             case Status.playerPlay:
                 interfaceManager.control.gameStatus = Status.playerPlay;
+
+                if (interfaceManager.control.status == Status.end)
+                    gameStatus = Status.endGame;
+
                 if ((FindCardPointed(cardsInGame) != null) && (player.Action))
                 {
                     objectiveCard.status = Card.Highlight.free;
@@ -176,8 +142,8 @@ public class Dealer : GameBase {
                             ChangeCards(challengeCards, Card.SuitType.miniSuit);
                             goto default;
                         default:
-                            int challenge = mainChallenge.Challenge;
-                            int challenge2 = subChallenges[challenge].Challenge;
+                            int challenge = interfaceManager.mainChallenge.Challenge;
+                            int challenge2 = interfaceManager.subChallenges[challenge].Challenge;
 
                             timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
 //                            timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber) * 360f / challengeNumber);    // Spread the cards on screen...
@@ -199,6 +165,10 @@ public class Dealer : GameBase {
                 break;
             case Status.playerChoice:
                 interfaceManager.control.gameStatus = Status.playerChoice;
+
+                if (interfaceManager.control.status == Status.end)
+                    goto case Status.endTurn;
+
                 if (Time.timeScale != 0f)
                 {
                     timeToChoose += Time.unscaledDeltaTime;
@@ -208,10 +178,16 @@ public class Dealer : GameBase {
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
             case Status.wrong:
+                interfaceManager.control.gameStatus = Status.wrong;
                 aimedCard.status = Card.Highlight.wrong;   // If chosen card is wrong, highlight it first
                 Wait(1.5f, Status.right);   // Waits x seconds before shows right cards
                 break;
             case Status.right:
+                interfaceManager.control.gameStatus = Status.right;
+
+                if (interfaceManager.control.status == Status.end)
+                    goto case Status.endTurn;
+
                 foreach (Card card in challengeCards)
                 {
                     if (card == objectiveCard)
@@ -243,11 +219,14 @@ public class Dealer : GameBase {
                 packCounter = 0;
                 timeToWait = HideCards(cardsInGame, 0f, 0f);
                 timeToWait = PackCards(cardsInGame, DeltaTime[Short], timeToWait);
-
                 if (interfaceManager.control.status == Status.end)
+                {
                     Wait(timeToWait, Status.endGame);
-                else 
+                }
+                else
+                {
                     Wait(timeToWait, Status.destroy);
+                }
                 break;
             case Status.destroy:
                 interfaceManager.control.gameStatus = Status.destroy;
@@ -255,9 +234,15 @@ public class Dealer : GameBase {
                 DestroyCard(objectiveCard);
                 cardsInGame.Clear();
                 packCounter = 0;
+
                 gameStatus = Status.newTurn;
                 goto case Status.newTurn;
             case Status.waitingMotion:
+                if (interfaceManager.control.status == Status.end)
+                {
+                    interfaceManager.control.gameStatus = Status.waitingMotion;
+                }
+                
                 if (waitCounter < timeToWait)
                     waitCounter += Time.deltaTime;
                 else
@@ -268,13 +253,17 @@ public class Dealer : GameBase {
                 }
                 break;
             case Status.endGame:
+                interfaceManager.control.gameStatus = Status.endGame;
                 if (interfaceManager.control.status != Status.end)
                 {
                     Debug.Log("Not end");
                     gameStatus = Status.destroy;
                 }
                 else
+                {
+                    Time.timeScale = 0f;
                     Debug.Log("End?");
+                }
                 break;
         }
         float orderCounter;
@@ -287,9 +276,6 @@ public class Dealer : GameBase {
         interfaceManager.control.metric1Value = 100f * Choice.suitCounter * orderCounter;
         interfaceManager.control.metric2Value = 100f * Choice.valueCounter * orderCounter;
         interfaceManager.control.metric3Value = 100f * Choice.colorCounter * orderCounter;
-
-        if (interfaceManager.control.status == Status.end)
-            EndTurn();
     }
 
     #region Generic functions
@@ -439,7 +425,7 @@ public class Dealer : GameBase {
     /// <summary>
     /// Ends the turn.
     /// </summary>
-    private void EndTurn()
+ /*   private void EndTurn()
     {
         switch (gameStatus)
         {
@@ -465,7 +451,7 @@ public class Dealer : GameBase {
                 gameStatus = Status.endTurn;
                 break;
         }
-    }
+    }*/
     #endregion
 
     #region Create and Destroy card functions
