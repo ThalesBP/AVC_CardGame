@@ -11,6 +11,30 @@ public class AnkleMovement : MonoBehaviour {
     public Vector2 bases, origin;       // Elliptic Movement's parameters
     public float elipseScale = 1.0f;    // Scale for elipse resulting Obs: Check if is necessary
 
+    public Vector3 Max
+    {
+        get
+        {
+            return Mathf.Rad2Deg * max;
+        }
+    }
+
+    public Vector3 Min
+    {
+        get
+        {
+            return Mathf.Rad2Deg * min;
+        }
+    }
+
+    public Vector3 Bases
+    {
+        get
+        {
+            return 2.0f * Mathf.Rad2Deg * bases;
+        }
+    }
+
     void Start()
     {
         Reset();

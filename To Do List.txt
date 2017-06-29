@@ -6,6 +6,7 @@ Nao usar TimeToWait global
 Log do plano de jogo e tabela de histórico
 Opção de calibragem - procedimento
 Solução pra "pé frouxo"
+Selecionar modo de jogo
 -----
 Ajuda visual: perguntar qual melhor forma
 
