@@ -1727,7 +1727,7 @@ GameObject:
   - component: {fileID: 222495262466783798}
   - component: {fileID: 114194651589186256}
   m_Layer: 9
-  m_Name: RobotCalibration
+  m_Name: MiniMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4720,6 +4720,8 @@ MonoBehaviour:
   fontSizeAdjust_M: 100
   status: 0
   gameStatus: 4
+  map: {fileID: 0}
+  miniMaptMat: {fileID: 2100000, guid: 621050d86a615e549aff2339803d83d0, type: 2}
   gameSpeed: 1
   gameTime: 0
   totalGameTime: 0
@@ -13348,7 +13350,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0000038146973, y: 96.950005}
+  m_AnchoredPosition: {x: -0.0000038146973, y: 96.95001}
   m_SizeDelta: {x: 0, y: 160}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224612525681625322

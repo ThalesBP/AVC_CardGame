@@ -192,35 +192,39 @@ public class Logger : MonoBehaviour {
 
     public void Register(string member, float gameTime, ChallengeManager history)
     {
-        File.AppendAllText(historicFile, 
-            logTime + "\t" +
-            member + "\t" +
-            Choice.totalPoints + "\t" +
-            (100f * Choice.totalMatches / Choice.orderCounter) + "\t" +
-            Choice.totalMatches + "\t" +
-            Choice.orderCounter + "\t" +
-            gameTime + "\t" +
-            Choice.averageTimeToChoose + "\t" +
-            Choice.rangeOfTime[0] + "\t" +
-            Choice.rangeOfTime[1] + "\t" +
-            (100f * Choice.suitCounter / Choice.orderCounter) + "\t" +
-            (100f * Choice.valueCounter / Choice.orderCounter) + "\t" +
-            (100f * Choice.colorCounter / Choice.orderCounter) + "\t" +
-            ControlManager.Instance.ankle.Max.y + "\t" +
-            ControlManager.Instance.ankle.Min.y + "\t" +
-            ControlManager.Instance.ankle.Min.x * sideMember + "\t" +
-            ControlManager.Instance.ankle.Max.x * sideMember + "\t" +
-            (100f * history.Plan[1]) + "\t" +
-            (100f * history.Plan[3]) + "\t" +
-
-            (100f * history.Plan[1 + sideMember])+ "\t" +
-            (100f * history.Plan[1 - sideMember]) + "\t" +
-
-            (100f * history.Done[1]) + "\t" +
-            (100f * history.Done[3]) + "\t" +
-
-            (100f * history.Done[1 + sideMember]) + "\t" +
-            (100f * history.Done[1 - sideMember]) + "\t" +
-            Environment.NewLine);
+        if (Choice.orderCounter == 0)
+        {
+            File.Delete(movementFile);
+            File.Delete(chooseFile);
+            File.Delete(messageFile);
+        }
+        else
+            File.AppendAllText(historicFile, 
+                logTime + "\t" +
+                member + "\t" +
+                Choice.totalPoints + "\t" +
+                (100f * Choice.totalMatches / Choice.orderCounter) + "\t" +
+                Choice.totalMatches + "\t" +
+                Choice.orderCounter + "\t" +
+                gameTime + "\t" +
+                Choice.averageTimeToChoose + "\t" +
+                Choice.rangeOfTime[0] + "\t" +
+                Choice.rangeOfTime[1] + "\t" +
+                (100f * Choice.suitCounter / Choice.orderCounter) + "\t" +
+                (100f * Choice.valueCounter / Choice.orderCounter) + "\t" +
+                (100f * Choice.colorCounter / Choice.orderCounter) + "\t" +
+                ControlManager.Instance.ankle.Max.y + "\t" +
+                ControlManager.Instance.ankle.Min.y + "\t" +
+                ControlManager.Instance.ankle.Min.x * sideMember + "\t" +
+                ControlManager.Instance.ankle.Max.x * sideMember + "\t" +
+                (100f * history.Plan[1]) + "\t" +
+                (100f * history.Plan[3]) + "\t" +
+                (100f * history.Plan[1 + sideMember])+ "\t" +
+                (100f * history.Plan[1 - sideMember]) + "\t" +
+                (100f * history.Done[1]) + "\t" +
+                (100f * history.Done[3]) + "\t" +
+                (100f * history.Done[1 + sideMember]) + "\t" +
+                (100f * history.Done[1 - sideMember]) + "\t" +
+                Environment.NewLine);
     }
 }

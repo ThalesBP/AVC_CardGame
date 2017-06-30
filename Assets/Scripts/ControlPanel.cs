@@ -28,6 +28,10 @@ public class ControlPanel : GameBase {
 
     private Text gameMessages;
 
+    public MiniMap map;
+    //[HideInInspector]
+    public Material miniMaptMat; //  Materials for minimap
+
     [Range(0.1f, 3.0f)]
     public float gameSpeed = 1f;
     public float gameTime;
@@ -68,6 +72,10 @@ public class ControlPanel : GameBase {
         metric3 = GameObject.Find("Metric3").GetComponentInChildren<Text>(true);
 
         gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>(true);
+
+        map = gameObject.AddComponent<MiniMap>();
+        map.mat = miniMaptMat;
+        map.space = GameObject.Find("MiniMap").GetComponentInChildren<RectTransform>(true);
 
         calibrateButton.onClick.AddListener(delegate { Calibrate(); });
         startButton.onClick.AddListener(delegate { SwitchStartPause(); });

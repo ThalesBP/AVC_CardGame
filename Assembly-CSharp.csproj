@@ -53,13 +53,13 @@
      <Compile Include="Assets\Scripts\Connection.cs" />
      <Compile Include="Assets\Scripts\ControlManager.cs" />
      <Compile Include="Assets\Scripts\ControlPanel.cs" />
-     <Compile Include="Assets\Scripts\DataManager.cs" />
      <Compile Include="Assets\Scripts\Dealer.cs" />
      <Compile Include="Assets\Scripts\Exit.cs" />
      <Compile Include="Assets\Scripts\GameBase.cs" />
      <Compile Include="Assets\Scripts\HideShow.cs" />
      <Compile Include="Assets\Scripts\InterfaceManager.cs" />
      <Compile Include="Assets\Scripts\Logger.cs" />
+     <Compile Include="Assets\Scripts\MiniMap.cs" />
      <Compile Include="Assets\Scripts\Motion.cs" />
      <Compile Include="Assets\Scripts\NetworkClient.cs" />
      <Compile Include="Assets\Scripts\NetworkClientTCP.cs" />

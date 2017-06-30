@@ -81,7 +81,7 @@ public class AnkleMovement : MonoBehaviour {
         cosAng = Mathf.Cos(ang);
         sinAng = Mathf.Sin(ang);
 
-        if (Mathf.Abs(cosAng) < Mathf.Epsilon)
+        if (Mathf.Abs(cosAng) < Mathf.Abs(sinAng))
             // (Y - OY)/SIN(T)/BY
             range = ((position.y - origin.y)/sinAng/bases.y);
         else
@@ -122,7 +122,7 @@ public class AnkleMovement : MonoBehaviour {
         cosAng = Mathf.Cos(ang);
         sinAng = Mathf.Sin(ang);
 
-        if (Mathf.Abs(cosAng) < Mathf.Epsilon)
+        if (Mathf.Abs(cosAng) < Mathf.Abs(sinAng))
             // (Y - OY)/SIN(T)/BY
             range = ((position.y - origin.y)/sinAng/bases.y);
         else

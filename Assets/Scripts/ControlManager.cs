@@ -11,6 +11,12 @@ public class ControlManager : Singleton<ControlManager> {
     private Vector2 position;
     private Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
 
+
+    [Range(-0.4f, 0.4f)]
+    public float simulateRobotX = 0.0f;
+    [Range(-0.6f, 0.6f)]
+    public float simulateRobotY = 0.0f;
+
     [SerializeField]
     private float scale = 0.45f * Screen.height;
 
@@ -19,7 +25,7 @@ public class ControlManager : Singleton<ControlManager> {
     [SerializeField]
     private bool actionCounting, actionTrigger;
 
-    public bool forceActionCounter = false;
+    public bool forceConnection = false;
     public bool joystick = false;
     public Connection connection;
     public AnkleMovement ankle;
@@ -27,6 +33,19 @@ public class ControlManager : Singleton<ControlManager> {
     public Vector2 Position
     {
         get { return position; }
+    }
+
+    public Vector2 RawPosition
+    {
+        get
+        {
+            if ((connection == null) && (!forceConnection))
+                return Position;
+            else if (forceConnection)
+                return new Vector2(simulateRobotX, simulateRobotY);
+            else
+                return connection.Position;
+        }
     }
 
     public float Loading
@@ -51,7 +70,7 @@ public class ControlManager : Singleton<ControlManager> {
 	// Update is called once per frame
 	void Update () 
     {
-        if (connection == null)
+        if ((connection == null) && (!forceConnection))
         {
             if (joystick)
                 position = new Vector2(Input.GetAxis("Horizontal") * 300f, Input.GetAxis("Vertical") * 300f) + center;
@@ -60,18 +79,21 @@ public class ControlManager : Singleton<ControlManager> {
         }
         else
         {
-            if (connection.connected)
-            {
-                if (connection.Position != null)
+            if (forceConnection)
+                position = scale * ankle.ElipseToCircle(new Vector2(simulateRobotX, simulateRobotY)) + center;
+            else                
+                if (connection.connected)
                 {
-                    Debug.Log(connection.Position);
-                    position = scale * ankle.ElipseToCircle(connection.Position) + center;
+                    if (connection.Position != null)
+                    {
+                        Debug.Log(connection.Position);
+                        position = scale * ankle.ElipseToCircle(connection.Position) + center;
+                    }
                 }
-            }
-            else
-            {
-                position = center;
-            }
+                else
+                {
+                        position = center;
+                }
         }
         if (actionCounting)
         {
@@ -95,7 +117,7 @@ public class ControlManager : Singleton<ControlManager> {
     /// <returns><c>true</c>, if action was gotten, <c>false</c> otherwise.</returns>
     private bool GetAction()
     {
-        if ((connection == null) && (!forceActionCounter))
+        if ((connection == null) && (!forceConnection))
             return Input.GetMouseButton(0);
         else
         {

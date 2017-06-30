@@ -106,7 +106,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     user.visibility.locked = true;
                     logging = true;
                 }
-
+                else
+                    log.Register(control.gameTime, gameMessageTexts[(int)control.status, language] + " - " + gameMessageTexts[(int)control.gameStatus, language]);
+                
                 if (countDownCounter >= 0)
                 {
                     if (statusScale.Idle)
@@ -136,10 +138,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 else
                 {
                     control.gameTime += Time.unscaledDeltaTime;
-                    if (control.connection == null)
-                        log.Register(control.gameTime, ControlManager.Instance.Position);
-                    else 
-                        log.Register(control.gameTime, control.connection.Position);
+                    log.Register(control.gameTime, ControlManager.Instance.RawPosition);
                 }
                 playStatus.transform.localScale = statusScale;
 
@@ -174,7 +173,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
         #endregion
 
-        log.Register(control.gameTime, gameMessageTexts[(int)control.status, language] + " - " + gameMessageTexts[(int)control.gameStatus, language]);
 	}
 
     /// <summary>
