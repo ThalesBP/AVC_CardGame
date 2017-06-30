@@ -353,7 +353,7 @@ public class Dealer : GameBase {
                 challengeCards[0].timeToTwinkle = 0f;
 
                 if (player.forceConnection)
-                    timeToChoose -= LoadingTime[Medium];
+                    timeToChoose -= LoadingTime[Medium] / Time.timeScale;
                 
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
 

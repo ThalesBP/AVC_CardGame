@@ -156,14 +156,10 @@ public class ControlPanel : GameBase {
                 {
                     FinishGame();
                 }
-//              gameMessage = Messages.gameRunning;
                 break;
             case Status.end:
                 start.text = restartText[language];
                 playTime.text = infTimeText[language];
-    //            gameMessage = Messages.showingResults;
-    //            gameMessages.text = gameMessageTexts[(int)gameMessage, language];
-
                 break;
         }
    //     gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
