@@ -4,7 +4,7 @@ Procurar por comentários "obs" ou "to check" entre outros
 Ajuste de dificuldade
 Solução pra "pé frouxo"
 Selecionar modo de jogo
-Mini mapa
+Calcular proporcional a tela todo o tempo
 -----
 Challenge Manager para os Card Challenge?
 Nao usar TimeToWait global ?

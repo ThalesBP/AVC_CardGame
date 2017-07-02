@@ -361,14 +361,22 @@ public class Dealer : GameBase {
 
                 interfaceManager.log.Register(interfaceManager.control.gameTime, choices[choices.Count - 1], aimedCard.position.Value, choicePosition);
 
-                // Verifies the closest angle in the plan
+                // Verifies the closest angle to a plan's angle
                 float angle = Mathf.Atan2(choicePosition.y, choicePosition.x) * Mathf.Rad2Deg;
+
                 int ang = VerifyCloserAngle(mainAngles, angle);
                 angle -= mainAngles[ang];
                 int ang2 = VerifyCloserAngle(subAngles, angle);
 
+                // Plan's angle
+                angle = Mathf.Deg2Rad * (mainAngles[ang] + subAngles[ang2]);
+                Vector3 planPosition = new Vector3(spreadRadius * Mathf.Cos(angle), spreadRadius * Mathf.Sin(angle), 0f);
+
                 interfaceManager.mainChallenge.AddChoice(ang);
                 interfaceManager.subChallenges[ang].AddChoice(ang2);
+
+                interfaceManager.control.map.choices.Add(Camera.current.WorldToScreenPoint(choicePosition) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
+                interfaceManager.control.map.challenges.Add(Camera.current.WorldToScreenPoint(planPosition) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
 
                 onCard = false;
                 timeToChoose = 0f;
@@ -797,7 +805,7 @@ public class Dealer : GameBase {
         angShare = 2f * Mathf.PI / deck.Count;
         foreach (Card card in deck)
         {
-            timeToDo = card.position.MoveTo(new Vector3(spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), 0), DeltaTime[Long], deck.IndexOf(card) * DeltaTime[Short]);
+            timeToDo = card.position.MoveTo(new Vector3(spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), 0f), DeltaTime[Long], deck.IndexOf(card) * DeltaTime[Short]);
         }
         return (timeToDo);
     }

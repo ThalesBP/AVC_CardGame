@@ -177,7 +177,7 @@ public class AnkleMovement : MonoBehaviour {
         cosAng = Mathf.Cos(ang);
         sinAng = Mathf.Sin(ang);
 
-        range = position.magnitude;
+        range = position.magnitude / sideSize;
 
         elipse.x = origin.x + range * cosAng * bases.x; // / elipseScale;
         elipse.y = origin.y + range * sinAng * bases.y; // / elipseScale;

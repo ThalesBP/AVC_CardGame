@@ -21,6 +21,8 @@ public class MiniMap : MonoBehaviour {
 
     private float colorRate, colorAlpha;
 
+    public List<Vector2> choices, challenges;
+
     void Start() 
     {
         ankleTrack = new List<Vector2> ();
@@ -32,6 +34,9 @@ public class MiniMap : MonoBehaviour {
         //        package = ControlManager.Instance.ankle;
 
         space = GameObject.Find("MiniMap").GetComponent<RectTransform>();
+
+        choices = new List<Vector2>();
+        challenges = new List<Vector2>();
     }
 
     void OnGUI() 
@@ -71,7 +76,7 @@ public class MiniMap : MonoBehaviour {
 
         // Black Dot for position
         GL.Color(Color.black);
-        point = origin + Vector2.Scale (ControlManager.Instance.RawPosition, size);
+        point = origin + Vector2.Scale (ControlManager.Instance.RawPosition * scale, size);
         ElipseForm (point, 0.02f*size);
         ElipseForm (point, 0.03f*size);
         CrossForm (point, 0.02f*size);
@@ -83,12 +88,24 @@ public class MiniMap : MonoBehaviour {
         else
             RectForm (origin + Vector2.Scale (package.centerSpring - new Vector2(package.freeSpace.x, -package.freeSpace.y), size), Vector2.Scale (package.freeSpace, size) * 2);
         CrossForm (origin + Vector2.Scale (package.centerSpring, size), 0.02f*size);
-            
-        // Red Dot for enemy
-        GL.Color(Color.red);
-        ElipseForm (origin + Vector2.Scale (package.enemyPos, size), 0.02f*size);
-        CrossForm (origin + Vector2.Scale (package.enemyPos, size), 0.02f*size);
 */
+        // Red Dot for choices
+
+        for (int i = 0; i < choices.Count; i++)
+        {
+            GL.Color(Color.red);
+            ElipseForm(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(choices[i], 0.45f * Screen.height) * scale, size), 0.02f * size);
+            CrossForm(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(choices[i], 0.45f * Screen.height) * scale, size), 0.02f * size);
+        }
+        for (int i = 0; i < challenges.Count; i++)
+        {
+            GL.Color(Color.green);
+            ElipseForm(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(challenges[i], 0.45f * Screen.height) * scale, size), 0.01f * size);
+            CrossForm(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(challenges[i], 0.45f * Screen.height) * scale, size), 0.01f * size);
+
+            Line(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(choices[i], 0.45f * Screen.height) * scale, size),
+                origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(challenges[i], 0.45f * Screen.height) * scale, size));
+        }
         // Record the track
         if (recTime <= 0f)
         {
