@@ -7,8 +7,11 @@ using UnityEngine;
 /// </summary>
 public class ControlManager : Singleton<ControlManager> {
 
+    public enum ControlMode {Mouse, Joystick, Connection, ForceConnection};
+    public ControlMode mode;
+
     [SerializeField]
-    private Vector2 position;
+    private Vector2 position = Vector2.zero;
     private Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
 
 
@@ -39,12 +42,19 @@ public class ControlManager : Singleton<ControlManager> {
     {
         get
         {
-            if ((connection == null) && (!forceConnection))
-                return Position;
-            else if (forceConnection)
-                return new Vector2(simulateRobotX, simulateRobotY);
-            else
-                return connection.Position;
+            switch (mode)
+            {
+                case ControlMode.Connection:
+                    return connection.Position;
+                case ControlMode.ForceConnection:
+                    return new Vector2(simulateRobotX, simulateRobotY);
+                case ControlMode.Joystick:
+                    return Position;
+                case ControlMode.Mouse:
+                    return ankle.CircleToElipse((Position - center).normalized * Mathf.Clamp((Position - center).magnitude, 0f, Screen.height * 0.45f), Screen.height * 0.45f);
+                default:
+                    return Vector2.zero;
+            }
         }
     }
 
@@ -73,31 +83,34 @@ public class ControlManager : Singleton<ControlManager> {
         center = new Vector2(Screen.width / 2f, Screen.height / 2f);
         scale = 0.45f * Screen.height;
 
-        if ((connection == null) && (!forceConnection))
-        {
-            if (joystick)
-                position = new Vector2(Input.GetAxis("Horizontal") * 300f, Input.GetAxis("Vertical") * 300f) + center;
-            else
-                position = Input.mousePosition;
-        }
+        if (connection != null)
+            mode = ControlMode.Connection;
+        else if (forceConnection)
+            mode = ControlMode.ForceConnection;
+        else if (joystick)
+            mode = ControlMode.Joystick;
         else
+            mode = ControlMode.Mouse;
+
+        switch (mode)
         {
-            if (forceConnection)
+            case ControlMode.Connection:
+                if (!connection.connected)
+                    ankle.Reset();
+                position = scale * ankle.ElipseToCircle(connection.Position) + center;
+                break;
+            case ControlMode.ForceConnection:
                 position = scale * ankle.ElipseToCircle(new Vector2(simulateRobotX, simulateRobotY)) + center;
-            else                
-                if (connection.connected)
-                {
-                    if (connection.Position != null)
-                    {
-                        Debug.Log(connection.Position);
-                        position = scale * ankle.ElipseToCircle(connection.Position) + center;
-                    }
-                }
-                else
-                {
-                        position = center;
-                }
+                break;
+            case ControlMode.Joystick:
+                position = new Vector2(Input.GetAxis("Horizontal") * 300f, Input.GetAxis("Vertical") * 300f) + center;
+                break;
+            case ControlMode.Mouse:
+                ankle.SetRadius(0.5f);
+                position = Input.mousePosition;
+                break;
         }
+
         if (actionCounting)
         {
             actionCounter += Time.deltaTime;
@@ -120,23 +133,24 @@ public class ControlManager : Singleton<ControlManager> {
     /// <returns><c>true</c>, if action was gotten, <c>false</c> otherwise.</returns>
     private bool GetAction()
     {
-        if ((connection == null) && (!forceConnection))
-            return Input.GetMouseButton(0);
-        else
+        switch (mode)
         {
-            actionCounting = true;
-            if (actionTrigger)
-            {
-                actionTrigger = false;
-                actionCounting = false;
-                actionCounter = actionCheck = 0f;       
-                return true;
-            }
-            else
-            {
-                actionCheck = actionCounter;
-                return false;
-            }
+            case ControlMode.Mouse:
+                return Input.GetMouseButton(0);
+            default:
+                actionCounting = true;
+                if (actionTrigger)
+                {
+                    actionTrigger = false;
+                    actionCounting = false;
+                    actionCounter = actionCheck = 0f;       
+                    return true;
+                }
+                else
+                {
+                    actionCheck = actionCounter;
+                    return false;
+                }
         }
     }
 }

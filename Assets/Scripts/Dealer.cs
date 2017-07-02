@@ -7,10 +7,8 @@ using UnityEngine;
 /// </summary>
 public class Dealer : GameBase {
 
-    public enum GameMode {Basic, Memory, MultiSuits, CountSuits}
-
     [SerializeField]
-    GameMode mode = GameMode.Basic;
+    public GameMode mode = GameMode.Basic;
 
     [SerializeField]
     private Status gameStatus;      // interfaceManager.controls the game phases
@@ -77,6 +75,8 @@ public class Dealer : GameBase {
 
 	void Update () 
     {
+        mode = (GameMode)interfaceManager.control.gameMode.value;
+
         switch (gameStatus)
         {
             case Status.newTurn:
@@ -307,7 +307,7 @@ public class Dealer : GameBase {
     /// </summary>
     /// <returns>The card pointed or null.</returns>
     /// <param name="deck">Deck of card to be checked.</param>
-    private Vector2 FindPlacePointed()
+    private Vector3 FindPlacePointed()
     {
         Ray camRay = Camera.main.ScreenPointToRay (player.Position);
         RaycastHit hit;
@@ -315,7 +315,7 @@ public class Dealer : GameBase {
         if (Physics.Raycast(camRay, out hit, 50f, cardMask))
             return hit.point;
         else
-            return Vector2.zero;
+            return Vector3.zero;
     }
 
     /// <summary>
@@ -357,12 +357,12 @@ public class Dealer : GameBase {
                 
                 choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
 
-                Vector2 choicePosition = FindPlacePointed();
+                Vector3 choicePosition = FindPlacePointed();
 
                 interfaceManager.log.Register(interfaceManager.control.gameTime, choices[choices.Count - 1], aimedCard.position.Value, choicePosition);
 
                 // Verifies the closest angle to a plan's angle
-                float angle = Mathf.Atan2(choicePosition.y, choicePosition.x) * Mathf.Rad2Deg;
+                float angle = Atan2(choicePosition.y, choicePosition.x) * Mathf.Rad2Deg;
 
                 int ang = VerifyCloserAngle(mainAngles, angle);
                 angle -= mainAngles[ang];
@@ -375,11 +375,12 @@ public class Dealer : GameBase {
                 interfaceManager.mainChallenge.AddChoice(ang);
                 interfaceManager.subChallenges[ang].AddChoice(ang2);
 
-                choicePosition = ControlManager.Instance.ankle.CircleToElipse(choicePosition, 0.45f * Screen.height);
-                planPosition= ControlManager.Instance.ankle.CircleToElipse(planPosition, 0.45f * Screen.height);
-
-                interfaceManager.control.map.choices.Add(Camera.current.WorldToScreenPoint(choicePosition) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
-                interfaceManager.control.map.challenges.Add(Camera.current.WorldToScreenPoint(planPosition) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
+                interfaceManager.control.map.choices.Add((Vector2)
+                    ControlManager.Instance.ankle.CircleToElipse(Camera.main.WorldToScreenPoint(choicePosition)
+                        - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f), 0.45f * Screen.height));
+                interfaceManager.control.map.challenges.Add((Vector2)
+                    ControlManager.Instance.ankle.CircleToElipse(Camera.main.WorldToScreenPoint(planPosition)
+                        - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f), 0.45f * Screen.height));
 
                 onCard = false;
                 timeToChoose = 0f;

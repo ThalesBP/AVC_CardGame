@@ -41,7 +41,10 @@ public class Connection : MonoBehaviour {
     {
         get
         {
-            return (int)robotStatus;
+            if (connected)
+                return (int)robotStatus;
+            else
+                return -1;
         }
     }
 
@@ -49,7 +52,10 @@ public class Connection : MonoBehaviour {
     {
         get 
         {
-            return  new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.position], robotStade[(int)Axis.vertical][(int)GameIndex.position]);
+            if (connected)
+                return  new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.position], robotStade[(int)Axis.vertical][(int)GameIndex.position]);
+            else
+                return Vector2.zero;
         }
     }
 
@@ -57,7 +63,10 @@ public class Connection : MonoBehaviour {
     {
         get 
         {
-            return new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.velocity], robotStade[(int)Axis.vertical][(int)GameIndex.velocity]);
+            if (connected)
+                return new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.velocity], robotStade[(int)Axis.vertical][(int)GameIndex.velocity]);
+            else
+                return Vector2.zero;
         }
     }
 
@@ -65,7 +74,10 @@ public class Connection : MonoBehaviour {
     {
         get 
         {
-            return new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.acc], robotStade[(int)Axis.vertical][(int)GameIndex.acc]);
+            if (connected)
+                return new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.acc], robotStade[(int)Axis.vertical][(int)GameIndex.acc]);
+            else
+                return Vector2.zero;
         }
     }
 
@@ -73,7 +85,10 @@ public class Connection : MonoBehaviour {
     {
         get 
         {
-            return new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.force], robotStade[(int)Axis.vertical][(int)GameIndex.force]);
+            if (connected)
+                return new Vector2(robotStade[(int)Axis.horizontal][(int)GameIndex.force], robotStade[(int)Axis.vertical][(int)GameIndex.force]);
+            else
+                return Vector2.zero;
         }
     }
 
@@ -81,12 +96,11 @@ public class Connection : MonoBehaviour {
     {
         get
         { 
-            return (GameStatus)RobotStatus;
+            return (GameStatus)BitConverter.ToInt16(gameStatus, 0);
         }
         set 
         {
-            value = Status;
-            SetStatus((short)Status);
+            SetStatus((short)value);
         }
     }
 
@@ -94,49 +108,54 @@ public class Connection : MonoBehaviour {
     {
         get
         { 
-            return CenterSpring; 
+            return new Vector2(BitConverter.ToSingle(gameStade[(int)Axis.horizontal][(int)RobotIndex.centerspring], 0), BitConverter.ToSingle(gameStade[(int)Axis.vertical][(int)RobotIndex.centerspring], 0));
         }
         set 
         {
-            SetStatus((int)Axis.horizontal, (int)RobotIndex.centerspring, CenterSpring.x);
-            SetStatus((int)Axis.vertical, (int)RobotIndex.centerspring, CenterSpring.y);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.centerspring, value.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.centerspring, value.y);
         }
     }
 
     public Vector2 FreeSpace
     {
-        get{ 
-            return FreeSpace; 
+        get
+        { 
+            return new Vector2(BitConverter.ToSingle(gameStade[(int)Axis.horizontal][(int)RobotIndex.freespace], 0), BitConverter.ToSingle(gameStade[(int)Axis.vertical][(int)RobotIndex.freespace], 0));
         }
         set 
         {
-            SetStatus((int)Axis.horizontal, (int)RobotIndex.freespace, FreeSpace.x);
-            SetStatus((int)Axis.vertical, (int)RobotIndex.freespace, FreeSpace.y);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.freespace, value.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.freespace, value.y);
         }
     }
 
     public Vector2 Stiffness
     {
-        get{ 
-            return Stiffness; 
+        get
+        { 
+            return new Vector2(BitConverter.ToSingle(gameStade[(int)Axis.horizontal][(int)RobotIndex.stiff], 0), BitConverter.ToSingle(gameStade[(int)Axis.vertical][(int)RobotIndex.stiff], 0));
         }
         set 
         {
-            SetStatus((int)Axis.horizontal, (int)RobotIndex.stiff, Stiffness.x);
-            SetStatus((int)Axis.vertical, (int)RobotIndex.stiff, Stiffness.y);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.stiff, value.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.stiff, value.y);
         }
+
     }
 
     public Vector2 Damping
     {
-        get{ 
-            return Damping; 
+        get
+        { 
+            return new Vector2(BitConverter.ToSingle(gameStade[(int)Axis.horizontal][(int)RobotIndex.damp], 0), BitConverter.ToSingle(gameStade[(int)Axis.vertical][(int)RobotIndex.damp], 0));
         }
         set 
         {
-            SetStatus((int)Axis.horizontal, (int)RobotIndex.damp, Damping.x);
-            SetStatus((int)Axis.vertical, (int)RobotIndex.damp, Damping.y);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.damp, value.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.damp, value.y);
         }
+
     }
 
     public bool connected;
@@ -152,7 +171,8 @@ public class Connection : MonoBehaviour {
 
 	void Start()
 	{
-		connectingThread = new Thread (Connect);
+        robotStatus = -1;
+        connectingThread = new Thread (Connect);
 		connectingThread.Start ();
 		if (clientHere.IsConnected ())
 			connectStatus = ConnectStatus.connected;

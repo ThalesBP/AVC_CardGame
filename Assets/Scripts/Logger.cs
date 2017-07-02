@@ -167,8 +167,8 @@ public class Logger : MonoBehaviour {
 
         Vector2 obj, cho;
 
-        obj = new Vector2(objPos.magnitude, Mathf.Atan2(objPos.y, objPos.x)) * Mathf.Rad2Deg;
-        cho = new Vector2(choicePos.magnitude, Mathf.Atan2(choicePos.y, choicePos.x)) * Mathf.Rad2Deg;
+        obj = new Vector2(objPos.magnitude, GameBase.Atan2(objPos.y, objPos.x)) * Mathf.Rad2Deg;
+        cho = new Vector2(choicePos.magnitude, GameBase.Atan2(choicePos.y, choicePos.x)) * Mathf.Rad2Deg;
 
         if (choice.match)
             match = 1;

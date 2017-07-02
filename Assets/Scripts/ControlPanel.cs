@@ -18,8 +18,9 @@ public class ControlPanel : GameBase {
     private Text stop;
     private Text playTime;
     private Text playTimeInput;
-    private Text help;
+    private Text modeText;
     private Text sliderText;
+    private Text help;
 
     // Transform in list later
     private Text metric1;
@@ -45,8 +46,9 @@ public class ControlPanel : GameBase {
     public ResultsPanel results;
     public Button connectButton, calibrateButton, startButton, stopButton;
     public InputField playTimeField;
-    public Toggle helpToggle;
+    public Dropdown gameMode;
     public Slider slider;
+    public Toggle helpToggle;
 
     public Connection connection;
     public bool calibrating;
@@ -64,8 +66,9 @@ public class ControlPanel : GameBase {
         stop = GameObject.Find("Stop").GetComponentInChildren<Text>(true);
         playTime = GameObject.Find("PlayTimePlaceholder").GetComponentInChildren<Text>(true);
         playTimeInput = GameObject.Find("PlayTime").GetComponentInChildren<Text>(true);
-        help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>(true);
+        modeText = GameObject.Find("GameModeText").GetComponentInChildren<Text>(true);
         sliderText = GameObject.Find("SliderText").GetComponentInChildren<Text>(true);
+        help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>(true);
 
         metric1 = GameObject.Find("Metric1").GetComponentInChildren<Text>(true);
         metric2 = GameObject.Find("Metric2").GetComponentInChildren<Text>(true);
@@ -162,6 +165,13 @@ public class ControlPanel : GameBase {
                 playTime.text = infTimeText[language];
                 break;
         }
+
+        modeText.text = gameModeText[language];
+        for (int option = 0; option < numOfGameModes; option++)
+        {
+            gameMode.options[option].text = gameModeTexts[option, language];
+        }
+        gameMode.RefreshShownValue();
    //     gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
 	}
 

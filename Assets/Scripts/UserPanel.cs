@@ -312,7 +312,7 @@ public class UserPanel : GameBase {
         left.text = planFactors[2].ToString("F1") + "%";
         botton.text = planFactors[3].ToString("F1") + "%";
 
-        for (int option = 0; option < memberDropdown.options.Count; option++)
+        for (int option = 0; option < numOfMembers; option++)
         {
             memberDropdown.options[option].text = limbTexts[option, language];
         }

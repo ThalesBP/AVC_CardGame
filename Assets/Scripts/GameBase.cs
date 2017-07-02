@@ -33,6 +33,18 @@ public class GameBase : MonoBehaviour {
     protected static Vector3 valueScale = new Vector3(0.015f, 0.01f, 0.4f);
     #endregion
 
+    #region Game Modes
+    protected static readonly int numOfGameModes = 4; // Number of game modes
+    public enum GameMode {Basic, Memory, MultiSuits, CountSuits};
+    protected static readonly string[,] gameModeTexts =
+        {
+                {"Basic", "Básico"},
+                {"Memory", "Memória"},
+                {"Multi Suits", "Múltiplos Naipes"},
+                {"Count Suits", "Contar Naipes"}
+        };
+    #endregion
+
     #region Time informations
     protected static readonly float[] LoadingTime = {0.1f, 0.5f, 1.25f, 2.5f, 3.5f, 5f, 8f};
     protected static readonly float[] DeltaTime = { 0.1f, 0.25f, 0.5f, 0.75f, 1f, 1.5f };
@@ -102,8 +114,9 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] stopText = { "Stop", "Parar" };
     protected static readonly string[] playTimeText = { "Play time in minutes", "Tempo de jogo em minutos" };
     protected static readonly string[] infTimeText = { "Infinite game time", "Tempo de jogo infinito" };
-    protected static readonly string[] helpText = { "Visual Help", "Ajuda Visual" };
+    protected static readonly string[] gameModeText = { "Game Mode", "Modo de Jogo" };
     protected static readonly string[] cardsText = { "Cards", "Cartas" };
+    protected static readonly string[] helpText = { "Visual Help", "Ajuda Visual" };
     // User panel
     protected static readonly string[] userPanelText = { "User", "Usuário" };
     protected static readonly string[] insertUserText = { "Insert user", "Insira usuário" };
@@ -121,6 +134,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] chooseText = { "Choose", "Escolher" };
     protected static readonly string[] changeText = { "Change", "Mudar" };
 
+    protected static readonly int numOfMembers = 2; // The N first member in the list
     public enum Limbs { rightHand, leftHand, rightFoot, leftFoot };
     protected static readonly string[,] limbTexts = 
         {
@@ -377,5 +391,16 @@ public class GameBase : MonoBehaviour {
         }
 
         return index;
+    }
+
+    static public float Atan2(float y, float x)
+    {
+        if (x == 0f)
+        if (y > 0f)
+            return Mathf.PI / 2f;
+        else
+            return Mathf.PI * 3f / 2f;
+        else
+            return Mathf.Atan2(y, x);
     }
 }

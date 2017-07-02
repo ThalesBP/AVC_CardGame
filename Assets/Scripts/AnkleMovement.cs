@@ -54,12 +54,19 @@ public class AnkleMovement : MonoBehaviour {
         origin = (max + min) / 2;
     }
 
-    public void Reset()
+    public void SetRadius(float radius)
     {
-        min = new Vector2(-Mathf.Epsilon, -Mathf.Epsilon);
-        max = new Vector2(Mathf.Epsilon, Mathf.Epsilon);
+        float absRadius = Mathf.Abs(radius);
+
+        min = new Vector2(-absRadius, -absRadius);
+        max = new Vector2(absRadius, absRadius);
         bases = max;
         origin = Vector2.zero;
+    }
+
+    public void Reset()
+    {
+        SetRadius(Mathf.Epsilon);
     }
 
     /// <summary>
@@ -76,7 +83,7 @@ public class AnkleMovement : MonoBehaviour {
         Vector2 square = Vector2.zero;
 
         // ATAN2(((X-OX)*BY);((Y-OY)*BX))
-        float ang = Mathf.Atan2 ((position.y - origin.y) * bases.x, (position.x - origin.x)*bases.y);
+        float ang = GameBase.Atan2 ((position.y - origin.y) * bases.x, (position.x - origin.x)*bases.y);
 
         cosAng = Mathf.Cos(ang);
         sinAng = Mathf.Sin(ang);
@@ -117,7 +124,7 @@ public class AnkleMovement : MonoBehaviour {
         Vector2 circle = Vector2.zero;
 
         // ATAN2(((X-OX)*BY);((Y-OY)*BX))
-        float ang = Mathf.Atan2 ((position.y - origin.y) * bases.x, (position.x - origin.x)*bases.y);
+        float ang = GameBase.Atan2 ((position.y - origin.y) * bases.x, (position.x - origin.x)*bases.y);
 
         cosAng = Mathf.Cos(ang);
         sinAng = Mathf.Sin(ang);
@@ -142,21 +149,23 @@ public class AnkleMovement : MonoBehaviour {
     public Vector2 SquareToElipse(Vector2 position, float sideSize)
     {
         float range;
-        float cosAng, sinAng;
+//        float cosAng, sinAng;
         Vector2 elipse = Vector2.zero;
 
         // ATAN2(((X-OX)*BY);((Y-OY)*BX))
-        float ang = Mathf.Atan2 (position.y, position.x);
+   //     float ang = GameBase.Atan2 (position.y, position.x);
 
-        cosAng = Mathf.Cos(ang);
-        sinAng = Mathf.Sin(ang);
+  //      cosAng = Mathf.Cos(ang);
+  //      sinAng = Mathf.Sin(ang);
 
         range = Mathf.Abs(position.x) > Mathf.Abs(position.y) ?
             Mathf.Abs(position.x / sideSize) :
             Mathf.Abs(position.y / sideSize);
 
-        elipse.x = origin.x + range * cosAng * bases.x; // / elipseScale;
-        elipse.y = origin.y + range * sinAng * bases.y; // / elipseScale;
+        elipse = origin + range * Vector2.Scale(position.normalized, bases);
+
+  //      elipse.x = origin.x + range * cosAng * bases.x; // / elipseScale;
+  //      elipse.y = origin.y + range * sinAng * bases.y; // / elipseScale;
         return (elipse);
     }
 
@@ -168,19 +177,20 @@ public class AnkleMovement : MonoBehaviour {
     public Vector2 CircleToElipse(Vector2 position, float sideSize)
     {
         float range;
-        float cosAng, sinAng;
+//        float cosAng, sinAng;
         Vector2 elipse = Vector2.zero;
 
-        // ATAN2(((X-OX)*BY);((Y-OY)*BX))
-        float ang = Mathf.Atan2 (position.y, position.x);
 
-        cosAng = Mathf.Cos(ang);
-        sinAng = Mathf.Sin(ang);
+        // ATAN2(((X-OX)*BY);((Y-OY)*BX))
+    //    float ang = GameBase.Atan2 (position.y, position.x);
+
+  //      cosAng = Mathf.Cos(ang);
+//        sinAng = Mathf.Sin(ang);
 
         range = position.magnitude / sideSize;
+        elipse = origin + range * Vector2.Scale(position.normalized, bases);
 
-        elipse.x = origin.x + range * cosAng * bases.x; // / elipseScale;
-        elipse.y = origin.y + range * sinAng * bases.y; // / elipseScale;
+        //elipse = new Vector2(origin.x + range * cosAng * bases.x, elipse.y = origin.y + range * sinAng * bases.y); // / elipseScale;
         return (elipse);
     }
 
