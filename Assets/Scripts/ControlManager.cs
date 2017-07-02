@@ -70,6 +70,9 @@ public class ControlManager : Singleton<ControlManager> {
 	// Update is called once per frame
 	void Update () 
     {
+        center = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        scale = 0.45f * Screen.height;
+
         if ((connection == null) && (!forceConnection))
         {
             if (joystick)

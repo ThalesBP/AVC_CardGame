@@ -94,17 +94,17 @@ public class MiniMap : MonoBehaviour {
         for (int i = 0; i < choices.Count; i++)
         {
             GL.Color(Color.red);
-            ElipseForm(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(choices[i], 0.45f * Screen.height) * scale, size), 0.02f * size);
-            CrossForm(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(choices[i], 0.45f * Screen.height) * scale, size), 0.02f * size);
+            ElipseForm(origin + Vector2.Scale(choices[i] * scale, size), 0.02f * size);
+            CrossForm(origin + Vector2.Scale(choices[i] * scale, size), 0.02f * size);
         }
         for (int i = 0; i < challenges.Count; i++)
         {
             GL.Color(Color.green);
-            ElipseForm(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(challenges[i], 0.45f * Screen.height) * scale, size), 0.01f * size);
-            CrossForm(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(challenges[i], 0.45f * Screen.height) * scale, size), 0.01f * size);
+            ElipseForm(origin + Vector2.Scale(challenges[i] * scale, size), 0.01f * size);
+            CrossForm(origin + Vector2.Scale(challenges[i] * scale, size), 0.01f * size);
 
-            Line(origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(choices[i], 0.45f * Screen.height) * scale, size),
-                origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(challenges[i], 0.45f * Screen.height) * scale, size));
+            Line(origin + Vector2.Scale(choices[i] * scale, size),
+                origin + Vector2.Scale(challenges[i] * scale, size));
         }
         // Record the track
         if (recTime <= 0f)

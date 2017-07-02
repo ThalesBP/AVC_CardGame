@@ -375,6 +375,9 @@ public class Dealer : GameBase {
                 interfaceManager.mainChallenge.AddChoice(ang);
                 interfaceManager.subChallenges[ang].AddChoice(ang2);
 
+                choicePosition = ControlManager.Instance.ankle.CircleToElipse(choicePosition, 0.45f * Screen.height);
+                planPosition= ControlManager.Instance.ankle.CircleToElipse(planPosition, 0.45f * Screen.height);
+
                 interfaceManager.control.map.choices.Add(Camera.current.WorldToScreenPoint(choicePosition) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
                 interfaceManager.control.map.challenges.Add(Camera.current.WorldToScreenPoint(planPosition) - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
 
