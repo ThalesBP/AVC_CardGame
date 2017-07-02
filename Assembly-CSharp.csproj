@@ -68,7 +68,29 @@
      <Compile Include="Assets\Scripts\Singleton.cs" />
      <Compile Include="Assets\Scripts\UserManager.cs" />
      <Compile Include="Assets\Scripts\UserPanel.cs" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-16-02 - Choices.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 14-50-46 - Movements.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-12-00 - GameMessage.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 14-50-46 - Choices.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-20-57 - GameMessage.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 14-55-03 - GameMessage.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 14-55-03 - Movements.txt" />
      <None Include="Assets\Shaders\Text3D.shader" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-24-59 - GameMessage.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-16-02 - GameMessage.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-24-59 - Movements.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-12-00 - Movements.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 14-53-26 - GameMessage.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 14-53-26 - Choices.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-20-57 - Choices.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Historic.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 14-55-03 - Choices.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 14-53-26 - Movements.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-24-59 - Choices.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-16-02 - Movements.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 14-50-46 - GameMessage.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-20-57 - Movements.txt" />
+     <None Include="Assets\Logs\Valéria Elui\Glauco Caurin - Left foot - 17-07-02 15-12-00 - Choices.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>D:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

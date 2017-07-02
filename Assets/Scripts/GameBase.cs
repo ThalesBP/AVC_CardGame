@@ -157,6 +157,7 @@ public class GameBase : MonoBehaviour {
         endTurn,            // Turn has ended
         destroy,            // Destroy objects
         waitingMotion,      // Waiting current motion
+        idle,               // No motion
         endGame,            // End current match
         connecting,         // Trying to connect to robot
         connected,          // Connected to robot
@@ -178,7 +179,8 @@ public class GameBase : MonoBehaviour {
             {"Wrong choose", "Escolha errada"},
             {"Turn ended", "Turno terminando"},
             {"Destroying elements", "Destruindo elementos"},
-            {"Moving to", "Movendo para"},
+            {"Moving", "Movendo"},
+            {"Not Moving", "Não Movendo"},
             {"Match ended", "Partida encerrada"},
             {"Connecting", "Conectando"},
             {"Connected", "Conectado"},
