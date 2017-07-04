@@ -53,10 +53,15 @@ public class Logger : MonoBehaviour {
         File.WriteAllText (chooseFile, 
             "Choice\t" +
             "Time\t" +
+            "Game Mode\t" +
             "N cards\t" +
             "Objective\t" +
             "Choice\t" +
             "Match\t" +
+            "Value Points\t" +
+            "Suit Points\t" + 
+            "Color Points\t" + 
+            "Total Points\t" +
             "Precision\t" +
             "Time to Play\t" +
             "Time to Memorize\t" +
@@ -95,14 +100,14 @@ public class Logger : MonoBehaviour {
                 "Turns\t" +
                 "Game Time\t" +
                 "Average Time\t" +
-                "Slowest Time\t" +
                 "Fastest Time\t" +
+                "Slowest Time\t" +
                 "Average Time\t" +
-                "Slowest Time\t" +
                 "Fastest Time\t" +
+                "Slowest Time\t" +
                 "Average Time\t" +
-                "Slowest Time\t" +
                 "Fastest Time\t" +
+                "Slowest Time\t" +
                 "Suit Matches\t" +
                 "Value Matches\t" +
                 "Color Mathes\t" +
@@ -172,7 +177,7 @@ public class Logger : MonoBehaviour {
     /// <param name="choice">Current choice.</param>
     /// <param name="angObjective">Objective position.</param>
     /// <param name="angChoice">Choice position.</param>
-    public void Register(float time, Choice choice, Vector2 objPos, Vector2 choicePos)
+    public void Register(float time, string gameMode, Choice choice, Vector2 objPos, Vector2 choicePos)
     {
         int match = 0;
 
@@ -187,10 +192,15 @@ public class Logger : MonoBehaviour {
         File.AppendAllText(chooseFile, 
             choice.order + "\t"
             + time + "\t"
+            + gameMode + "\t"
             + choice.numOptions + "\t" 
             + choice.objectiveCard + "\t"
             + choice.choiceCard + "\t"
             + match + "\t"
+            + choice.valueMatch + "\t"
+            + choice.suitMatch + "\t"
+            + choice.colorMatch + "\t"
+            + choice.pointMatch + "\t"
             + Choice.precision + "\t"
             + choice.TimeToPlay + "\t"
             + choice.TimeToMemorize + "\t"

@@ -127,6 +127,12 @@ public class MiniMap : MonoBehaviour {
                     aux -= colorRate;
             }
         }
+
+        while (ankleTrack.Count > 600)
+        {
+            ankleTrack.RemoveAt(0);
+        }
+
         GL.End();
         GL.PopMatrix();
 
@@ -205,4 +211,10 @@ public class MiniMap : MonoBehaviour {
         }
     }
 
+    public void Reset()
+    {
+        choices.Clear();
+        challenges.Clear();
+        ankleTrack.Clear();
+    }
 }

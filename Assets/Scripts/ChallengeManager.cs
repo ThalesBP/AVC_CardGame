@@ -8,6 +8,9 @@ public class ChallengeManager {
     public float[] rehabStat = { 0.0f, 0.0f, 0.0f, 0.0f };
     public List<int> rehabStory = new List<int>();
 
+    /// <summary>
+    /// Challenge plan
+    /// </summary>
     public float[] Plan
     {
         get
@@ -20,6 +23,9 @@ public class ChallengeManager {
         }
     }
 
+    /// <summary>
+    /// Challenge statistics
+    /// </summary>
     public float[] Done
     {
         get
@@ -28,6 +34,9 @@ public class ChallengeManager {
         }
     }
 
+    /// <summary>
+    /// The plna size
+    /// </summary>
     public int Size
     {
         get 
@@ -36,6 +45,9 @@ public class ChallengeManager {
         }
     }
 
+    /// <summary>
+    /// Gets a challenge.
+    /// </summary>
     public int Challenge
     {
         get 
@@ -44,9 +56,22 @@ public class ChallengeManager {
         }
     }
 
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChallengeManager"/> class.
+    /// </summary>
+    /// <param name="challenge">Challenge plan.</param>
     public ChallengeManager (float [] challenge)
     {
         AdaptPlan(challenge);
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ChallengeManager"/> class.
+    /// </summary>
+    /// <param name="number">Number of challenges.</param>
+    public ChallengeManager (int number)
+    {
+        AdaptPlan(number);
     }
 
     /// <summary>
@@ -69,12 +94,24 @@ public class ChallengeManager {
         }
         else
         {
-            rehabPlan = plan;
-            rehabStat = new float[plan.Length];
-            for (int i = 0; i < rehabStat.Length; i++)
-                rehabStat[i] = 0f;
-            rehabStory.Clear();
+            AdaptPlan(plan.Length);
         }
+    }
+
+    /// <summary>
+    /// Adapts the plan.
+    /// </summary>
+    /// <param name="number">Number of options.</param>
+    private void AdaptPlan(int number)
+    {
+        rehabPlan = new float[number];
+        rehabStat = new float[number];
+        for (int i = 0; i < number; i++)
+        {
+            rehabPlan[i] = 1f / number;
+            rehabStat[i] = 0f;
+        }
+        rehabStory.Clear();
     }
 
     /// <summary>

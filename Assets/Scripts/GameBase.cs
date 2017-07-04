@@ -13,11 +13,11 @@ public class GameBase : MonoBehaviour {
     #region Suit of cards, cards and player's position
     protected static readonly string[] suitNames = {"Diamond", "Spades", "Heart", "Club"};
     protected static readonly string[] suitSymbols = {"♦", "♠", "♥", "♣"};
-    protected static readonly string[] valueNames = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"};
+    protected static readonly string[] valueNames = {"A", "2", "3", "4", "5", "6", "7", "8", "9", "10"}; //, "J", "Q", "K"};
     protected static readonly string[] colorNames = { "Red", "Black"};
 
     public enum Suits {Diamond, Spades, Heart, Club};
-    public enum Values {A = 0, J = 11, Q = 12, K = 13};
+    public enum Values {A = 0, J = 11, Q = 12, K = 13}; // Obs: Necessary?
     public enum Colors {Red, Black};
     #endregion
 

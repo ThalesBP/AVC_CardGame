@@ -115,6 +115,9 @@ public class Dealer : GameBase {
                     objectiveCard.status = Card.Highlight.free;
                     objectiveCard.timeToTwinkle = 0f;
 
+                    int challenge = interfaceManager.mainChallenge.Challenge;
+                    int challenge2 = interfaceManager.subChallenges[challenge].Challenge;
+
                     // Acts according game mode
                     switch (mode)
                     {
@@ -132,7 +135,7 @@ public class Dealer : GameBase {
                             }
                             else
                             {
-                                timeToWait = SpreadCards(challengeCards, 90f + Random.Range(0, challengeNumber) * 360f / challengeNumber);    // Spread the cards on screen...
+                                timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
                                 timeToWait = objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
 
                                 timeToWait = ShowCard(objectiveCard, timeToWait);   // Also shows objective card
@@ -155,9 +158,6 @@ public class Dealer : GameBase {
                             ChangeCards(challengeCards, Card.SuitType.miniSuit);
                             goto default;
                         default:
-                            int challenge = interfaceManager.mainChallenge.Challenge;
-                            int challenge2 = interfaceManager.subChallenges[challenge].Challenge;
-
                             timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
                             objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
 
@@ -385,7 +385,7 @@ public class Dealer : GameBase {
 
                 Vector3 choicePosition = FindPlacePointed();
 
-                interfaceManager.log.Register(interfaceManager.control.gameTime, choices[choices.Count - 1], aimedCard.position.Value, choicePosition);
+                interfaceManager.log.Register(interfaceManager.control.gameTime, mode.ToString(), choices[choices.Count - 1], aimedCard.position.Value, choicePosition);
 
                 // Verifies the closest angle to a plan's angle
                 float angle = Atan2(choicePosition.y, choicePosition.x) * Mathf.Rad2Deg;
@@ -420,7 +420,7 @@ public class Dealer : GameBase {
 
                 interfaceManager.control.gameSpeed = Mathf.Clamp(interfaceManager.control.gameSpeed, GameSpeedLimits[0], GameSpeedLimits[1]);
 
-                if (Choice.orderCounter == 0)
+                if (Choice.orderCounter != 0)
                     Choice.precision = Choice.totalPoints / Choice.orderCounter;
                 
                 ShowCard(objectiveCard, 0f);
@@ -830,10 +830,15 @@ public class Dealer : GameBase {
         float angShare;
         float timeToDo = 0f;
 
+        ChallengeManager cardIndex = new ChallengeManager(deck.Count);
+        int angIndex;
+
         angShare = 2f * Mathf.PI / deck.Count;
         foreach (Card card in deck)
         {
-            timeToDo = card.position.MoveTo(new Vector3(spreadRadius * Mathf.Cos(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), spreadRadius * Mathf.Sin(angShare * deck.IndexOf(card) + Mathf.Deg2Rad * angle), 0f), DeltaTime[Long], deck.IndexOf(card) * DeltaTime[Short]);
+            angIndex = cardIndex.Challenge;
+            cardIndex.AddChoice(angIndex);
+            timeToDo = card.position.MoveTo(new Vector3(spreadRadius * Mathf.Cos(angShare * angIndex + Mathf.Deg2Rad * angle), spreadRadius * Mathf.Sin(angShare * angIndex + Mathf.Deg2Rad * angle), 0f), DeltaTime[Long], angIndex * DeltaTime[Short]);
         }
         return (timeToDo);
     }

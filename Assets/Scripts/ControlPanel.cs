@@ -137,6 +137,9 @@ public class ControlPanel : GameBase {
                 gameTime = totalGameTime = 0f;
 
                 calibrateButton.interactable = connected;
+                slider.interactable = true;
+
+                map.Reset();
                 break;
             case Status.paused:
                 start.text = startText[language];
@@ -163,6 +166,7 @@ public class ControlPanel : GameBase {
             case Status.end:
                 start.text = restartText[language];
                 playTime.text = infTimeText[language];
+                slider.interactable = false;
                 break;
         }
 
