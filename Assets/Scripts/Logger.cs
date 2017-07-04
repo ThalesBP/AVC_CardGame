@@ -192,9 +192,9 @@ public class Logger : MonoBehaviour {
             + choice.choiceCard + "\t"
             + match + "\t"
             + Choice.precision + "\t"
-            + choice.Play.value + "\t"
-            + choice.Memorize.value + "\t"
-            + choice.Choose.value + "\t"
+            + choice.TimeToPlay + "\t"
+            + choice.TimeToMemorize + "\t"
+            + choice.TimeToChoose + "\t"
             + Time.timeScale + "\t"
             + obj.x  + "\t" + obj.y + "\t"
             + cho.x  + "\t" + cho.y
@@ -221,15 +221,15 @@ public class Logger : MonoBehaviour {
                 Choice.totalMatches + "\t" +
                 Choice.orderCounter + "\t" +
                 gameTime + "\t" +
-                Choice.PlayAverage + "\t" +
-                Choice.PlayAverage.range[0] + "\t" +
-                Choice.PlayAverage.range[1] + "\t" +
-                Choice.MemorizeAverage + "\t" +
-                Choice.MemorizeAverage.range[0] + "\t" +
-                Choice.MemorizeAverage.range[1] + "\t" +
-                Choice.ChooseAverage + "\t" +
-                Choice.ChooseAverage.range[0] + "\t" +
-                Choice.ChooseAverage.range[1] + "\t" +
+                Choice.AverageTimeToPlay + "\t" +
+                Choice.RangeTimeToPlay[0] + "\t" +
+                Choice.RangeTimeToPlay[1] + "\t" +
+                Choice.AverageTimeToMemorize + "\t" +
+                Choice.RangeTimeToMemorize[0] + "\t" +
+                Choice.RangeTimeToMemorize[1] + "\t" +
+                Choice.AverageTimeToChoose + "\t" +
+                Choice.RangeTimeToChoose[0] + "\t" +
+                Choice.RangeTimeToChoose[1] + "\t" +
                 (100f * Choice.suitCounter / Choice.orderCounter) + "\t" +
                 (100f * Choice.valueCounter / Choice.orderCounter) + "\t" +
                 (100f * Choice.colorCounter / Choice.orderCounter) + "\t" +

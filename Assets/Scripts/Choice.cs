@@ -29,8 +29,17 @@ public class Choice {
     public float timeToPlay;
     public float timeToMemorize;*/
 
-    static public TimeTo ChooseAverage, PlayAverage, MemorizeAverage;
-    public TimeTo Choose, Play, Memorize;
+    public static float AverageTimeToChoose = 0f;
+    public static float AverageTimeToPlay = 0f;
+    public static float AverageTimeToMemorize = 0f;
+
+    public static float[] RangeTimeToChoose = {float.PositiveInfinity, float.NegativeInfinity};
+    public static float[] RangeTimeToPlay = {float.PositiveInfinity, float.NegativeInfinity};
+    public static float[] RangeTimeToMemorize = {float.PositiveInfinity, float.NegativeInfinity};
+
+    public float TimeToChoose = 0f;
+    public float TimeToPlay = 0f;
+    public float TimeToMemorize = 0f;
 
     private const int suitScore = 5;
     private const int colorScore = 5;
@@ -96,20 +105,18 @@ public class Choice {
         averageTimeToPlay = (averageTimeToPlay * orderCounter + timeToPlay) / (orderCounter + 1);
         averageTimeToMemorize = (averageTimeToMemorize * orderCounter + timeToPlay) / (orderCounter + 1);
         */
-        Choose = new TimeTo(timeToChoose, orderCounter + 1);
-        Play = new TimeTo(timeToPlay, orderCounter + 1);
-        Memorize = new TimeTo(timeToMemorize, orderCounter + 1);
 
-        if (ChooseAverage == null)
-            ChooseAverage = new TimeTo(timeToChoose, orderCounter + 1);
-        if (PlayAverage == null)
-            PlayAverage = new TimeTo(timeToChoose, orderCounter + 1);
-        if (MemorizeAverage == null)
-            MemorizeAverage = new TimeTo(timeToChoose, orderCounter + 1);
+        TimeToChoose = timeToChoose;
+        TimeToPlay = timeToPlay;
+        TimeToMemorize = timeToMemorize;
 
-        ChooseAverage.Set(ChooseAverage.Average(ChooseAverage, Choose, orderCounter + 1), orderCounter + 1);
-        PlayAverage.Set(ChooseAverage.Average(PlayAverage, Play, orderCounter + 1), orderCounter + 1);
-        MemorizeAverage.Set(ChooseAverage.Average(MemorizeAverage, Memorize, orderCounter + 1), orderCounter + 1);
+        AverageTimeToChoose = Average(AverageTimeToChoose, timeToChoose, orderCounter);
+        AverageTimeToPlay = Average(AverageTimeToPlay, timeToPlay, orderCounter);
+        AverageTimeToMemorize = Average(AverageTimeToMemorize, timeToMemorize, orderCounter);
+
+        RangeTimeToChoose = CheckExtremes(timeToChoose, RangeTimeToChoose);
+        RangeTimeToPlay = CheckExtremes(timeToPlay, RangeTimeToPlay);
+        RangeTimeToMemorize = CheckExtremes(timeToMemorize, RangeTimeToMemorize);
 
         order = orderCounter;
         orderCounter++;
@@ -208,44 +215,23 @@ public class Choice {
 
         return match;
     }
-}
 
-public class TimeTo{
-    public float value = 0f;
-    public float[] range = {float.PositiveInfinity, 0f};
 
-    public static implicit operator float(TimeTo action)
+    public float [] CheckExtremes(float value, float[] range)
     {
-        return action.value;
-    }
+        float[] newRange = range;
 
-    public TimeTo(float value, int order)
-    {
-        Set(value, order);
-    }
-
-    public void CheckExtremes(float value)
-    {
         if (value < range[0])
-            range[0] = value;
+            newRange[0] = value;
         if (value > range[1])
-            range[1] = value;
+            newRange[1] = value;
+
+        return newRange;
     }
 
-    public void Set (float value, int order)
+    public float Average(float average, float value, int order)
     {
-        this.value = value;
-        CheckExtremes(value);
-    }
-
-    public float Average(float average, float value, float order)
-    {
-        return (average * order + value) / (order + 1);
-    }
-
-    public void Reset()
-    {
-        value = 0f;
-        range = new float[] {float.PositiveInfinity, 0f};
+        return (average * order + value) / (order + 1f);
     }
 }
+

@@ -31,7 +31,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     void Start () 
     {
-        countDownCounter = CountDown;
+        countDownCounter = CountDown + 1;
         Time.timeScale = 0f;
 
         #region General Interface Initialization

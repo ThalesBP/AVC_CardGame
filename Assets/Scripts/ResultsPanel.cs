@@ -36,12 +36,12 @@ public class ResultsPanel : GameBase {
             info2[0].text = info2Text[language];
 
             hitRate[1].text = (100f * Choice.totalMatches / Choice.orderCounter).ToString("F0") + "%";
-            timeRate[1].text = ((float)Choice.ChooseAverage).ToString("F1");
+            timeRate[1].text = Choice.AverageTimeToChoose.ToString("F1");
             info1[1].text = ControlManager.Instance.ankle.Bases.y.ToString("F1") + "%";
             info2[1].text = ControlManager.Instance.ankle.Bases.x.ToString("F1") + "%";
 
             hitRate[2].text = Choice.totalMatches.ToString("F0") + ofText[language] + Choice.orderCounter.ToString("F0");
-            timeRate[2].text = fromText[language] + ((float)Choice.ChooseAverage.range[0]).ToString("F1") + toText[language] + ((float)Choice.ChooseAverage.range[1]).ToString("F1");
+            timeRate[2].text = fromText[language] + Choice.RangeTimeToChoose[0].ToString("F1") + toText[language] + Choice.RangeTimeToChoose[1].ToString("F1");
 
             info1[2].text = fromText[language] + ControlManager.Instance.ankle.Min.y.ToString("F1") + toText[language] + ControlManager.Instance.ankle.Max.y.ToString("F1");
             info2[2].text = fromText[language] + ControlManager.Instance.ankle.Min.x.ToString("F1") + toText[language] + ControlManager.Instance.ankle.Max.x.ToString("F1");

@@ -17,6 +17,7 @@ public class Dealer : GameBase {
 
     private float waitCounter;      // Counter for waiting function
     private float timeToWait;       // Aux variable for sums time to wait
+    [SerializeField]
     private float timeToPlay;       // Time player takes to play
     private float timeToMemorize;   // Time player takes to memorize
     private float timeToChoose;     // Time player takes to choose
@@ -95,7 +96,7 @@ public class Dealer : GameBase {
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
 
-                Wait(interfaceManager.CountDownCounter + DeltaTime[VeryShort], Status.playerPlay);
+                Wait(interfaceManager.CountDownCounter * interfaceManager.control.gameSpeed + DeltaTime[VeryShort], Status.playerPlay);
                 turnTime = -Mathf.Clamp(interfaceManager.CountDownCounter + DeltaTime[VeryShort], 0f, float.PositiveInfinity);
 
                 challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
@@ -175,7 +176,7 @@ public class Dealer : GameBase {
                     {
                         objectiveCard.HighlightTimer(LoadingTime[VeryLong], 1f);
                         if (!objectiveCard.showed)
-                            timeToChoose += Time.unscaledDeltaTime;
+                            timeToPlay += Time.unscaledDeltaTime;
                         else
                             timeToMemorize += Time.unscaledDeltaTime;
                     }
@@ -410,7 +411,7 @@ public class Dealer : GameBase {
                 onCard = false;
 
 //                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.averageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
-                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.ChooseAverage) * Choice.totalMatches / Choice.orderCounter;
+                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.AverageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
 
                 if (Mathf.Abs(gameSpeed_aux - interfaceManager.control.gameSpeed) > TimeChoiceLimits[0])
                     interfaceManager.control.gameSpeed += TimeChoiceLimits[0] * Mathf.Sign(gameSpeed_aux - interfaceManager.control.gameSpeed);

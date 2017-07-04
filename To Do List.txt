@@ -16,6 +16,7 @@ Partidas para coleta de dados / análise de dificuldade
 Desvio padrão das informações
 
 Visual:
+Save the last configuration
 Nota musical pra cada carta
 -----
 Mouse rotacionar com o pé (corrigir centro do mouse)
