@@ -122,7 +122,6 @@ public class ControlPanel : GameBase {
 
         calibrateButton.interactable = false;
 
-
         stop.text = stopText[language];
         help.text = helpText[language];
         sliderText.text = slider.value.ToString("F0") + " " + cardsText[language];
@@ -137,6 +136,7 @@ public class ControlPanel : GameBase {
                 gameTime = totalGameTime = 0f;
 
                 calibrateButton.interactable = connected;
+
                 slider.interactable = true;
 
                 map.Reset();
@@ -160,7 +160,8 @@ public class ControlPanel : GameBase {
                 // To check
                 if (gameTime > 60f * totalGameTime)
                 {
-                    FinishGame();
+                    if (gameStatus != Status.playerChoice)
+                        FinishGame();
                 }
                 break;
             case Status.end:
@@ -176,6 +177,12 @@ public class ControlPanel : GameBase {
             gameMode.options[option].text = gameModeTexts[option, language];
         }
         gameMode.RefreshShownValue();
+
+        if (gameMode.value == numOfGameModes - 1)
+        {
+            slider.value = 3f;
+            slider.interactable = false;
+        }
    //     gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
 	}
 

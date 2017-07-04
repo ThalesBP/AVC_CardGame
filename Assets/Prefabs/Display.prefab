@@ -3941,7 +3941,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Right Ankle
+  m_Text: Left Ankle
 --- !u!114 &114078095268195226
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5153,7 +5153,7 @@ MonoBehaviour:
   gameStatus: 4
   map: {fileID: 0}
   miniMaptMat: {fileID: 2100000, guid: 621050d86a615e549aff2339803d83d0, type: 2}
-  gameSpeed: 3
+  gameSpeed: 1
   gameTime: 0
   totalGameTime: 0
   metric1Value: 0
@@ -7614,7 +7614,7 @@ MonoBehaviour:
   m_CaptionImage: {fileID: 0}
   m_ItemText: {fileID: 114185376356361822}
   m_ItemImage: {fileID: 0}
-  m_Value: 0
+  m_Value: 1
   m_Options:
     m_Options:
     - m_Text: Right Ankle
@@ -8149,7 +8149,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 224480837982674932}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.3930486
+  m_Size: 0.39406252
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10003,6 +10003,8 @@ MonoBehaviour:
     - m_Text: Option B
       m_Image: {fileID: 0}
     - m_Text: Option C
+      m_Image: {fileID: 0}
+    - m_Text: Option D
       m_Image: {fileID: 0}
     - m_Text: Option D
       m_Image: {fileID: 0}
@@ -14364,7 +14366,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0000038146973, y: 97.06097}
+  m_AnchoredPosition: {x: -0.0000038146973, y: 96.95001}
   m_SizeDelta: {x: 0, y: 160}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224612525681625322

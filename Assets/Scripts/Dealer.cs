@@ -9,6 +9,7 @@ public class Dealer : GameBase {
 
     [SerializeField]
     public GameMode mode = GameMode.Basic;
+    public int AutomaticMode = -1;
 
     [SerializeField]
     private Status gameStatus;      // interfaceManager.controls the game phases
@@ -22,6 +23,10 @@ public class Dealer : GameBase {
     private float timeToMemorize;   // Time player takes to memorize
     private float timeToChoose;     // Time player takes to choose
     private float turnTime;         // Time the turn takes to complete
+    [SerializeField]
+    private float gameSlice;        // Slice of game time for each game mode
+    [SerializeField]
+    private float modeSlice;        // Slice of mode time for each number of card
     private int packCounter;        // Counter for positioning cards in a pack
     private int challengeNumber;    // Number of card in challange - It may be useless
     private bool onCard;            // Checks if mouse is on a card
@@ -73,6 +78,8 @@ public class Dealer : GameBase {
         timeToPlay = 0f;
         timeToMemorize = 0f;
         turnTime = 0f;
+        gameSlice = 100f;
+        modeSlice = 10f;
         packCounter = 0;
         soundEffect = gameObject.GetComponent<AudioSource>();
         interfaceManager.control.slider.onValueChanged.AddListener(delegate {
@@ -85,7 +92,41 @@ public class Dealer : GameBase {
 
 	void Update () 
     {
-        mode = (GameMode)interfaceManager.control.gameMode.value;
+        if (interfaceManager.control.gameMode.value != numOfGameModes - 1)
+        {
+            mode = (GameMode)interfaceManager.control.gameMode.value;
+            challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
+        }
+        else
+        {
+            if ((interfaceManager.control.gameTime == 0f) && (challengeNumber != challengeCards.Count))
+                gameStatus = Status.destroy;
+
+            if (interfaceManager.control.totalGameTime > 0)
+            {
+//                gameSlice = interfaceManager.control.totalGameTime * 60f;// (numOfGameModes - 1f);
+                gameSlice = interfaceManager.control.totalGameTime * 60f/ (numOfGameModes - 1f);
+                modeSlice = gameSlice / 6f;
+
+//                AutomaticMode = 3;
+
+                if (interfaceManager.control.gameTime >= gameSlice * (AutomaticMode + 1))
+                {
+                    AutomaticMode++;
+                    challengeNumber = 3;
+                }
+
+//                if (interfaceManager.control.gameTime >= modeSlice * (challengeNumber - 2))
+                if (interfaceManager.control.gameTime - gameSlice * AutomaticMode >= modeSlice * (challengeNumber - 2))
+                {
+                    challengeNumber++;
+                }
+
+                mode = (GameMode)AutomaticMode;
+            }
+        }
+
+
         turnTime += Time.unscaledDeltaTime;
 
         switch (gameStatus)
@@ -98,8 +139,6 @@ public class Dealer : GameBase {
 
                 Wait(interfaceManager.CountDownCounter * interfaceManager.control.gameSpeed + DeltaTime[VeryShort], Status.playerPlay);
                 turnTime = -Mathf.Clamp(interfaceManager.CountDownCounter + DeltaTime[VeryShort], 0f, float.PositiveInfinity);
-
-                challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
 
                 challengeCards = CreateHardDeck(challengeNumber);   // Creates a pack of challenge card with n cards
                 objectiveCard = CreateCard(challengeCards[0]); // Chose one card from challenge cards to be the objective card

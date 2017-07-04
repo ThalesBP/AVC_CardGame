@@ -34,14 +34,15 @@ public class GameBase : MonoBehaviour {
     #endregion
 
     #region Game Modes
-    protected static readonly int numOfGameModes = 4; // Number of game modes
-    public enum GameMode {Basic, Memory, MultiSuits, CountSuits};
+    protected static readonly int numOfGameModes = 5; // Number of game modes
+    public enum GameMode {Basic, Memory, MultiSuits, CountSuits, SwipeModes};
     protected static readonly string[,] gameModeTexts =
         {
-                {"Basic", "Básico"},
-                {"Memory", "Memória"},
-                {"Multi Suits", "Múltiplos Naipes"},
-                {"Count Suits", "Contar Naipes"}
+            {"Basic", "Básico"},
+            {"Memory", "Memória"},
+            {"Multi Suits", "Múltiplos Naipes"},
+            {"Count Suits", "Contar Naipes"},
+            {"Swipe Modes", "Alterna os Modos"}
         };
     #endregion
 
