@@ -17,7 +17,10 @@ public class Dealer : GameBase {
 
     private float waitCounter;      // Counter for waiting function
     private float timeToWait;       // Aux variable for sums time to wait
+    private float timeToPlay;       // Time player takes to play
+    private float timeToMemorize;   // Time player takes to memorize
     private float timeToChoose;     // Time player takes to choose
+    private float turnTime;         // Time the turn takes to complete
     private int packCounter;        // Counter for positioning cards in a pack
     private int challengeNumber;    // Number of card in challange - It may be useless
     private bool onCard;            // Checks if mouse is on a card
@@ -66,6 +69,9 @@ public class Dealer : GameBase {
         waitCounter = 0f;
         timeToWait = 0f;
         timeToChoose = 0f;
+        timeToPlay = 0f;
+        timeToMemorize = 0f;
+        turnTime = 0f;
         packCounter = 0;
         soundEffect = gameObject.GetComponent<AudioSource>();
         interfaceManager.control.slider.onValueChanged.AddListener(delegate {
@@ -79,6 +85,7 @@ public class Dealer : GameBase {
 	void Update () 
     {
         mode = (GameMode)interfaceManager.control.gameMode.value;
+        turnTime += Time.unscaledDeltaTime;
 
         switch (gameStatus)
         {
@@ -89,6 +96,7 @@ public class Dealer : GameBase {
                     gameStatus = Status.endGame;
 
                 Wait(interfaceManager.CountDownCounter + DeltaTime[VeryShort], Status.playerPlay);
+                turnTime = -Mathf.Clamp(interfaceManager.CountDownCounter + DeltaTime[VeryShort], 0f, float.PositiveInfinity);
 
                 challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
 
@@ -164,7 +172,13 @@ public class Dealer : GameBase {
                 {
                     // Highlights the deck if player delays to play.
                     if (Time.timeScale != 0f)
+                    {
                         objectiveCard.HighlightTimer(LoadingTime[VeryLong], 1f);
+                        if (!objectiveCard.showed)
+                            timeToChoose += Time.unscaledDeltaTime;
+                        else
+                            timeToMemorize += Time.unscaledDeltaTime;
+                    }
                 }
                 break;
             case Status.playerChoice:   // Waits player to make his/her choice
@@ -359,10 +373,14 @@ public class Dealer : GameBase {
                 challengeCards[0].status = Card.Highlight.free;
                 challengeCards[0].timeToTwinkle = 0f;
 
-                if (player.forceConnection)
+                if (player.mode != ControlManager.ControlMode.Mouse)
                     timeToChoose -= LoadingTime[Medium] / Time.timeScale;
                 
-                choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose));
+                choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose, timeToPlay, timeToMemorize));
+                timeToChoose = 0f;
+                timeToPlay = 0f;
+                timeToMemorize = 0f;
+                turnTime = 0f;
 
                 Vector3 choicePosition = FindPlacePointed();
 
@@ -390,9 +408,9 @@ public class Dealer : GameBase {
                         - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f), 0.45f * Screen.height));
 
                 onCard = false;
-                timeToChoose = 0f;
 
-                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.averageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
+//                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.averageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
+                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.ChooseAverage) * Choice.totalMatches / Choice.orderCounter;
 
                 if (Mathf.Abs(gameSpeed_aux - interfaceManager.control.gameSpeed) > TimeChoiceLimits[0])
                     interfaceManager.control.gameSpeed += TimeChoiceLimits[0] * Mathf.Sign(gameSpeed_aux - interfaceManager.control.gameSpeed);
@@ -401,15 +419,9 @@ public class Dealer : GameBase {
 
                 interfaceManager.control.gameSpeed = Mathf.Clamp(interfaceManager.control.gameSpeed, GameSpeedLimits[0], GameSpeedLimits[1]);
 
-                // Check
-                float precisionRate;
-                if ((bool)choices[choices.Count - 1])
-                    precisionRate = 1f;
-                else
-                    precisionRate = (challengeNumber - 1) / challengeNumber;
-
-                Choice.precision = (Choice.precision * (Choice.orderCounter - 1) + precisionRate) / Choice.orderCounter;
-
+                if (Choice.orderCounter == 0)
+                    Choice.precision = Choice.totalPoints / Choice.orderCounter;
+                
                 ShowCard(objectiveCard, 0f);
 
                 if (aimedCard == objectiveCard)

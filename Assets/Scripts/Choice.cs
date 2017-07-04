@@ -12,8 +12,12 @@ public class Choice {
     public static int orderCounter = 0;
     public static int totalMatches = 0;
     public static float precision = 0f;
-    public static float averageTimeToChoose = 0f;
-    public static float[] rangeOfTime = { 0, 0f };
+ /*   public static float averageTimeToChoose = 0f;
+    public static float averageTimeToPlay = 0f;
+    public static float averageTimeToMemorize = 0f;
+    public static float[] rangeOfTimeToChoose = { 0f, 0f };
+    public static float[] rangeOfTimeToPlay = { 0f, 0f };
+    public static float[] rangeOfTimeToMemorize = { 0f, 0f };*/
 
     public int objectiveCard;
     public int choiceCard;
@@ -21,7 +25,12 @@ public class Choice {
     public int pointMatch;
     public int order;
     public int numOptions;
-    public float timeToChoose;
+/*    public float timeToChoose;
+    public float timeToPlay;
+    public float timeToMemorize;*/
+
+    static public TimeTo ChooseAverage, PlayAverage, MemorizeAverage;
+    public TimeTo Choose, Play, Memorize;
 
     private const int suitScore = 5;
     private const int colorScore = 5;
@@ -35,7 +44,7 @@ public class Choice {
     /// <param name="objective">Objective card.</param>
     /// <param name="choice">Chosen card.</param>
     /// <param name="nOptions">Number of card options.</param>
-    public Choice(Card objective, Card choice, int nOptions, float timeToChoose)
+    public Choice(Card objective, Card choice, int nOptions, float timeToChoose, float timeToPlay, float timeToMemorize)
     {
         pointMatch = 0;
         numOptions = nOptions;
@@ -74,20 +83,34 @@ public class Choice {
         }
         else
             match = false;
-
+        /*
         this.timeToChoose = timeToChoose;
+        this.timeToPlay = timeToPlay;
+        this.timeToMemorize = timeToMemorize;
 
-        if (orderCounter > 0)
-        {
-            if (timeToChoose < rangeOfTime[0])
-                rangeOfTime[0] = timeToChoose;
-            if (timeToChoose > rangeOfTime[1])
-                rangeOfTime[1] = timeToChoose;
-        }
-        else
-            rangeOfTime[0] = rangeOfTime[1] = timeToChoose;
+        rangeOfTimeToChoose = CheckExtremes(rangeOfTimeToChoose, timeToChoose);
+        rangeOfTimeToPlay = CheckExtremes(rangeOfTimeToPlay, timeToPlay);
+        rangeOfTimeToMemorize = CheckExtremes(rangeOfTimeToMemorize, timeToPlay);
 
         averageTimeToChoose = (averageTimeToChoose * orderCounter + timeToChoose) / (orderCounter + 1);
+        averageTimeToPlay = (averageTimeToPlay * orderCounter + timeToPlay) / (orderCounter + 1);
+        averageTimeToMemorize = (averageTimeToMemorize * orderCounter + timeToPlay) / (orderCounter + 1);
+        */
+        Choose = new TimeTo(timeToChoose, orderCounter + 1);
+        Play = new TimeTo(timeToPlay, orderCounter + 1);
+        Memorize = new TimeTo(timeToMemorize, orderCounter + 1);
+
+        if (ChooseAverage == null)
+            ChooseAverage = new TimeTo(timeToChoose, orderCounter + 1);
+        if (PlayAverage == null)
+            PlayAverage = new TimeTo(timeToChoose, orderCounter + 1);
+        if (MemorizeAverage == null)
+            MemorizeAverage = new TimeTo(timeToChoose, orderCounter + 1);
+
+        ChooseAverage.Set(ChooseAverage.Average(ChooseAverage, Choose, orderCounter + 1), orderCounter + 1);
+        PlayAverage.Set(ChooseAverage.Average(PlayAverage, Play, orderCounter + 1), orderCounter + 1);
+        MemorizeAverage.Set(ChooseAverage.Average(MemorizeAverage, Memorize, orderCounter + 1), orderCounter + 1);
+
         order = orderCounter;
         orderCounter++;
         totalPoints += pointMatch;
@@ -167,8 +190,6 @@ public class Choice {
         orderCounter = 0;
         totalMatches = 0;
         precision = 0f;
-        averageTimeToChoose = 0f;
-        rangeOfTime = new float[] { 6000f, 0f };
     }
 
     public static int CheckPoints(Card a, Card b)
@@ -186,5 +207,45 @@ public class Choice {
             match += extraScore + Mathf.RoundToInt(timeScore/2f);
 
         return match;
+    }
+}
+
+public class TimeTo{
+    public float value = 0f;
+    public float[] range = {float.PositiveInfinity, 0f};
+
+    public static implicit operator float(TimeTo action)
+    {
+        return action.value;
+    }
+
+    public TimeTo(float value, int order)
+    {
+        Set(value, order);
+    }
+
+    public void CheckExtremes(float value)
+    {
+        if (value < range[0])
+            range[0] = value;
+        if (value > range[1])
+            range[1] = value;
+    }
+
+    public void Set (float value, int order)
+    {
+        this.value = value;
+        CheckExtremes(value);
+    }
+
+    public float Average(float average, float value, float order)
+    {
+        return (average * order + value) / (order + 1);
+    }
+
+    public void Reset()
+    {
+        value = 0f;
+        range = new float[] {float.PositiveInfinity, 0f};
     }
 }
