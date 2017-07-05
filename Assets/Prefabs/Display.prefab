@@ -5122,6 +5122,7 @@ MonoBehaviour:
   playStatus: {fileID: 0}
   countDownCounter: 0
   scoreValue: 0
+  logging: 0
 --- !u!114 &114201828627396616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -8148,8 +8149,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 114585431317576758}
   m_HandleRect: {fileID: 224480837982674932}
   m_Direction: 2
-  m_Value: 0.00000035412342
-  m_Size: 0.39406243
+  m_Value: 0
+  m_Size: 0.39406252
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -14366,7 +14367,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.0000038146973, y: 96.94999}
+  m_AnchoredPosition: {x: -0.0000038146973, y: 96.95001}
   m_SizeDelta: {x: 0, y: 160}
   m_Pivot: {x: 0, y: 1}
 --- !u!224 &224612525681625322

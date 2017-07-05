@@ -24,7 +24,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public int CountDownCounter {get {return countDownCounter;}}
     public int scoreValue;
 
-    private bool logging = false;
+    public bool logging = false;
 
     public ChallengeManager mainChallenge;
     public List<ChallengeManager> subChallenges;
@@ -101,10 +101,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
                 if (!logging)
                 {
-                    log.StartFiles(user.managerDropdown.captionText.text, user.playerDropdown.captionText.text, user.memberDropdown.captionText.text, user.memberDropdown.value); 
                     user.visibility.MoveTo(-10f);
                     user.visibility.locked = true;
-                    logging = true;
+                    StartLoggin();
                 }
                 else
                     log.Register(control.gameTime, gameMessageTexts[(int)control.status, language] + " - " + gameMessageTexts[(int)control.gameStatus, language]);
@@ -146,9 +145,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             case Status.end:
                 if (logging)
                 {
-                    log.Register(user.memberDropdown.captionText.text, control.gameTime, mainChallenge);
                     user.visibility.locked = false;
-                    logging = false;
+                    StopLoggin();
                 }
                 playStatus.text = endOfGameText[language];
                 statusScale.MoveTo(Vector3.one);
@@ -182,5 +180,17 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public void StartCountDown(int time)
     {
         countDownCounter = time + 1;
+    }
+
+    public void StartLoggin()
+    {
+        log.StartFiles(user.managerDropdown.captionText.text, user.playerDropdown.captionText.text, user.memberDropdown.captionText.text, user.memberDropdown.value); 
+        logging = true;
+    }
+
+    public void StopLoggin()
+    {
+        log.Register(user.memberDropdown.captionText.text, control.gameTime, mainChallenge);
+        logging = false;
     }
 }

@@ -212,4 +212,13 @@ public class ChallengeManager {
             }
         return index[Random.Range(0, index.Count)];
     }
+
+    public void Reset()
+    {
+        for (int index = 0; index < rehabStat.Length; index++)
+        {
+            rehabStat[index] = 0f;
+        }
+        rehabStory.Clear();
+    }
 }

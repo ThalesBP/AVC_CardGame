@@ -1,5 +1,5 @@
 Jogo:
-Verificar lerdeza ao longo do tempo
+Game Manager?
 Selecionar se varia modo ou numero de cartas
 Criptografar a senha / Senha master pra recuperar
 Procurar por comentários "obs" ou "to check" entre outros
@@ -13,8 +13,6 @@ Calcular proporcional a tela todo o tempo
 Mini mapa por cima do mouse
 
 Log:
-Registrar info das cartas
-Registrar cada modo e carta no histórico
 -----
 Partidas para coleta de dados / análise de dificuldade
 Desvio padrão das informações

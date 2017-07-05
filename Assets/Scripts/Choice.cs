@@ -19,8 +19,7 @@ public class Choice {
     public static float[] rangeOfTimeToPlay = { 0f, 0f };
     public static float[] rangeOfTimeToMemorize = { 0f, 0f };*/
 
-    public int objectiveCard;
-    public int choiceCard;
+    public int[] objectiveCard = new int[3], choiceCard = new int[3];
     public bool suitMatch, valueMatch, colorMatch, match;
     public int pointMatch;
     public int order;
@@ -57,8 +56,12 @@ public class Choice {
     {
         pointMatch = 0;
         numOptions = nOptions;
-        objectiveCard = objective.GetHashCode();
-        choiceCard = choice.GetHashCode();
+        objectiveCard[0] = objective.value;
+        objectiveCard[1] = objective.suit;
+        objectiveCard[2] = objective.color;
+        choiceCard[0] = choice.value;
+        choiceCard[1] = choice.suit;
+        choiceCard[2] = choice.color;
 
         suitMatch = objective.suit == choice.suit;
         valueMatch = objective.value == choice.value;
@@ -125,7 +128,8 @@ public class Choice {
 
     public Choice () 
     {
-        objectiveCard = choiceCard = -1;
+        objectiveCard = new int[3];
+        choiceCard = new int[3];
         pointMatch = 0;
 
         suitMatch = false;
@@ -197,6 +201,14 @@ public class Choice {
         orderCounter = 0;
         totalMatches = 0;
         precision = 0f;
+
+        AverageTimeToChoose = 0f;
+        AverageTimeToPlay = 0f;
+        AverageTimeToMemorize = 0f;
+
+        RangeTimeToChoose = new float[] {float.PositiveInfinity, float.NegativeInfinity};
+        RangeTimeToPlay = new float[] {float.PositiveInfinity, float.NegativeInfinity};
+        RangeTimeToMemorize = new float[] {float.PositiveInfinity, float.NegativeInfinity};
     }
 
     public static int CheckPoints(Card a, Card b)

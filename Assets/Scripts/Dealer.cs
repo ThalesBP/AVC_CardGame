@@ -9,7 +9,7 @@ public class Dealer : GameBase {
 
     [SerializeField]
     public GameMode mode = GameMode.Basic;
-    public int AutomaticMode = -1;
+    public int AutomaticMode = 0;
 
     [SerializeField]
     private Status gameStatus;      // interfaceManager.controls the game phases
@@ -25,8 +25,6 @@ public class Dealer : GameBase {
     private float turnTime;         // Time the turn takes to complete
     [SerializeField]
     private float gameSlice;        // Slice of game time for each game mode
-    [SerializeField]
-    private float modeSlice;        // Slice of mode time for each number of card
     private int packCounter;        // Counter for positioning cards in a pack
     private int challengeNumber;    // Number of card in challange - It may be useless
     private bool onCard;            // Checks if mouse is on a card
@@ -80,7 +78,6 @@ public class Dealer : GameBase {
         timeToMemorize = 0f;
         turnTime = 0f;
         gameSlice = 100f;
-        modeSlice = 10f;
         packCounter = 0;
         soundEffect = gameObject.GetComponent<AudioSource>();
         interfaceManager.control.slider.onValueChanged.AddListener(delegate {
@@ -105,22 +102,29 @@ public class Dealer : GameBase {
 
             if (interfaceManager.control.totalGameTime > 0)
             {
-//                gameSlice = interfaceManager.control.totalGameTime * 60f;// (numOfGameModes - 1f);
-                gameSlice = interfaceManager.control.totalGameTime * 60f/ (numOfGameModes - 1f);
-                modeSlice = gameSlice / 6f;
+                gameSlice = interfaceManager.control.totalGameTime * 60f / (numOfGameModes - 1f);
+                gameSlice = gameSlice / 6f;
 
-//                AutomaticMode = 3;
-
-                if (interfaceManager.control.gameTime >= gameSlice * (AutomaticMode + 1))
-                {
-                    AutomaticMode++;
-                    challengeNumber = 3;
-                }
-
-//                if (interfaceManager.control.gameTime >= modeSlice * (challengeNumber - 2))
-                if (interfaceManager.control.gameTime - gameSlice * AutomaticMode >= modeSlice * (challengeNumber - 2))
+                if (interfaceManager.control.gameTime >= gameSlice)
                 {
                     challengeNumber++;
+                    if (challengeNumber > 8)
+                    {
+                        challengeNumber = 3;
+                        AutomaticMode++;
+                    }
+
+                    if (AutomaticMode == numOfGameModes - 2)
+                        AutomaticMode = numOfGameModes - 2;
+
+                    interfaceManager.StopLoggin();
+
+                    interfaceManager.mainChallenge.Reset();
+                    foreach (ChallengeManager challenge in interfaceManager.subChallenges)
+                        challenge.Reset();
+
+                    Choice.ResetChoice();
+                    interfaceManager.control.gameTime = 0f;
                 }
 
                 mode = (GameMode)AutomaticMode;

@@ -122,7 +122,7 @@ MonoBehaviour:
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
   mode: 0
-  AutomaticMode: -1
+  AutomaticMode: 0
   gameStatus: 0
   nextStatus: 0
   timeToPlay: 0
@@ -705,23 +705,18 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 224480837982674932, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}
-      propertyPath: m_AnchorMin.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 224480837982674932, guid: e435aa7d892158f48a2138903352a7a3,
-        type: 2}
       propertyPath: m_AnchorMax.x
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224480837982674932, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0.39406264
+      value: 0.39406252
       objectReference: {fileID: 0}
     - target: {fileID: 224603450149834756, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 96.95001
+      value: 160.00003
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e435aa7d892158f48a2138903352a7a3, type: 2}

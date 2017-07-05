@@ -13,8 +13,9 @@ public class Logger : MonoBehaviour {
 
     private string logTime, movementFile, chooseFile, messageFile, previousMessage, historicFile;
     private Vector2 pos, vel, acc;
-    private float time1, time0;
+    private float time1, time0, turnTime;
     private int sideMember;
+    private bool started = false;
 
 	// Use this for initialization
 	void Start () 
@@ -31,7 +32,10 @@ public class Logger : MonoBehaviour {
     /// <param name="side">Side - 0: Left / 1: Right.</param>
     public void StartFiles(string manager, string player, string member, int side)
     {
+        started = true;
+
         pos = vel = acc = Vector2.zero;
+        turnTime = 0f;
 
         if (side == 0)
             sideMember = -1;
@@ -51,24 +55,37 @@ public class Logger : MonoBehaviour {
         
         chooseFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - Choices.txt";
         File.WriteAllText (chooseFile, 
+            "\tGame\t\t\t\t\t\t\t" +
+            "Objective\t\t\t" +
+            "Choice\t\t\t" +
+            "Points\t\t\t\t" +
+            "Time To\t\t\t" +
+            "Objective Pos\t\t"+
+            "Choice Pos\t" +
+            Environment.NewLine +
             "Choice\t" +
             "Time\t" +
-            "Game Mode\t" +
+            "Mode\t" +
+            "Speed\t" +
             "N cards\t" +
-            "Objective\t" +
-            "Choice\t" +
             "Match\t" +
-            "Value Points\t" +
-            "Suit Points\t" + 
-            "Color Points\t" + 
-            "Total Points\t" +
+            "Turn Time\t" + 
             "Precision\t" +
-            "Time to Play\t" +
-            "Time to Memorize\t" +
-            "Time to Choose\t" +
-            "Game Speed\t" +
-            "Obj Mag\tObj Ang\t" +
-            "Cho Mag\tCho Ang" +
+            "Value\t" +
+            "Suit\t" +
+            "Color\t" +
+            "Value\t" +
+            "Suit\t" +
+            "Color\t" +
+            "Value\t" +
+            "Suit\t" + 
+            "Color\t" + 
+            "Total\t" +
+            "Play\t" +
+            "Memorize\t" +
+            "Choose\t" +
+            "Magnitude\tAngle\t" +
+            "Magnitude\tAngle" +
             Environment.NewLine);
 
         messageFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - GameMessage.txt";
@@ -133,6 +150,9 @@ public class Logger : MonoBehaviour {
     /// <param name="message">Message.</param>
     public void Register(float time, string message)
     {
+        if (!started)
+            return;
+
         if (!String.Equals(message, previousMessage))
         {
             File.AppendAllText(messageFile,
@@ -150,6 +170,9 @@ public class Logger : MonoBehaviour {
     /// <param name="position">Current position.</param>
     public void Register(float time, Vector2 position) 
     {
+        if (!started)
+            return;
+        
         Vector2 vel_axu = (position - pos) / (time - time1);
         acc = (vel_axu - vel) / (time - time0);
         vel = vel_axu;
@@ -179,6 +202,9 @@ public class Logger : MonoBehaviour {
     /// <param name="angChoice">Choice position.</param>
     public void Register(float time, string gameMode, Choice choice, Vector2 objPos, Vector2 choicePos)
     {
+        if (!started)
+            return;
+        
         int match = 0;
 
         Vector2 obj, cho;
@@ -193,29 +219,39 @@ public class Logger : MonoBehaviour {
             choice.order + "\t"
             + time + "\t"
             + gameMode + "\t"
+            + Time.timeScale + "\t"
             + choice.numOptions + "\t" 
-            + choice.objectiveCard + "\t"
-            + choice.choiceCard + "\t"
             + match + "\t"
-            + choice.valueMatch + "\t"
-            + choice.suitMatch + "\t"
-            + choice.colorMatch + "\t"
-            + choice.pointMatch + "\t"
+            + (time - turnTime) + "\t"
             + Choice.precision + "\t"
+            + choice.objectiveCard[0] + "\t"
+            + choice.objectiveCard[1] + "\t"
+            + choice.objectiveCard[2] + "\t"
+            + choice.choiceCard[0] + "\t"
+            + choice.choiceCard[1] + "\t"
+            + choice.choiceCard[2] + "\t"
+            + ((int)choice.valueMatch) + "\t"
+            + ((int)choice.suitMatch) + "\t"
+            + ((int)choice.colorMatch) + "\t"
+            + ((int)choice.pointMatch) + "\t"
             + choice.TimeToPlay + "\t"
             + choice.TimeToMemorize + "\t"
             + choice.TimeToChoose + "\t"
-            + Time.timeScale + "\t"
             + obj.x  + "\t" + obj.y + "\t"
             + cho.x  + "\t" + cho.y
         );
 
         File.AppendAllText(chooseFile, Environment.NewLine);
-
+        turnTime = time;
     }
 
     public void Register(string member, float gameTime, ChallengeManager history)
     {
+        if (!started)
+            return;
+        
+        started = false;
+
         if (Choice.orderCounter == 0)
         {
             File.Delete(movementFile);
