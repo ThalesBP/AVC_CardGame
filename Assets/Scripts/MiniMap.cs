@@ -13,15 +13,11 @@ public class MiniMap : MonoBehaviour {
     public Vector2 origin, size, point;
     public float scale = 0.75f;
 
-    //public AnkleMovement package;
-
-    private List<Vector2> ankleTrack;
+    public List<Vector2> choices, challenges, ankleTrack;
     private float recStep;
     private float recTime;
 
     private float colorRate, colorAlpha;
-
-    public List<Vector2> choices, challenges;
 
     void Start() 
     {
@@ -29,7 +25,7 @@ public class MiniMap : MonoBehaviour {
         colorRate = 0.1f;
         colorAlpha = 0.3f;
         recTime = 0f;
-        recStep = 0.5f;
+        recStep = 0.25f;
 
         //        package = ControlManager.Instance.ankle;
 
@@ -69,16 +65,16 @@ public class MiniMap : MonoBehaviour {
         // Blue Elipse for package
         GL.Color(Color.blue);
         point = origin + Vector2.Scale (ControlManager.Instance.ankle.origin, size);
-        ElipseForm (point, Vector2.Scale(ControlManager.Instance.ankle.bases * scale, size));
-        ElipseForm (point, Vector2.Scale(ControlManager.Instance.ankle.bases * scale, size)/ControlManager.Instance.ankle.elipseScale);
+        ElipseForm (point, Vector2.Scale(ControlManager.Instance.ankle.bases * scale, size), 180);
+        ElipseForm (point, Vector2.Scale(ControlManager.Instance.ankle.bases * scale, size)/ControlManager.Instance.ankle.elipseScale, 180);
         CrossForm (point, 0.1f*size);
 
 
         // Black Dot for position
         GL.Color(Color.black);
         point = origin + Vector2.Scale (ControlManager.Instance.RawPosition * scale, size);
-        ElipseForm (point, 0.02f*size);
-        ElipseForm (point, 0.03f*size);
+        ElipseForm (point, 0.02f*size, 18);
+        ElipseForm (point, 0.03f*size, 18);
         CrossForm (point, 0.02f*size);
 
         // Green Lines for helper
@@ -89,30 +85,24 @@ public class MiniMap : MonoBehaviour {
             RectForm (origin + Vector2.Scale (package.centerSpring - new Vector2(package.freeSpace.x, -package.freeSpace.y), size), Vector2.Scale (package.freeSpace, size) * 2);
         CrossForm (origin + Vector2.Scale (package.centerSpring, size), 0.02f*size);
 */
-        // Red Dot for choices
-
+        // Green Dot for choices
         for (int i = 0; i < choices.Count; i++)
         {
-            GL.Color(Color.red);
-            ElipseForm(origin + Vector2.Scale(choices[i] * scale, size), 0.02f * size);
-            CrossForm(origin + Vector2.Scale(choices[i] * scale, size), 0.02f * size);
-        }
-        for (int i = 0; i < challenges.Count; i++)
-        {
             GL.Color(Color.green);
-            ElipseForm(origin + Vector2.Scale(challenges[i] * scale, size), 0.01f * size);
-            CrossForm(origin + Vector2.Scale(challenges[i] * scale, size), 0.01f * size);
+            ElipseForm(origin + Vector2.Scale(choices[i] * scale, size), 0.01f * size, 12);
+            CrossForm(origin + Vector2.Scale(choices[i] * scale, size), 0.01f * size);
 
             Line(origin + Vector2.Scale(choices[i] * scale, size),
                 origin + Vector2.Scale(challenges[i] * scale, size));
         }
-        // Record the track
-        if (recTime <= 0f)
+
+        // Red Dot for challenges
+        for (int i = 0; i < challenges.Count; i++)
         {
-            ankleTrack.Add (point - origin);
-            recTime = recStep;
-        } else
-            recTime -= Time.deltaTime;
+            GL.Color(Color.red);
+            ElipseForm(origin + Vector2.Scale(challenges[i] * scale, size), 0.02f * size, 12);
+            CrossForm(origin + Vector2.Scale(challenges[i] * scale, size), 0.02f * size);
+        }
 
         // Black changing alpha for track
         GL.Color (Color.black);
@@ -122,15 +112,10 @@ public class MiniMap : MonoBehaviour {
             for (int i = ankleTrack.Count - 1; i > 0 ; i--)
             {
                 GL.Color(new Color (0f, 0f, 0f, aux));
-                Line(ankleTrack[i - 1] + origin, ankleTrack[i] + origin);
+                Line(origin + Vector2.Scale(ankleTrack[i - 1] * scale, size), origin + Vector2.Scale(ankleTrack[i] * scale, size));
                 if (aux > colorAlpha)
                     aux -= colorRate;
             }
-        }
-
-        while (ankleTrack.Count > 600)
-        {
-            ankleTrack.RemoveAt(0);
         }
 
         GL.End();
@@ -191,7 +176,7 @@ public class MiniMap : MonoBehaviour {
         GL.Vertex(center + new Vector2(0, -sizes.y));   
     }
 
-    void ElipseForm(Vector2 center, Vector2 sizes)
+    void ElipseForm(Vector2 center, Vector2 sizes, int steps)
     {
         center = new Vector2 (
             center.x / Screen.width,
@@ -200,14 +185,16 @@ public class MiniMap : MonoBehaviour {
             sizes.x / Screen.width,
             sizes.y / Screen.height);
 
-        for (int i = 0; i < 360; i++)
+        float angStep = 2f * Mathf.PI / steps;
+
+        for (int i = 0; i < steps; i++)
         {
             GL.Vertex(center + new Vector2(
-                Mathf.Sin(i * Mathf.Deg2Rad) * (sizes.x), 
-                Mathf.Cos(i * Mathf.Deg2Rad) * (sizes.y)));
+                Mathf.Sin(i * angStep) * (sizes.x), 
+                Mathf.Cos(i * angStep) * (sizes.y)));
             GL.Vertex(center + new Vector2(
-                Mathf.Sin((i + 1) * Mathf.Deg2Rad) * (sizes.x), 
-                Mathf.Cos((i + 1) * Mathf.Deg2Rad) * (sizes.y)));
+                Mathf.Sin((i + 1) * angStep) * (sizes.x), 
+                Mathf.Cos((i + 1) * angStep) * (sizes.y)));
         }
     }
 

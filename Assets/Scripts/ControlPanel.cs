@@ -91,6 +91,8 @@ public class ControlPanel : GameBase {
 	
 	void Update () 
     {
+        map.enabled = visibility.showed;
+
         language = (int)chosenLanguage;
 
         panel.text = controlPanelText[language];

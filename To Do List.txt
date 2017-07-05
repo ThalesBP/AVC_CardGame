@@ -14,6 +14,7 @@ Mini mapa por cima do mouse
 
 Log:
 Registrar info das cartas
+Registrar cada modo e carta no histórico
 -----
 Partidas para coleta de dados / análise de dificuldade
 Desvio padrão das informações

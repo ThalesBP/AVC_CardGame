@@ -48,7 +48,8 @@ public class Dealer : GameBase {
     private List<Card> challengeCards;  // Challenge cards in the game
     [SerializeField]
     private Card objectiveCard;         // Objective card
-    private List<Choice> choices;       // Saves player's choices
+//    private List<Choice> choices;       // Saves player's choices
+    Choice currentChoice;
 
     private LayerMask cardMask;
 
@@ -62,7 +63,7 @@ public class Dealer : GameBase {
 
     void Start () 
     {
-        choices = new List<Choice>();
+//        choices = new List<Choice>();
         gameStatus = Status.newTurn;
         nextStatus = Status.idle;
         cardMask = LayerMask.GetMask("Card");
@@ -137,11 +138,12 @@ public class Dealer : GameBase {
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
 
-                Wait(interfaceManager.CountDownCounter * interfaceManager.control.gameSpeed + DeltaTime[VeryShort], Status.playerPlay);
-                turnTime = -Mathf.Clamp(interfaceManager.CountDownCounter + DeltaTime[VeryShort], 0f, float.PositiveInfinity);
+                turnTime = 0f;
 
                 challengeCards = CreateHardDeck(challengeNumber);   // Creates a pack of challenge card with n cards
                 objectiveCard = CreateCard(challengeCards[0]); // Chose one card from challenge cards to be the objective card
+
+                gameStatus = Status.playerPlay;
                 break;
             case Status.playerPlay: // Waits Player to play
                 interfaceManager.control.gameStatus = Status.playerPlay;
@@ -149,75 +151,82 @@ public class Dealer : GameBase {
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
 
-                if ((FindCardPointed(cardsInGame) != null) && (player.Action))
+                if (interfaceManager.CountDownCounter <= 0)
                 {
-                    objectiveCard.status = Card.Highlight.free;
-                    objectiveCard.timeToTwinkle = 0f;
-
-                    int challenge = interfaceManager.mainChallenge.Challenge;
-                    int challenge2 = interfaceManager.subChallenges[challenge].Challenge;
-
-                    // Acts according game mode
-                    switch (mode)
+                    if ((FindCardPointed(cardsInGame) != null) && (player.Action))
                     {
-                        case GameMode.Memory:
-                            ChangeCards(cardsInGame, Card.ValueType.doubleValue);
-                            ChangeCards(cardsInGame, Card.SuitType.singleSuit);
+                        objectiveCard.status = Card.Highlight.free;
+                        objectiveCard.timeToTwinkle = 0f;
 
-                            if (objectiveCard.showed)
-                            {
-                                timeToWait = HideCard(objectiveCard, 0f);
+                        int challenge = interfaceManager.mainChallenge.Challenge;
+                        int challenge2 = interfaceManager.subChallenges[challenge].Challenge;
+
+                        interfaceManager.control.map.ankleTrack.Add((Vector2)
+                            ControlManager.Instance.ankle.CircleToElipse(Camera.main.WorldToScreenPoint(FindPlacePointed())
+                                - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f), 0.45f * Screen.height));
+
+                        // Acts according game mode
+                        switch (mode)
+                        {
+                            case GameMode.Memory:
+                                ChangeCards(cardsInGame, Card.ValueType.doubleValue);
+                                ChangeCards(cardsInGame, Card.SuitType.singleSuit);
+
+                                if (objectiveCard.showed)
+                                {
+                                    timeToWait = HideCard(objectiveCard, 0f);
+
+                                    timeToWait = ShowCards(challengeCards, timeToWait);   // ... and show them
+
+                                    Wait(timeToWait, Status.playerChoice);
+                                }
+                                else
+                                {
+                                    timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
+                                    timeToWait = objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
+
+                                    timeToWait = ShowCard(objectiveCard, timeToWait);   // Also shows objective card
+
+                                    Wait(timeToWait, Status.playerPlay);
+                                }
+                                break;
+                            case GameMode.Basic:
+                                ChangeCards(cardsInGame, Card.ValueType.doubleValue);
+                                ChangeCards(cardsInGame, Card.SuitType.singleSuit);
+                                goto default;
+                            case GameMode.MultiSuits:
+                                ChangeCards(cardsInGame, Card.ValueType.doubleValue);
+                                ChangeCards(cardsInGame, Card.SuitType.complete);
+                                goto default;
+                            case GameMode.CountSuits:
+                                objectiveCard.UpdateInfos(Card.ValueType.noValue);
+                                objectiveCard.UpdateInfos(Card.SuitType.multiSuit);
+                                ChangeCards(challengeCards, Card.ValueType.doubleValue);
+                                ChangeCards(challengeCards, Card.SuitType.miniSuit);
+                                goto default;
+                            default:
+                                timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
+                                objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
 
                                 timeToWait = ShowCards(challengeCards, timeToWait);   // ... and show them
 
-                                Wait(timeToWait, Status.playerChoice);
-                            }
-                            else
-                            {
-                                timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
-                                timeToWait = objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
-
                                 timeToWait = ShowCard(objectiveCard, timeToWait);   // Also shows objective card
 
-                                Wait(timeToWait, Status.playerPlay);
-                            }
-                            break;
-                        case GameMode.Basic:
-                            ChangeCards(cardsInGame, Card.ValueType.doubleValue);
-                            ChangeCards(cardsInGame, Card.SuitType.singleSuit);
-                            goto default;
-                        case GameMode.MultiSuits:
-                            ChangeCards(cardsInGame, Card.ValueType.doubleValue);
-                            ChangeCards(cardsInGame, Card.SuitType.complete);
-                            goto default;
-                        case GameMode.CountSuits:
-                            objectiveCard.UpdateInfos(Card.ValueType.noValue);
-                            objectiveCard.UpdateInfos(Card.SuitType.multiSuit);
-                            ChangeCards(challengeCards, Card.ValueType.doubleValue);
-                            ChangeCards(challengeCards, Card.SuitType.miniSuit);
-                            goto default;
-                        default:
-                            timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
-                            objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
-
-                            timeToWait = ShowCards(challengeCards, timeToWait);   // ... and show them
-
-                            timeToWait = ShowCard(objectiveCard, timeToWait);   // Also shows objective card
-
-                            Wait(timeToWait, Status.playerChoice);
-                            break;
-                    }
-                }   // Waits player plays the game
+                                Wait(timeToWait, Status.playerChoice);
+                                break;
+                        }
+                    }   // Waits player plays the game
                 else
-                {
-                    // Highlights the deck if player delays to play.
-                    if (Time.timeScale != 0f)
                     {
-                        objectiveCard.HighlightTimer(LoadingTime[VeryLong], 1f);
-                        if (!objectiveCard.showed)
-                            timeToPlay += Time.unscaledDeltaTime;
-                        else
-                            timeToMemorize += Time.unscaledDeltaTime;
+                        // Highlights the deck if player delays to play.
+                        if (Time.timeScale != 0f)
+                        {
+                            objectiveCard.HighlightTimer(LoadingTime[VeryLong], 1f);
+                            if (!objectiveCard.showed)
+                                timeToPlay += Time.unscaledDeltaTime;
+                            else
+                                timeToMemorize += Time.unscaledDeltaTime;
+                        }
                     }
                 }
                 break;
@@ -416,7 +425,8 @@ public class Dealer : GameBase {
                 if (player.mode != ControlManager.ControlMode.Mouse)
                     timeToChoose -= LoadingTime[Medium] / Time.timeScale;
                 
-                choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose, timeToPlay, timeToMemorize));
+                //choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose, timeToPlay, timeToMemorize));
+                currentChoice = new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose, timeToPlay, timeToMemorize);
                 timeToChoose = 0f;
                 timeToPlay = 0f;
                 timeToMemorize = 0f;
@@ -424,7 +434,8 @@ public class Dealer : GameBase {
 
                 Vector3 choicePosition = FindPlacePointed();
 
-                interfaceManager.log.Register(interfaceManager.control.gameTime, mode.ToString(), choices[choices.Count - 1], aimedCard.position.Value, choicePosition);
+                //interfaceManager.log.Register(interfaceManager.control.gameTime, mode.ToString(), choices[choices.Count - 1], aimedCard.position.Value, choicePosition);
+                interfaceManager.log.Register(interfaceManager.control.gameTime, mode.ToString(), currentChoice, aimedCard.position.Value, choicePosition);
 
                 // Verifies the closest angle to a plan's angle
                 float angle = Atan2(choicePosition.y, choicePosition.x) * Mathf.Rad2Deg;
@@ -446,7 +457,10 @@ public class Dealer : GameBase {
                 interfaceManager.control.map.challenges.Add((Vector2)
                     ControlManager.Instance.ankle.CircleToElipse(Camera.main.WorldToScreenPoint(planPosition)
                         - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f), 0.45f * Screen.height));
-
+                interfaceManager.control.map.ankleTrack.Add((Vector2)
+                    ControlManager.Instance.ankle.CircleToElipse(Camera.main.WorldToScreenPoint(choicePosition)
+                        - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f), 0.45f * Screen.height));
+                
                 onCard = false;
 
 //                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.averageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
