@@ -1,0 +1,46 @@
+Time	Message
+1.665373	Jogo executando - Esperando jogador escolher
+3.959778	Jogo executando - Escolha certa
+5.237715	Jogo executando - Turno terminando
+6.954029	Jogo executando - Novo turno
+6.993261	Jogo executando - Esperando jogador iniciar
+8.420046	Jogo executando - Esperando jogador escolher
+9.741868	Jogo executando - Escolha certa
+10.87759	Jogo executando - Turno terminando
+11.88196	Jogo executando - Novo turno
+11.89836	Jogo executando - Esperando jogador iniciar
+13.10449	Jogo executando - Esperando jogador escolher
+14.29153	Jogo executando - Escolha certa
+15.39798	Jogo executando - Turno terminando
+16.36293	Jogo executando - Novo turno
+16.37989	Jogo executando - Esperando jogador iniciar
+17.63068	Jogo executando - Esperando jogador escolher
+19.29637	Jogo executando - Escolha certa
+20.39109	Jogo executando - Turno terminando
+21.38331	Jogo executando - Novo turno
+21.40001	Jogo executando - Esperando jogador iniciar
+22.93137	Jogo executando - Esperando jogador escolher
+24.27001	Jogo executando - Escolha certa
+25.35481	Jogo executando - Turno terminando
+26.30569	Jogo executando - Novo turno
+26.32224	Jogo executando - Esperando jogador iniciar
+27.49534	Jogo executando - Esperando jogador escolher
+29.0483	Jogo executando - Escolha certa
+30.14332	Jogo executando - Turno terminando
+31.0959	Jogo executando - Novo turno
+31.11241	Jogo executando - Esperando jogador iniciar
+32.40692	Jogo executando - Esperando jogador escolher
+33.58703	Jogo executando - Escolha certa
+34.69376	Jogo executando - Turno terminando
+35.6388	Jogo executando - Novo turno
+35.65536	Jogo executando - Esperando jogador iniciar
+36.68578	Jogo executando - Esperando jogador escolher
+37.76849	Jogo executando - Escolha certa
+38.81929	Jogo executando - Turno terminando
+39.79831	Jogo executando - Novo turno
+39.81522	Jogo executando - Esperando jogador iniciar
+41.39585	Jogo executando - Esperando jogador escolher
+42.40824	Jogo executando - Escolha certa
+43.45118	Jogo executando - Turno terminando
+44.38192	Jogo executando - Novo turno
+44.39848	Jogo executando - Esperando jogador iniciar

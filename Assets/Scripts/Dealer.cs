@@ -10,6 +10,9 @@ public class Dealer : GameBase {
     [SerializeField]
     public GameMode mode = GameMode.Basic;
     public int AutomaticMode = 0;
+    public int totalScore, totalMathes, totalOrderCounter;
+    public float totalGameTime, averageTimeToChoose;
+    public float[] rangeTimeToChoose;
 
     [SerializeField]
     private Status gameStatus;      // interfaceManager.controls the game phases
@@ -61,7 +64,12 @@ public class Dealer : GameBase {
 
     void Start () 
     {
+        totalGameTime = averageTimeToChoose = 0f;
+        totalScore = totalOrderCounter = totalMathes = 0;
+        rangeTimeToChoose = new float[2] {float.PositiveInfinity, float.NegativeInfinity};
+
 //        choices = new List<Choice>();
+
         gameStatus = Status.newTurn;
         nextStatus = Status.idle;
         cardMask = LayerMask.GetMask("Card");
@@ -90,48 +98,6 @@ public class Dealer : GameBase {
 
 	void Update () 
     {
-        if (interfaceManager.control.gameMode.value != numOfGameModes - 1)
-        {
-            mode = (GameMode)interfaceManager.control.gameMode.value;
-            challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
-        }
-        else
-        {
-            if ((interfaceManager.control.gameTime == 0f) && (challengeNumber != challengeCards.Count))
-                gameStatus = Status.destroy;
-
-            if (interfaceManager.control.totalGameTime > 0)
-            {
-                gameSlice = interfaceManager.control.totalGameTime * 60f / (numOfGameModes - 1f);
-                gameSlice = gameSlice / 6f;
-
-                if (interfaceManager.control.gameTime >= gameSlice)
-                {
-                    challengeNumber++;
-                    if (challengeNumber > 8)
-                    {
-                        challengeNumber = 3;
-                        AutomaticMode++;
-                    }
-
-                    if (AutomaticMode == numOfGameModes - 2)
-                        AutomaticMode = numOfGameModes - 2;
-
-                    interfaceManager.StopLoggin();
-
-                    interfaceManager.mainChallenge.Reset();
-                    foreach (ChallengeManager challenge in interfaceManager.subChallenges)
-                        challenge.Reset();
-
-                    Choice.ResetChoice();
-                    interfaceManager.control.gameTime = 0f;
-                }
-
-                mode = (GameMode)AutomaticMode;
-            }
-        }
-
-
         turnTime += Time.unscaledDeltaTime;
 
         switch (gameStatus)
@@ -141,6 +107,56 @@ public class Dealer : GameBase {
 
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
+
+                if (interfaceManager.control.gameMode.value != numOfGameModes - 1)
+                {
+                    mode = (GameMode)interfaceManager.control.gameMode.value;
+                    challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
+                }
+                else
+                {
+                    if ((interfaceManager.control.gameTime == 0f) && (challengeNumber != challengeCards.Count))
+                        gameStatus = Status.destroy;
+
+                    if (interfaceManager.control.totalGameTime > 0)
+                    {
+                        gameSlice = interfaceManager.control.totalGameTime * 60f / (numOfGameModes - 1f);
+                        gameSlice = gameSlice / 6f;
+
+                        if (interfaceManager.control.gameTime >= gameSlice)
+                        {
+                            challengeNumber++;
+                            if (challengeNumber > 8)
+                            {
+                                challengeNumber = 3;
+                                AutomaticMode++;
+                            }
+
+                            interfaceManager.StopLoggin();
+
+                            totalGameTime += interfaceManager.control.gameTime;
+
+                            interfaceManager.mainChallenge.Reset();
+                            foreach (ChallengeManager challenge in interfaceManager.subChallenges)
+                                challenge.Reset();
+                            
+                            Choice.ResetChoice();
+
+                            if (AutomaticMode == numOfGameModes - 1)
+                            {
+                                Choice.totalMatches = totalMathes;
+                                Choice.AverageTimeToChoose = averageTimeToChoose;
+                                Choice.RangeTimeToChoose = rangeTimeToChoose;
+                                Choice.orderCounter = totalOrderCounter;
+                                interfaceManager.control.FinishGame();
+                            }
+                            else
+                                interfaceManager.control.gameTime = 0f;
+                        }
+
+                        mode = (GameMode)AutomaticMode;
+                    }
+                }
 
                 turnTime = 0f;
 
@@ -346,7 +362,11 @@ public class Dealer : GameBase {
         else
             orderCounter = 1f/Choice.orderCounter;
 
-        interfaceManager.scoreValue = Choice.totalPoints;
+        if (interfaceManager.control.gameMode.value == numOfGameModes - 1)
+            interfaceManager.scoreValue = totalScore;
+        else
+            interfaceManager.scoreValue = Choice.totalPoints;
+        
         interfaceManager.control.metric1Value = 100f * Choice.suitCounter * orderCounter;
         interfaceManager.control.metric2Value = 100f * Choice.valueCounter * orderCounter;
         interfaceManager.control.metric3Value = 100f * Choice.colorCounter * orderCounter;
@@ -431,6 +451,13 @@ public class Dealer : GameBase {
                 
                 //choices.Add(new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose, timeToPlay, timeToMemorize));
                 currentChoice = new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose, timeToPlay, timeToMemorize);
+
+                totalScore += currentChoice.pointMatch;
+                totalMathes += (currentChoice.match ? 1 : 0);
+                averageTimeToChoose = Average(averageTimeToChoose, currentChoice.TimeToChoose, totalOrderCounter);
+                totalOrderCounter++;
+                rangeTimeToChoose = CheckExtremes(currentChoice.TimeToChoose, rangeTimeToChoose);
+
                 timeToChoose = 0f;
                 timeToPlay = 0f;
                 timeToMemorize = 0f;
@@ -468,7 +495,11 @@ public class Dealer : GameBase {
                 onCard = false;
 
 //                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.averageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
-                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.AverageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
+                float gameSpeed_aux;
+                if (AutomaticMode == numOfGameModes -1)
+                    gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.AverageTimeToChoose) * totalMathes / totalOrderCounter;
+                else
+                    gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.AverageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
 
                 if (Mathf.Abs(gameSpeed_aux - interfaceManager.control.gameSpeed) > TimeChoiceLimits[0])
                     interfaceManager.control.gameSpeed += TimeChoiceLimits[0] * Mathf.Sign(gameSpeed_aux - interfaceManager.control.gameSpeed);

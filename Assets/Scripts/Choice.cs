@@ -113,13 +113,13 @@ public class Choice {
         TimeToPlay = timeToPlay;
         TimeToMemorize = timeToMemorize;
 
-        AverageTimeToChoose = Average(AverageTimeToChoose, timeToChoose, orderCounter);
-        AverageTimeToPlay = Average(AverageTimeToPlay, timeToPlay, orderCounter);
-        AverageTimeToMemorize = Average(AverageTimeToMemorize, timeToMemorize, orderCounter);
+        AverageTimeToChoose = GameBase.Average(AverageTimeToChoose, timeToChoose, orderCounter);
+        AverageTimeToPlay = GameBase.Average(AverageTimeToPlay, timeToPlay, orderCounter);
+        AverageTimeToMemorize = GameBase.Average(AverageTimeToMemorize, timeToMemorize, orderCounter);
 
-        RangeTimeToChoose = CheckExtremes(timeToChoose, RangeTimeToChoose);
-        RangeTimeToPlay = CheckExtremes(timeToPlay, RangeTimeToPlay);
-        RangeTimeToMemorize = CheckExtremes(timeToMemorize, RangeTimeToMemorize);
+        RangeTimeToChoose = GameBase.CheckExtremes(timeToChoose, RangeTimeToChoose);
+        RangeTimeToPlay = GameBase.CheckExtremes(timeToPlay, RangeTimeToPlay);
+        RangeTimeToMemorize = GameBase.CheckExtremes(timeToMemorize, RangeTimeToMemorize);
 
         order = orderCounter;
         orderCounter++;
@@ -130,11 +130,16 @@ public class Choice {
     {
         objectiveCard = new int[3];
         choiceCard = new int[3];
-        pointMatch = 0;
+        pointMatch = order = numOptions = 0;
 
         suitMatch = false;
         valueMatch = false;
         colorMatch = false;
+        match = false;
+
+        TimeToChoose = 0f;
+        TimeToPlay = 0f;
+        TimeToMemorize = 0f;
     }
 
     public static bool operator ==(Choice A, Choice B)
@@ -226,24 +231,6 @@ public class Choice {
             match += extraScore + Mathf.RoundToInt(timeScore/2f);
 
         return match;
-    }
-
-
-    public float [] CheckExtremes(float value, float[] range)
-    {
-        float[] newRange = range;
-
-        if (value < range[0])
-            newRange[0] = value;
-        if (value > range[1])
-            newRange[1] = value;
-
-        return newRange;
-    }
-
-    public float Average(float average, float value, int order)
-    {
-        return (average * order + value) / (order + 1f);
     }
 }
 

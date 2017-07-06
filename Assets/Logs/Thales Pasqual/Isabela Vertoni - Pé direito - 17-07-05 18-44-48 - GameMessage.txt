@@ -1,0 +1,50 @@
+Time	Message
+0.4451972	Jogo executando - Novo turno
+0.5148049	Jogo executando - Esperando jogador iniciar
+1.739921	Jogo executando - Esperando jogador escolher
+2.727525	Jogo executando - Escolha certa
+3.73471	Jogo executando - Turno terminando
+4.688452	Jogo executando - Novo turno
+4.705019	Jogo executando - Esperando jogador iniciar
+6.16727	Jogo executando - Esperando jogador escolher
+7.696189	Jogo executando - Escolha certa
+8.708131	Jogo executando - Turno terminando
+9.701953	Jogo executando - Novo turno
+9.717955	Jogo executando - Esperando jogador iniciar
+11.06077	Jogo executando - Esperando jogador escolher
+11.74869	Jogo executando - Escolha certa
+12.73252	Jogo executando - Turno terminando
+13.69857	Jogo executando - Novo turno
+13.72648	Jogo executando - Esperando jogador iniciar
+15.2329	Jogo executando - Esperando jogador escolher
+16.22863	Jogo executando - Escolha certa
+17.21223	Jogo executando - Turno terminando
+18.16689	Jogo executando - Novo turno
+18.18332	Jogo executando - Esperando jogador iniciar
+19.07933	Jogo executando - Esperando jogador escolher
+20.79435	Jogo executando - Escolha certa
+21.81728	Jogo executando - Turno terminando
+22.80838	Jogo executando - Novo turno
+22.82561	Jogo executando - Esperando jogador iniciar
+23.82152	Jogo executando - Esperando jogador escolher
+25.38184	Jogo executando - Escolha certa
+26.41591	Jogo executando - Turno terminando
+27.41692	Jogo executando - Novo turno
+27.43345	Jogo executando - Esperando jogador iniciar
+28.6645	Jogo executando - Esperando jogador escolher
+30.14281	Jogo executando - Escolha certa
+31.15853	Jogo executando - Turno terminando
+32.16856	Jogo executando - Novo turno
+32.18496	Jogo executando - Esperando jogador iniciar
+33.2513	Jogo executando - Esperando jogador escolher
+34.23451	Jogo executando - Escolha certa
+35.26717	Jogo executando - Turno terminando
+36.26389	Jogo executando - Novo turno
+36.28017	Jogo executando - Esperando jogador iniciar
+37.92524	Jogo executando - Esperando jogador escolher
+39.19367	Jogo executando - Escolha certa
+40.20107	Jogo executando - Turno terminando
+41.19713	Jogo executando - Novo turno
+41.2137	Jogo executando - Esperando jogador iniciar
+42.16188	Jogo executando - Esperando jogador escolher
+44.16309	Jogo executando - Escolha certa

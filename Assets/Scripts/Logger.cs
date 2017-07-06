@@ -51,7 +51,7 @@ public class Logger : MonoBehaviour {
             "Pos X\tPos Y\t" +
             "Vel X\tVel Y\t" +
             "Acc X\tAcc Y" +
-            Environment.NewLine);
+            Environment.NewLine, Encoding.UTF8);
         
         chooseFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - Choices.txt";
         File.WriteAllText (chooseFile, 
@@ -86,13 +86,13 @@ public class Logger : MonoBehaviour {
             "Choose\t" +
             "Magnitude\tAngle\t" +
             "Magnitude\tAngle" +
-            Environment.NewLine);
+            Environment.NewLine, Encoding.UTF8);
 
         messageFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - GameMessage.txt";
         File.WriteAllText (messageFile, 
             "Time\t" +
             "Message" +
-            Environment.NewLine);
+            Environment.NewLine, Encoding.UTF8);
 
 
 
@@ -140,7 +140,7 @@ public class Logger : MonoBehaviour {
                 "Dorsiflexion\t" +
                 "Inversion\t" +
                 "Eversion\t" +
-                Environment.NewLine);
+                Environment.NewLine, Encoding.UTF8);
     }
 
     /// <summary>
@@ -158,7 +158,7 @@ public class Logger : MonoBehaviour {
             File.AppendAllText(messageFile,
                 time + "\t"
                 + message +
-                Environment.NewLine);
+                Environment.NewLine, Encoding.UTF8);
             previousMessage = message;
         }
     }
@@ -189,9 +189,9 @@ public class Logger : MonoBehaviour {
             + vel.y + "\t"
             + acc.x + "\t"
             + acc.y
-        );
+            , Encoding.UTF8);
 
-        File.AppendAllText(movementFile, Environment.NewLine);
+        File.AppendAllText(movementFile, Environment.NewLine, Encoding.UTF8);
     }
 
     /// <summary>
@@ -230,10 +230,10 @@ public class Logger : MonoBehaviour {
             + choice.choiceCard[0] + "\t"
             + choice.choiceCard[1] + "\t"
             + choice.choiceCard[2] + "\t"
-            + ((int)choice.valueMatch) + "\t"
-            + ((int)choice.suitMatch) + "\t"
-            + ((int)choice.colorMatch) + "\t"
-            + ((int)choice.pointMatch) + "\t"
+            + (choice.valueMatch ? 1 : 0) + "\t"
+            + (choice.suitMatch ? 1 : 0) + "\t"
+            + (choice.colorMatch ? 1 : 0) + "\t"
+            + choice.pointMatch + "\t"
             + choice.TimeToPlay + "\t"
             + choice.TimeToMemorize + "\t"
             + choice.TimeToChoose + "\t"
@@ -241,7 +241,7 @@ public class Logger : MonoBehaviour {
             + cho.x  + "\t" + cho.y
         );
 
-        File.AppendAllText(chooseFile, Environment.NewLine);
+        File.AppendAllText(chooseFile, Environment.NewLine, Encoding.UTF8);
         turnTime = time;
     }
 
@@ -291,6 +291,6 @@ public class Logger : MonoBehaviour {
                 (100f * history.Done[3]) + "\t" +
                 (100f * history.Done[1 + sideMember]) + "\t" +
                 (100f * history.Done[1 - sideMember]) + "\t" +
-                Environment.NewLine);
+                Environment.NewLine, Encoding.UTF8);
     }
 }

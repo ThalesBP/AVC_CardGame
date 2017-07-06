@@ -1,0 +1,43 @@
+Time	Message
+2.343016	Jogo executando - Esperando jogador escolher
+3.197196	Jogo executando - Escolha certa
+4.142419	Jogo executando - Turno terminando
+5.0679	Jogo executando - Novo turno
+5.084467	Jogo executando - Esperando jogador iniciar
+7.133272	Jogo executando - Esperando jogador escolher
+7.710557	Jogo executando - Escolha certa
+8.643367	Jogo executando - Turno terminando
+9.632523	Jogo executando - Novo turno
+9.649239	Jogo executando - Esperando jogador iniciar
+11.78812	Jogo executando - Esperando jogador escolher
+12.45147	Jogo executando - Escolha certa
+13.40592	Jogo executando - Turno terminando
+14.40137	Jogo executando - Novo turno
+14.41794	Jogo executando - Esperando jogador iniciar
+17.25536	Jogo executando - Esperando jogador escolher
+17.80622	Jogo executando - Escolha certa
+18.73003	Jogo executando - Turno terminando
+19.71955	Jogo executando - Novo turno
+19.73612	Jogo executando - Esperando jogador iniciar
+21.51089	Jogo executando - Esperando jogador escolher
+23.15857	Jogo executando - Escolha certa
+24.09881	Jogo executando - Turno terminando
+25.11104	Jogo executando - Novo turno
+25.12701	Jogo executando - Esperando jogador iniciar
+26.95721	Jogo executando - Esperando jogador escolher
+28.27657	Jogo executando - Escolha certa
+29.23764	Jogo executando - Turno terminando
+30.30792	Jogo executando - Novo turno
+30.32448	Jogo executando - Esperando jogador iniciar
+32.02684	Jogo executando - Esperando jogador escolher
+32.98417	Jogo executando - Escolha certa
+33.96151	Jogo executando - Turno terminando
+34.99553	Jogo executando - Novo turno
+35.01223	Jogo executando - Esperando jogador iniciar
+36.69067	Jogo executando - Esperando jogador escolher
+38.46657	Jogo executando - Escolha certa
+39.45024	Jogo executando - Turno terminando
+40.5042	Jogo executando - Novo turno
+40.52076	Jogo executando - Esperando jogador iniciar
+42.90532	Jogo executando - Esperando jogador escolher
+44.21437	Jogo executando - Escolha certa

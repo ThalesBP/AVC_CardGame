@@ -1,0 +1,45 @@
+Time	Message
+0.7055935	Jogo executando - Novo turno
+0.7224827	Jogo executando - Esperando jogador iniciar
+2.162634	Jogo executando - Esperando jogador escolher
+3.052332	Jogo executando - Escolha certa
+4.05962	Jogo executando - Turno terminando
+5.192078	Jogo executando - Novo turno
+5.208727	Jogo executando - Esperando jogador iniciar
+6.500567	Jogo executando - Esperando jogador escolher
+7.974854	Jogo executando - Escolha certa
+8.999142	Jogo executando - Turno terminando
+10.17647	Jogo executando - Novo turno
+10.19304	Jogo executando - Esperando jogador iniciar
+11.31269	Jogo executando - Esperando jogador escolher
+12.8756	Jogo executando - Escolha certa
+13.95338	Jogo executando - Turno terminando
+15.15187	Jogo executando - Novo turno
+15.16843	Jogo executando - Esperando jogador iniciar
+16.6161	Jogo executando - Esperando jogador escolher
+18.06906	Jogo executando - Escolha certa
+19.15586	Jogo executando - Turno terminando
+20.36077	Jogo executando - Novo turno
+20.37734	Jogo executando - Esperando jogador iniciar
+21.49589	Jogo executando - Esperando jogador escolher
+22.76704	Jogo executando - Escolha errada
+23.55058	Jogo executando - Escolha certa
+24.79953	Jogo executando - Turno terminando
+26.29162	Jogo executando - Novo turno
+26.30852	Jogo executando - Esperando jogador iniciar
+28.62505	Jogo executando - Esperando jogador escolher
+29.91422	Jogo executando - Escolha certa
+31.16038	Jogo executando - Turno terminando
+32.60033	Jogo executando - Novo turno
+32.6169	Jogo executando - Esperando jogador iniciar
+34.28785	Jogo executando - Esperando jogador escolher
+35.19965	Jogo executando - Escolha certa
+36.37574	Jogo executando - Turno terminando
+37.78325	Jogo executando - Novo turno
+37.79982	Jogo executando - Esperando jogador iniciar
+39.20654	Jogo executando - Esperando jogador escolher
+39.85731	Jogo executando - Escolha certa
+41.02536	Jogo executando - Turno terminando
+42.36721	Jogo executando - Novo turno
+42.38378	Jogo executando - Esperando jogador iniciar
+43.62485	Jogo executando - Esperando jogador escolher
