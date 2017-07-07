@@ -44,6 +44,16 @@ public class GameBase : MonoBehaviour {
             {"Count Suits", "Contar Naipes"},
             {"Swipe Modes", "Alterna os Modos"}
         };
+
+    // Explaining Game Modes
+    protected static readonly string[,] explainingModesText =
+        { 
+            { "Find the card around that matches the center one", "Encontre a carta ao redor igual a do centro" },
+            { "Memorize the central card before continue", "Memorize a carta central antes de continuar" },
+            { "The number of suits just matches with card value", "O número de naipes apenas é igual ao valor da carta" },
+            { "Count the number of suits and find the card around", "Conte o número de naipes e ache a carta ao redor" }
+        };
+
     #endregion
 
     #region Time informations
@@ -55,7 +65,7 @@ public class GameBase : MonoBehaviour {
     protected static readonly int Long = 3;
     protected static readonly int VeryLong = 4;
     protected static readonly int MuchLonger = 5;
-    protected static readonly int MostLogner = 6;
+    protected static readonly int MostLonger = 6;
     protected static readonly int CountDown = 3;    // 3 seconds
     protected static readonly float[] GameSpeedLimits = { 1f, 3f };
     protected static readonly float[] TimeChoiceLimits = { 0.5f, 4.5f };
@@ -84,6 +94,7 @@ public class GameBase : MonoBehaviour {
     public static Languages chosenLanguage = Languages.English;
     // Central Message
     protected static readonly string[] readyText = { "READY?", "PRONTO?" };
+    protected static readonly string[] ready2Text = { "Point over the cards when you are ready", "Aponte para as cartas quando estiver pronto" };
     protected static readonly string[] goText = { "Go!", "Vai!" };
     protected static readonly string[] endOfGameText = { "End of game", "Fim de jogo" };
     protected static readonly string[] moveCirclesText = { "Move in circles", "Mova em círculos" };
@@ -164,7 +175,7 @@ public class GameBase : MonoBehaviour {
         connected,          // Connected to robot
         disconnecting,      // Disconnecting to robot
         disconnected,       // Disconnected to robot
-        calibrating         // Calibrating movement
+        calibrating        // Calibrating movement
     };
 
     protected static readonly string[,] gameMessageTexts =

@@ -88,9 +88,14 @@ public class Dealer : GameBase {
         gameSlice = 100f;
         packCounter = 0;
         soundEffect = gameObject.GetComponent<AudioSource>();
-        interfaceManager.control.slider.onValueChanged.AddListener(delegate {
-            EndTurn();
-        } );
+        interfaceManager.control.slider.onValueChanged.AddListener(delegate 
+            {
+                EndTurn();
+            } );
+        interfaceManager.control.gameMode.onValueChanged.AddListener(delegate
+            {
+                EndTurn();
+            } );
 
         mainAngles = new float[] {0f, 90f, 180f, 270f};     // [Right, Top, Left, Botton]
         subAngles  = new float[] {-36f, -18f, 0f, 18f, 36f};
@@ -112,12 +117,14 @@ public class Dealer : GameBase {
                 {
                     mode = (GameMode)interfaceManager.control.gameMode.value;
                     challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
+
+                    if (Choice.orderCounter == 0)
+                    {
+                        interfaceManager.mode = (int)mode;
+                    }
                 }
                 else
                 {
-                    if ((interfaceManager.control.gameTime == 0f) && (challengeNumber != challengeCards.Count))
-                        gameStatus = Status.destroy;
-
                     if (interfaceManager.control.totalGameTime > 0)
                     {
                         gameSlice = interfaceManager.control.totalGameTime * 60f / (numOfGameModes - 1f);
@@ -130,6 +137,8 @@ public class Dealer : GameBase {
                             {
                                 challengeNumber = 3;
                                 AutomaticMode++;
+
+                                interfaceManager.mode = AutomaticMode;
                             }
 
                             interfaceManager.StopLoggin();
@@ -153,7 +162,6 @@ public class Dealer : GameBase {
                             else
                                 interfaceManager.control.gameTime = 0f;
                         }
-
                         mode = (GameMode)AutomaticMode;
                     }
                 }
@@ -175,6 +183,8 @@ public class Dealer : GameBase {
                 {
                     if ((FindCardPointed(cardsInGame) != null) && (player.Action))
                     {
+                        interfaceManager.mode = -1;
+
                         objectiveCard.status = Card.Highlight.free;
                         objectiveCard.timeToTwinkle = 0f;
 
@@ -260,7 +270,7 @@ public class Dealer : GameBase {
                 {
                     timeToChoose += Time.unscaledDeltaTime;
                     if (interfaceManager.control.helpToggle.isOn)
-                        challengeCards[0].HighlightTimer(LoadingTime[MostLogner], 0.75f);
+                        challengeCards[0].HighlightTimer(LoadingTime[MostLonger], 0.75f);
                 }
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
@@ -558,6 +568,7 @@ public class Dealer : GameBase {
     /// </summary>
     private void EndTurn()
     {
+        challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
         switch(gameStatus)
         {
             case Status.playerPlay:

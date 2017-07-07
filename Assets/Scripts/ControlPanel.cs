@@ -192,7 +192,7 @@ public class ControlPanel : GameBase {
     /// <summary>
     /// Pauses the game.
     /// </summary>
-    private void PauseGame()
+    public void PauseGame()
     {
         status = Status.paused;
         Time.timeScale = 0f;
@@ -201,7 +201,7 @@ public class ControlPanel : GameBase {
     /// <summary>
     /// Starts the game.
     /// </summary>
-    private void StartGame()
+    public void StartGame()
     {
         if (playTimeInput.text == "")
         {
@@ -235,7 +235,7 @@ public class ControlPanel : GameBase {
     /// <summary>
     /// Switchs between start and pause status.
     /// </summary>
-    private void SwitchStartPause()
+    public void SwitchStartPause()
     {
         switch (status)
         {

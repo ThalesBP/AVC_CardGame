@@ -12,7 +12,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public Logger log;
     public Texture2D mouseDefault;
 
-    public Text playStatus;
+    public Text playStatus, playStatus2;
     private Motion statusScale;
     private Outline statusBoarder;
 
@@ -23,6 +23,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     private int countDownCounter;   // Counter for count down
     public int CountDownCounter {get {return countDownCounter;}}
     public int scoreValue;
+    public int mode;
 
     public bool logging = false;
 
@@ -31,11 +32,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     void Start () 
     {
-        countDownCounter = CountDown + 1;
+        countDownCounter = -1;
+        mode = -1;
         Time.timeScale = 0f;
 
         #region General Interface Initialization
         playStatus = GameObject.Find("PlayStatus").GetComponentInChildren<Text>(true);
+        playStatus2 = GameObject.Find("PlayStatus2").GetComponentInChildren<Text>(true);
         statusScale = playStatus.gameObject.AddComponent<Motion>();
         statusScale.MoveTo(Vector3.one);
         statusScale.timeScaled = false;
@@ -85,7 +88,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     playStatus.text = moveCirclesText[language];
                 else
                     playStatus.text = readyText[language];
-                StartCountDown(CountDown);
+                playStatus2.text = "";
+   //             StartCountDown(CountDown);
                 break;
             case Status.paused:
                 if (control.calibrating)
@@ -95,7 +99,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 statusScale.MoveTo(Vector3.one);
                 playStatus.color = YellowText;
                 statusBoarder.effectColor = Color.black;
-                StartCountDown(CountDown);
+   //             StartCountDown(CountDown);
                 break;
             case Status.playing:
 
@@ -140,6 +144,17 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     log.Register(control.gameTime, ControlManager.Instance.RawPosition);
                 }
                 playStatus.transform.localScale = statusScale;
+
+                if (mode >= 0)
+                {
+                    playStatus.text = explainingModesText[mode, language];
+                    playStatus2.text = ready2Text[language];
+                }
+                else
+                {
+                    playStatus.text = "";
+                    playStatus2.text = "";
+                }
 
                 break;
             case Status.end:
