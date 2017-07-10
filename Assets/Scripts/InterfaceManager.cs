@@ -10,7 +10,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public ControlPanel control;
     public UserPanel user;
     public Logger log;
-    public Texture2D mouseDefault;
+  //  public Texture2D mouseDefault;
 
     public Text playStatus, playStatus2;
     private Motion statusScale;
@@ -72,11 +72,6 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         }
         else
             control.startButton.interactable = false;
-
-        if ((control.connection == null) && (!ControlManager.Instance.joystick))
-            Cursor.visible = false;
-        else
-            Cursor.visible = true;
 
         language = (int)chosenLanguage;
 		

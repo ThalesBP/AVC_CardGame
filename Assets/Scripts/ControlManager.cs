@@ -47,7 +47,7 @@ public class ControlManager : Singleton<ControlManager> {
                 case ControlMode.Connection:
                     return connection.Position;
                 case ControlMode.ForceConnection:
-                    return new Vector2(simulateRobotX, simulateRobotY);
+                    return ankle.CircleToElipse((Position - center).normalized * Mathf.Clamp((Position - center).magnitude, 0f, Screen.height * 0.45f), Screen.height * 0.45f);
                 case ControlMode.Joystick:
                     return Position;
                 case ControlMode.Mouse:
@@ -100,17 +100,27 @@ public class ControlManager : Singleton<ControlManager> {
         switch (mode)
         {
             case ControlMode.Connection:
+                Cursor.visible = true;
                 if (!connection.connected)
                     ankle.Reset();
                 position = scale * ankle.ElipseToCircle(connection.Position) + center;
                 break;
             case ControlMode.ForceConnection:
-                position = scale * ankle.ElipseToCircle(new Vector2(simulateRobotX, simulateRobotY)) + center;
+                float mag = ((Vector2)Input.mousePosition - center).magnitude;
+                position = ((Vector2)Input.mousePosition - center).normalized * Mathf.Clamp(mag, 0f, Screen.height * 0.45f) + center;
+
+                if (mag > Screen.height * 0.45f)
+                    Cursor.visible = true;
+                else
+                    Cursor.visible = false;
+            //    position = scale * ankle.ElipseToCircle(new Vector2(simulateRobotX, simulateRobotY)) + center;
                 break;
             case ControlMode.Joystick:
+                Cursor.visible = true;
                 position = new Vector2(Input.GetAxis("Horizontal") * 300f, Input.GetAxis("Vertical") * 300f) + center;
                 break;
             case ControlMode.Mouse:
+                Cursor.visible = false;
                 ankle.SetRadius(0.5f);
                 position = Input.mousePosition;
                 break;
