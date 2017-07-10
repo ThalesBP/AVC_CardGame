@@ -87,7 +87,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 if (control.calibrating)
                     playStatus.text = moveCirclesText[language];
                 else
+                {
                     playStatus.text = readyText[language];
+                    mainChallenge.Reset();
+                    foreach (ChallengeManager challenge in subChallenges)
+                        challenge.Reset();
+                }
                 playStatus2.text = "";
    //             StartCountDown(CountDown);
                 break;

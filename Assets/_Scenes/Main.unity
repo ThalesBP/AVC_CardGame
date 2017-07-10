@@ -128,11 +128,13 @@ MonoBehaviour:
   totalOrderCounter: 0
   totalGameTime: 0
   averageTimeToChoose: 0
+  timeToRead: 0
   rangeTimeToChoose: []
   gameStatus: 0
   nextStatus: 0
   timeToPlay: 0
   gameSlice: 0
+  choiceChanged: 0
   cardPrefab: {fileID: 1921799268104742, guid: 2fe6ed2b873708f4bac81311e93e7f0a, type: 2}
   player: {fileID: 0}
   aimedCard: {fileID: 0}
@@ -698,6 +700,16 @@ Prefab:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 224539756983564346, guid: e435aa7d892158f48a2138903352a7a3,
+        type: 2}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 224539756983564346, guid: e435aa7d892158f48a2138903352a7a3,
+        type: 2}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 224480837982674932, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}
       propertyPath: m_AnchorMax.x
@@ -707,16 +719,6 @@ Prefab:
         type: 2}
       propertyPath: m_AnchorMax.y
       value: 0.39406252
-      objectReference: {fileID: 0}
-    - target: {fileID: 224539756983564346, guid: e435aa7d892158f48a2138903352a7a3,
-        type: 2}
-      propertyPath: m_AnchorMax.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 224539756983564346, guid: e435aa7d892158f48a2138903352a7a3,
-        type: 2}
-      propertyPath: m_AnchorMax.y
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 224603450149834756, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}

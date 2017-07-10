@@ -14,8 +14,8 @@ public class MiniMap : MonoBehaviour {
     public float scale = 0.75f;
 
     public List<Vector2> choices, challenges, ankleTrack;
-    private float recStep;
-    private float recTime;
+//    private float recStep;
+//    private float recTime;
 
     private float colorRate, colorAlpha;
 
@@ -24,8 +24,8 @@ public class MiniMap : MonoBehaviour {
         ankleTrack = new List<Vector2> ();
         colorRate = 0.1f;
         colorAlpha = 0.3f;
-        recTime = 0f;
-        recStep = 0.25f;
+//        recTime = 0f;
+//        recStep = 0.25f;
 
         //        package = ControlManager.Instance.ankle;
 

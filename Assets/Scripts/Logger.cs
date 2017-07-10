@@ -71,6 +71,7 @@ public class Logger : MonoBehaviour {
             "Match\t" +
             "Turn Time\t" + 
             "Precision\t" +
+            "Changed Choice\t" +
             "Value\t" +
             "Suit\t" +
             "Color\t" +
@@ -100,7 +101,7 @@ public class Logger : MonoBehaviour {
         if(!File.Exists(historicFile))
             File.WriteAllText (historicFile,
                 manager + "\t" + player + "\t" +
-                "Game Results\t\t\t\t\t" +
+                "Game Results\t\t\t\t\t\t" +
                 "Time to Play\t\t\t" +
                 "Time to Memorize\t\t\t" +
                 "Time to Choose\t\t\t" +
@@ -116,6 +117,7 @@ public class Logger : MonoBehaviour {
                 "Matches\t" +
                 "Turns\t" +
                 "Game Time\t" +
+                "Time to Read\t" +
                 "Average Time\t" +
                 "Fastest Time\t" +
                 "Slowest Time\t" +
@@ -224,6 +226,7 @@ public class Logger : MonoBehaviour {
             + match + "\t"
             + (time - turnTime) + "\t"
             + Choice.precision + "\t"
+            + choice.choiceChanged + "\t"
             + choice.objectiveCard[0] + "\t"
             + choice.objectiveCard[1] + "\t"
             + choice.objectiveCard[2] + "\t"
@@ -267,6 +270,7 @@ public class Logger : MonoBehaviour {
                 Choice.totalMatches + "\t" +
                 Choice.orderCounter + "\t" +
                 gameTime + "\t" +
+                Choice.TimeToRead + "\t" +
                 Choice.AverageTimeToPlay + "\t" +
                 Choice.RangeTimeToPlay[0] + "\t" +
                 Choice.RangeTimeToPlay[1] + "\t" +

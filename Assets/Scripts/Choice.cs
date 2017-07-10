@@ -31,6 +31,7 @@ public class Choice {
     public static float AverageTimeToChoose = 0f;
     public static float AverageTimeToPlay = 0f;
     public static float AverageTimeToMemorize = 0f;
+    public static float TimeToRead = 0f;
 
     public static float[] RangeTimeToChoose = {float.PositiveInfinity, float.NegativeInfinity};
     public static float[] RangeTimeToPlay = {float.PositiveInfinity, float.NegativeInfinity};
@@ -39,6 +40,7 @@ public class Choice {
     public float TimeToChoose = 0f;
     public float TimeToPlay = 0f;
     public float TimeToMemorize = 0f;
+    public float choiceChanged = 0f;
 
     private const int suitScore = 5;
     private const int colorScore = 5;
@@ -210,6 +212,7 @@ public class Choice {
         AverageTimeToChoose = 0f;
         AverageTimeToPlay = 0f;
         AverageTimeToMemorize = 0f;
+        TimeToRead = 0f;
 
         RangeTimeToChoose = new float[] {float.PositiveInfinity, float.NegativeInfinity};
         RangeTimeToPlay = new float[] {float.PositiveInfinity, float.NegativeInfinity};

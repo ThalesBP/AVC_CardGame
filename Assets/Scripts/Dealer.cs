@@ -11,7 +11,7 @@ public class Dealer : GameBase {
     public GameMode mode = GameMode.Basic;
     public int AutomaticMode = 0;
     public int totalScore, totalMathes, totalOrderCounter;
-    public float totalGameTime, averageTimeToChoose;
+    public float totalGameTime, averageTimeToChoose, timeToRead;
     public float[] rangeTimeToChoose;
 
     [SerializeField]
@@ -31,6 +31,8 @@ public class Dealer : GameBase {
     private int packCounter;        // Counter for positioning cards in a pack
     private int challengeNumber;    // Number of card in challange - It may be useless
     private bool onCard;            // Checks if mouse is on a card
+    [SerializeField]
+    private float choiceChanged;     // Verifies if player changed his/her choice
 
     public GameObject cardPrefab;   // Card prefab to be instantiated
     public ControlManager player;   // Reads player's position
@@ -64,7 +66,7 @@ public class Dealer : GameBase {
 
     void Start () 
     {
-        totalGameTime = averageTimeToChoose = 0f;
+        totalGameTime = averageTimeToChoose = timeToRead = 0f;
         totalScore = totalOrderCounter = totalMathes = 0;
         rangeTimeToChoose = new float[2] {float.PositiveInfinity, float.NegativeInfinity};
 
@@ -79,6 +81,7 @@ public class Dealer : GameBase {
         player.connection = interfaceManager.control.connection;
 
         onCard = false;
+        choiceChanged = 0f;
         waitCounter = 0f;
         timeToWait = 0f;
         timeToChoose = 0f;
@@ -145,10 +148,10 @@ public class Dealer : GameBase {
 
                             totalGameTime += interfaceManager.control.gameTime;
 
-                            interfaceManager.mainChallenge.Reset();
+               /*             interfaceManager.mainChallenge.Reset();
                             foreach (ChallengeManager challenge in interfaceManager.subChallenges)
                                 challenge.Reset();
-                            
+                  */          
                             Choice.ResetChoice();
 
                             if (AutomaticMode == numOfGameModes - 1)
@@ -253,7 +256,12 @@ public class Dealer : GameBase {
                         {
                             objectiveCard.HighlightTimer(LoadingTime[VeryLong], 1f);
                             if (!objectiveCard.showed)
-                                timeToPlay += Time.unscaledDeltaTime;
+                            {
+                                if (interfaceManager.mode == -1)
+                                    timeToRead += Time.unscaledDeltaTime;
+                                else 
+                                    timeToPlay += Time.unscaledDeltaTime;
+                            }
                             else
                                 timeToMemorize += Time.unscaledDeltaTime;
                         }
@@ -437,7 +445,6 @@ public class Dealer : GameBase {
                 onCard = true;
                 aimedCard = cardAux;
                 aimedCard.scale.MoveTo(1.1f * Vector3.one, DeltaTime[Short]);
-
             }
             else
             {
@@ -467,11 +474,15 @@ public class Dealer : GameBase {
                 averageTimeToChoose = Average(averageTimeToChoose, currentChoice.TimeToChoose, totalOrderCounter);
                 totalOrderCounter++;
                 rangeTimeToChoose = CheckExtremes(currentChoice.TimeToChoose, rangeTimeToChoose);
+                Choice.TimeToRead = timeToRead;
+                currentChoice.choiceChanged = choiceChanged;
 
                 timeToChoose = 0f;
                 timeToPlay = 0f;
                 timeToMemorize = 0f;
                 turnTime = 0f;
+                timeToRead = 0f;
+                choiceChanged = 0f;
 
                 Vector3 choicePosition = FindPlacePointed();
 
@@ -541,6 +552,9 @@ public class Dealer : GameBase {
         }
         else
         {
+            if (onCard)
+                choiceChanged += ControlManager.Instance.RawLoading;
+
             onCard = false;
             if (aimedCard != null)
             {

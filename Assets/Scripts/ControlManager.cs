@@ -63,6 +63,11 @@ public class ControlManager : Singleton<ControlManager> {
         get { return actionCounter / LoadingTime[Medium]; }
     }
 
+    public float RawLoading
+    {
+        get { return actionCounter; }
+    }
+
     public bool Action
     {
         get { return GetAction(); }

@@ -1,0 +1,51 @@
+﻿Time	Message
+0.0156647	Game running - Waiting player starts
+1.821381	Game running - Waiting player chooses
+5.81377	Game running - Right choose
+8.247715	Game running - Turn ended
+9.979239	Game running - New turn
+9.995798	Game running - Waiting player starts
+11.34087	Game running - Waiting player chooses
+13.72063	Game running - Right choose
+15.29609	Game running - Turn ended
+17.30262	Game running - New turn
+17.31922	Game running - Waiting player starts
+18.94527	Game running - Waiting player chooses
+19.89502	Game running - Right choose
+21.1946	Game running - Turn ended
+22.83912	Game running - New turn
+22.85543	Game running - Waiting player starts
+24.34948	Game running - Waiting player chooses
+26.5722	Game running - Right choose
+27.84745	Game running - Turn ended
+29.48164	Game running - New turn
+29.4982	Game running - Waiting player starts
+30.90944	Game running - Waiting player chooses
+32.33382	Game running - Right choose
+33.55976	Game running - Turn ended
+35.12457	Game running - New turn
+35.14145	Game running - Waiting player starts
+36.93067	Game running - Waiting player chooses
+37.77975	Game running - Right choose
+38.94675	Game running - Turn ended
+40.42495	Game running - New turn
+40.44152	Game running - Waiting player starts
+42.14457	Game running - Waiting player chooses
+43.34774	Game running - Wrong choose
+44.16407	Game running - Right choose
+45.46341	Game running - Turn ended
+47.14834	Game running - New turn
+47.16543	Game running - Waiting player starts
+48.9589	Game running - Waiting player chooses
+49.78732	Game running - Right choose
+51.05294	Game running - Turn ended
+52.66221	Game running - New turn
+52.67878	Game running - Waiting player starts
+54.15036	Game running - Waiting player chooses
+55.70929	Game running - Right choose
+56.94449	Game running - Turn ended
+58.52544	Game running - New turn
+58.54187	Game running - Waiting player starts
+60.40128	Game running - Waiting player chooses
+62.29827	Game running - Right choose
+63.53453	Game running - Turn ended
