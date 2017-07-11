@@ -205,7 +205,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     public void StopLoggin()
     {
-        log.Register(user.memberDropdown.captionText.text, control.gameTime, mainChallenge);
+        log.Register(control.obsField.text, user.memberDropdown.captionText.text, control.gameTime, mainChallenge);
         logging = false;
     }
 }

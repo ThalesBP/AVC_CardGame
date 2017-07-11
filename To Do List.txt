@@ -13,9 +13,9 @@ Calcular proporcional a tela todo o tempo
 Mini mapa por cima do mouse
 
 Log:
+ATENÇAO: Desvio padrão das informações
 -----
 Partidas para coleta de dados / análise de dificuldade
-Desvio padrão das informações
 
 Visual:
 Save the last configuration

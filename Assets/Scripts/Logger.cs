@@ -101,7 +101,7 @@ public class Logger : MonoBehaviour {
         if(!File.Exists(historicFile))
             File.WriteAllText (historicFile,
                 manager + "\t" + player + "\t" +
-                "Game Results\t\t\t\t\t\t" +
+                "Game Results\t\t\t\t\t\t\t" +
                 "Time to Play\t\t\t" +
                 "Time to Memorize\t\t\t" +
                 "Time to Choose\t\t\t" +
@@ -111,6 +111,7 @@ public class Logger : MonoBehaviour {
                 "Movements Done\t\t\t\t" +
                 Environment.NewLine +
                 "Date\t" +
+                "Obs\t" +
                 "Member\t" +
                 "Score\t" + 
                 "Win Rate\t" +
@@ -248,7 +249,7 @@ public class Logger : MonoBehaviour {
         turnTime = time;
     }
 
-    public void Register(string member, float gameTime, ChallengeManager history)
+    public void Register(string obs, string member, float gameTime, ChallengeManager history)
     {
         if (!started)
             return;
@@ -264,6 +265,7 @@ public class Logger : MonoBehaviour {
         else
             File.AppendAllText(historicFile, 
                 logTime + "\t" +
+                obs + "\t" +
                 member + "\t" +
                 Choice.totalPoints + "\t" +
                 (100f * Choice.totalMatches / Choice.orderCounter) + "\t" +

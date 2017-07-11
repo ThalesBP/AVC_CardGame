@@ -118,6 +118,8 @@ public class Dealer : GameBase {
 
                 if (interfaceManager.control.gameMode.value != numOfGameModes - 1)
                 {
+                    interfaceManager.control.obsField.interactable = true;
+
                     mode = (GameMode)interfaceManager.control.gameMode.value;
                     challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
 
@@ -128,6 +130,9 @@ public class Dealer : GameBase {
                 }
                 else
                 {
+                    interfaceManager.control.obsField.text = (((GameMode)mode).ToString() + " - " + challengeNumber.ToString());
+                    interfaceManager.control.obsField.interactable = false;
+
                     if (interfaceManager.control.totalGameTime > 0)
                     {
                         gameSlice = interfaceManager.control.totalGameTime * 60f / (numOfGameModes - 1f);

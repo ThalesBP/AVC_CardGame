@@ -124,11 +124,12 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] pausedText = { "Paused", "Pausado" };
     protected static readonly string[] pauseText = { "Pause", "Pausar" };
     protected static readonly string[] stopText = { "Stop", "Parar" };
+    protected static readonly string[] gameSetupText = { "Game Setup", "Configuração do Jogo" };
     protected static readonly string[] playTimeText = { "Play time in minutes", "Tempo de jogo em minutos" };
     protected static readonly string[] infTimeText = { "Infinite game time", "Tempo de jogo infinito" };
-    protected static readonly string[] gameModeText = { "Game Mode", "Modo de Jogo" };
-    protected static readonly string[] cardsText = { "Cards", "Cartas" };
+    protected static readonly string[] obsText = { "Obs. for this match", "Obs. para a partida" };
     protected static readonly string[] helpText = { "Visual Help", "Ajuda Visual" };
+    protected static readonly string[] cardsText = { "Cards", "Cartas" };
     // User panel
     protected static readonly string[] userPanelText = { "User", "Usuário" };
     protected static readonly string[] insertUserText = { "Insert user", "Insira usuário" };

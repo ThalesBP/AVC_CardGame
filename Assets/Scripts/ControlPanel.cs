@@ -18,6 +18,8 @@ public class ControlPanel : GameBase {
     private Text stop;
     private Text playTime;
     private Text playTimeInput;
+    private Text obs;
+    private Text obsInput;
     private Text modeText;
     private Text sliderText;
     private Text help;
@@ -45,7 +47,7 @@ public class ControlPanel : GameBase {
     public HideShow visibility;
     public ResultsPanel results;
     public Button connectButton, calibrateButton, startButton, stopButton;
-    public InputField playTimeField;
+    public InputField playTimeField, obsField;
     public Dropdown gameMode;
     public Slider slider;
     public Toggle helpToggle;
@@ -66,6 +68,8 @@ public class ControlPanel : GameBase {
         stop = GameObject.Find("Stop").GetComponentInChildren<Text>(true);
         playTime = GameObject.Find("PlayTimePlaceholder").GetComponentInChildren<Text>(true);
         playTimeInput = GameObject.Find("PlayTime").GetComponentInChildren<Text>(true);
+        obs = GameObject.Find("ObsPlaceholder").GetComponentInChildren<Text>(true);
+        obsInput = GameObject.Find("Obs").GetComponentInChildren<Text>(true);
         modeText = GameObject.Find("GameModeText").GetComponentInChildren<Text>(true);
         sliderText = GameObject.Find("SliderText").GetComponentInChildren<Text>(true);
         help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>(true);
@@ -173,7 +177,7 @@ public class ControlPanel : GameBase {
                 break;
         }
 
-        modeText.text = gameModeText[language];
+        modeText.text = gameSetupText[language];
         for (int option = 0; option < numOfGameModes; option++)
         {
             gameMode.options[option].text = gameModeTexts[option, language];
@@ -185,6 +189,8 @@ public class ControlPanel : GameBase {
             slider.value = 3f;
             slider.interactable = false;
         }
+
+        obs.text = obsText[language];
    //     gameMessages.text = gameMessageTexts[(int)gameMessage, language] + "\n" + gameMessageTexts[(int)dealerMessage, language];
 	}
 
