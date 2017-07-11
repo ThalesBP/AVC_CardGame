@@ -1,0 +1,65 @@
+﻿Time	Message
+0.01656632	Game running - Waiting player starts
+1.824419	Game running - Waiting player chooses
+3.456631	Game running - Right choose
+4.449769	Game running - Turn ended
+5.528907	Game running - New turn
+5.545473	Game running - Waiting player starts
+7.095361	Game running - Waiting player chooses
+8.436953	Game running - Right choose
+9.404714	Game running - Turn ended
+10.46667	Game running - New turn
+10.48384	Game running - Waiting player starts
+12.17888	Game running - Waiting player chooses
+14.285	Game running - Right choose
+15.29551	Game running - Turn ended
+16.37937	Game running - New turn
+16.39594	Game running - Waiting player starts
+17.96215	Game running - Waiting player chooses
+20.28596	Game running - Right choose
+21.32205	Game running - Turn ended
+22.44881	Game running - New turn
+22.46531	Game running - Waiting player starts
+24.08126	Game running - Waiting player chooses
+25.69588	Game running - Right choose
+26.73956	Game running - Turn ended
+27.84579	Game running - New turn
+27.86295	Game running - Waiting player starts
+30.20699	Game running - Waiting player chooses
+32.02945	Game running - Right choose
+33.05679	Game running - Turn ended
+34.15968	Game running - New turn
+34.17625	Game running - Waiting player starts
+35.97762	Game running - Waiting player chooses
+38.12211	Game running - Right choose
+39.15317	Game running - Turn ended
+40.27971	Game running - New turn
+40.2969	Game running - Waiting player starts
+42.10045	Game running - Waiting player chooses
+44.12692	Game running - Right choose
+45.17562	Game running - Turn ended
+46.30275	Game running - New turn
+46.31972	Game running - Waiting player starts
+48.22701	Game running - Waiting player chooses
+50.35159	Game running - Right choose
+51.3998	Game running - Turn ended
+52.53384	Game running - New turn
+52.55037	Game running - Waiting player starts
+56.66008	Game running - Waiting player chooses
+58.0052	Game running - Right choose
+59.03595	Game running - Turn ended
+60.15285	Game running - New turn
+60.17316	Game running - Waiting player starts
+61.59483	Game running - Waiting player chooses
+63.20875	Game running - Right choose
+64.24083	Game running - Turn ended
+65.3518	Game running - New turn
+65.36837	Game running - Waiting player starts
+66.7906	Game running - Waiting player chooses
+68.73717	Game running - Right choose
+69.76216	Game running - Turn ended
+70.87867	Game running - New turn
+70.89523	Game running - Waiting player starts
+72.49525	Game running - Waiting player chooses
+74.50517	Game running - Right choose
+75.53631	Game running - Turn ended

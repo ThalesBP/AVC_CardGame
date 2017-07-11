@@ -11,7 +11,7 @@ using System.Text;
 /// </summary>
 public class Logger : MonoBehaviour {
 
-    private string logTime, movementFile, chooseFile, messageFile, previousMessage, historicFile;
+    private string logTime, movementFile, chooseFile, messageFile, previousMessage, historicFile, obs;
     private Vector2 pos, vel, acc;
     private float time1, time0, turnTime;
     private int sideMember;
@@ -30,9 +30,10 @@ public class Logger : MonoBehaviour {
     /// <param name="player">Player.</param>
     /// <param name="member">Member.</param>
     /// <param name="side">Side - 0: Left / 1: Right.</param>
-    public void StartFiles(string manager, string player, string member, int side)
+    public void StartFiles(string manager, string player, string member, int side, string observation)
     {
         started = true;
+        obs = observation;
 
         pos = vel = acc = Vector2.zero;
         turnTime = 0f;
@@ -45,7 +46,7 @@ public class Logger : MonoBehaviour {
         logTime = DateTime.Now.ToString("yy-MM-dd HH-mm-ss");
         Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
 
-        movementFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - Movements.txt";
+        movementFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + observation + " - " logTime + " - Movements.txt";
         File.WriteAllText (movementFile, 
             "Time\t" +
             "Pos X\tPos Y\t" +
@@ -53,9 +54,9 @@ public class Logger : MonoBehaviour {
             "Acc X\tAcc Y" +
             Environment.NewLine, Encoding.UTF8);
         
-        chooseFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - Choices.txt";
+        chooseFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + observation + " - " + logTime + " - Choices.txt";
         File.WriteAllText (chooseFile, 
-            "\tGame\t\t\t\t\t\t\t" +
+            "\tGame\t\t\t\t\t\t\t\t" +
             "Objective\t\t\t" +
             "Choice\t\t\t" +
             "Points\t\t\t\t" +
@@ -89,7 +90,7 @@ public class Logger : MonoBehaviour {
             "Magnitude\tAngle" +
             Environment.NewLine, Encoding.UTF8);
 
-        messageFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + logTime + " - GameMessage.txt";
+        messageFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + observation + " - " + logTime + " - GameMessage.txt";
         File.WriteAllText (messageFile, 
             "Time\t" +
             "Message" +
@@ -249,7 +250,7 @@ public class Logger : MonoBehaviour {
         turnTime = time;
     }
 
-    public void Register(string obs, string member, float gameTime, ChallengeManager history)
+    public void Register(string member, float gameTime, ChallengeManager history)
     {
         if (!started)
             return;
@@ -296,7 +297,7 @@ public class Logger : MonoBehaviour {
                 (100f * history.Done[1]) + "\t" +
                 (100f * history.Done[3]) + "\t" +
                 (100f * history.Done[1 + sideMember]) + "\t" +
-                (100f * history.Done[1 - sideMember]) + "\t" +
+                (100f * history.Done[1 - sideMember]), 
                 Environment.NewLine, Encoding.UTF8);
     }
 }

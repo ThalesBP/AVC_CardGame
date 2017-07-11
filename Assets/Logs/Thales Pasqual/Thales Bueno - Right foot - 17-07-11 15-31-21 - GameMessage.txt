@@ -1,0 +1,3 @@
+﻿Time	Message
+0.01705582	Game running - Waiting player starts
+3.056723	Game running - Waiting player chooses

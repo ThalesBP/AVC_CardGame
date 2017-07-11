@@ -1,4 +1,5 @@
 Jogo:
+ATENÇAO: Verificar gerador aleatório
 Game Manager?
 Selecionar se varia modo ou numero de cartas
 Criptografar a senha / Senha master pra recuperar

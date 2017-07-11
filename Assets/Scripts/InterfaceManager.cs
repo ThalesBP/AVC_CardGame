@@ -199,7 +199,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     public void StartLoggin()
     {
-        log.StartFiles(user.managerDropdown.captionText.text, user.playerDropdown.captionText.text, user.memberDropdown.captionText.text, user.memberDropdown.value); 
+        log.StartFiles(user.managerDropdown.captionText.text, user.playerDropdown.captionText.text, user.memberDropdown.captionText.text, user.memberDropdown.value, control.obsField.text); 
         logging = true;
     }
 

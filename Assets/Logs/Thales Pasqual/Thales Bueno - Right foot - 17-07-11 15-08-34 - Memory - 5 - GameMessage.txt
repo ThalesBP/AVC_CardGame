@@ -1,0 +1,52 @@
+﻿Time	Message
+0.01656908	Game running - Waiting player starts
+2.707191	Game running - Waiting player chooses
+4.198188	Game running - Right choose
+5.158365	Game running - Turn ended
+6.193804	Game running - New turn
+6.210371	Game running - Waiting player starts
+8.953712	Game running - Waiting player chooses
+10.43056	Game running - Right choose
+11.39495	Game running - Turn ended
+12.43091	Game running - New turn
+12.44748	Game running - Waiting player starts
+15.10606	Game running - Waiting player chooses
+17.46412	Game running - Wrong choose
+18.19504	Game running - Right choose
+19.35874	Game running - Turn ended
+20.62101	Game running - New turn
+20.63758	Game running - Waiting player starts
+23.53297	Game running - Waiting player chooses
+24.95815	Game running - Right choose
+26.2712	Game running - Turn ended
+27.69202	Game running - New turn
+27.70826	Game running - Waiting player starts
+31.20434	Game running - Waiting player chooses
+32.90448	Game running - Right choose
+34.13582	Game running - Turn ended
+35.4783	Game running - New turn
+35.49459	Game running - Waiting player starts
+38.77089	Game running - Waiting player chooses
+40.52863	Game running - Right choose
+41.71938	Game running - Turn ended
+42.99746	Game running - New turn
+43.01661	Game running - Waiting player starts
+46.67084	Game running - Waiting player chooses
+49.59978	Game running - Right choose
+50.79156	Game running - Turn ended
+52.07416	Game running - New turn
+52.09233	Game running - Waiting player starts
+55.24405	Game running - Waiting player chooses
+57.53811	Game running - Right choose
+58.71081	Game running - Turn ended
+59.98053	Game running - New turn
+59.9971	Game running - Waiting player starts
+63.00947	Game running - Waiting player chooses
+64.65057	Game running - Wrong choose
+65.46593	Game running - Right choose
+66.75558	Game running - Turn ended
+68.18143	Game running - New turn
+68.198	Game running - Waiting player starts
+71.92258	Game running - Waiting player chooses
+73.30332	Game running - Right choose
+74.5666	Game running - Turn ended
