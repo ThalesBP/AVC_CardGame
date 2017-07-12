@@ -19,7 +19,7 @@ public class ChallengeManager {
         }
         set
         {
-            AdaptPlan(value);
+            NewPlan(value);
         }
     }
 
@@ -43,6 +43,10 @@ public class ChallengeManager {
         { 
             return rehabPlan.Length;
         }
+        set
+        {
+            NewPlan(value);
+        }
     }
 
     /// <summary>
@@ -62,7 +66,7 @@ public class ChallengeManager {
     /// <param name="challenge">Challenge plan.</param>
     public ChallengeManager (float [] challenge)
     {
-        AdaptPlan(challenge);
+        NewPlan(challenge);
     }
 
     /// <summary>
@@ -71,38 +75,33 @@ public class ChallengeManager {
     /// <param name="number">Number of challenges.</param>
     public ChallengeManager (int number)
     {
-        AdaptPlan(number);
+        NewPlan(number);
     }
 
     /// <summary>
     /// Adapts the plan.
     /// </summary>
     /// <param name="plan">The new plan.</param>
-    private void AdaptPlan(float[] plan)
+    private void NewPlan(float[] plan)
     {
-        if (plan.Length == rehabPlan.Length)
-        {
-            float sum = 0f;
-            foreach (float value in plan)
-                sum += value;
+        rehabPlan = new float[plan.Length];
+        float sum = 0f;
 
-            for (int i = 0; i < rehabPlan.Length; i++)
-                if (sum == 0)
-                    rehabPlan[i] = 1f / rehabPlan.Length;
-                else 
-                    rehabPlan[i] = plan[i] / sum;
-        }
-        else
-        {
-            AdaptPlan(plan.Length);
-        }
+        foreach (float value in plan)
+            sum += value;
+
+        for (int i = 0; i < rehabPlan.Length; i++)
+            if (sum == 0)
+                rehabPlan[i] = 1f / rehabPlan.Length;
+            else 
+                rehabPlan[i] = plan[i] / sum;
     }
 
     /// <summary>
     /// Adapts the plan.
     /// </summary>
     /// <param name="number">Number of options.</param>
-    private void AdaptPlan(int number)
+    private void NewPlan(int number)
     {
         rehabPlan = new float[number];
         rehabStat = new float[number];

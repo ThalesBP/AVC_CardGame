@@ -1,5 +1,6 @@
 Jogo:
-ATENÇAO: Verificar gerador aleatório
+Maior/Menor divisor comum (número de iterações do challenge manager)
+Usar Challenge Manager nas cartas?
 Game Manager?
 Selecionar se varia modo ou numero de cartas
 Criptografar a senha / Senha master pra recuperar
@@ -14,8 +15,8 @@ Calcular proporcional a tela todo o tempo
 Mini mapa por cima do mouse
 
 Log:
-ATENÇAO: Desvio padrão das informações
 -----
+Desvio padrão das informações
 Partidas para coleta de dados / análise de dificuldade
 
 Visual:

@@ -142,6 +142,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 {
                     control.gameTime += Time.unscaledDeltaTime;
                     log.Register(control.gameTime, ControlManager.Instance.RawPosition);
+
+                    if (Time.unscaledDeltaTime > 0.2f)
+                    {
+                        Debug.Log("Big Time Step: " + Time.unscaledDeltaTime.ToString());
+                        log.Register(control.gameTime, "Big Time Step");
+                    }
                 }
                 playStatus.transform.localScale = statusScale;
 
@@ -205,7 +211,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
     public void StopLoggin()
     {
-        log.Register(control.obsField.text, user.memberDropdown.captionText.text, control.gameTime, mainChallenge);
+        log.Register(user.memberDropdown.captionText.text, control.gameTime, mainChallenge);
         logging = false;
     }
 }

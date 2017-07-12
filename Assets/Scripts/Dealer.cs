@@ -196,8 +196,8 @@ public class Dealer : GameBase {
                         objectiveCard.status = Card.Highlight.free;
                         objectiveCard.timeToTwinkle = 0f;
 
-                        int challenge = interfaceManager.mainChallenge.Challenge;
-                        int challenge2 = interfaceManager.subChallenges[challenge].Challenge;
+                        int challenge;
+                        int challenge2;
 
                         interfaceManager.control.map.ankleTrack.Add((Vector2)
                             ControlManager.Instance.ankle.CircleToElipse(Camera.main.WorldToScreenPoint(FindPlacePointed())
@@ -220,6 +220,9 @@ public class Dealer : GameBase {
                                 }
                                 else
                                 {
+                                    challenge = interfaceManager.mainChallenge.Challenge;
+                                    challenge2 = interfaceManager.subChallenges[challenge].Challenge;
+
                                     timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
                                     timeToWait = objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
 
@@ -243,6 +246,10 @@ public class Dealer : GameBase {
                                 ChangeCards(challengeCards, Card.SuitType.miniSuit);
                                 goto default;
                             default:
+                                challenge = interfaceManager.mainChallenge.Challenge;
+                                challenge2 = interfaceManager.subChallenges[challenge].Challenge;
+                                interfaceManager.subChallenges[challenge].AddChoice(challenge2);
+
                                 timeToWait = SpreadCards(challengeCards, mainAngles[challenge] + subAngles[challenge2]);    // Spread the cards on screen...
                                 objectiveCard.position.MoveTo(0.5f * Vector3.back, DeltaTime[Long], timeToWait);  // Highlightes objective card in center
 
@@ -506,7 +513,7 @@ public class Dealer : GameBase {
                 Vector3 planPosition = new Vector3(spreadRadius * Mathf.Cos(angle), spreadRadius * Mathf.Sin(angle), 0f);
 
                 interfaceManager.mainChallenge.AddChoice(ang);
-                interfaceManager.subChallenges[ang].AddChoice(ang2);
+             //   interfaceManager.subChallenges[ang].AddChoice(ang2);
 
                 interfaceManager.control.map.choices.Add((Vector2)
                     ControlManager.Instance.ankle.CircleToElipse(Camera.main.WorldToScreenPoint(choicePosition)

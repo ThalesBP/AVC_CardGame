@@ -46,7 +46,7 @@ public class Logger : MonoBehaviour {
         logTime = DateTime.Now.ToString("yy-MM-dd HH-mm-ss");
         Directory.CreateDirectory(Application.dataPath + "\\Logs\\" + manager);
 
-        movementFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + observation + " - " logTime + " - Movements.txt";
+        movementFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + observation + " - " + logTime + " - Movements.txt";
         File.WriteAllText (movementFile, 
             "Time\t" +
             "Pos X\tPos Y\t" +
@@ -72,7 +72,7 @@ public class Logger : MonoBehaviour {
             "Match\t" +
             "Turn Time\t" + 
             "Precision\t" +
-            "Changed Choice\t" +
+            "Choice changed\t" +
             "Value\t" +
             "Suit\t" +
             "Color\t" +
@@ -297,7 +297,7 @@ public class Logger : MonoBehaviour {
                 (100f * history.Done[1]) + "\t" +
                 (100f * history.Done[3]) + "\t" +
                 (100f * history.Done[1 + sideMember]) + "\t" +
-                (100f * history.Done[1 - sideMember]), 
+                (100f * history.Done[1 - sideMember]) +
                 Environment.NewLine, Encoding.UTF8);
     }
 }
