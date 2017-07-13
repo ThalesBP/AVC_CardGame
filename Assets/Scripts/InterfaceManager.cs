@@ -32,6 +32,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public ChallengeManager mainChallenge;
     public List<ChallengeManager> subChallenges;
 
+    private AudioSource music;
+    private Motion musicFade;
+
     void Start () 
     {
         countDownCounter = -1;
@@ -43,6 +46,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         playStatus2 = GameObject.Find("PlayStatus2").GetComponentInChildren<Text>(true);
         mainButtonText = GameObject.Find("MainButtonText").GetComponentInChildren<Text>(true);
         mainButton.SetActive(false);
+
+        music = GetComponent<AudioSource>();
+        musicFade = gameObject.AddComponent<Motion>();
 
         statusScale = playStatus.gameObject.AddComponent<Motion>();
         statusScale.MoveTo(Vector3.one);
@@ -84,6 +90,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         switch (control.status)
         {
             case Status.begin:
+                music.Play();
+                music.Pause();
                 if (control.calibrating)
                     playStatus.text = moveCirclesText[language];
                 else
@@ -97,6 +105,8 @@ public class InterfaceManager : Singleton<InterfaceManager> {
    //             StartCountDown(CountDown);
                 break;
             case Status.paused:
+                music.Pause();
+
                 if (control.calibrating)
                     playStatus.text = moveCirclesText[language];
                 else
@@ -107,6 +117,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
    //             StartCountDown(CountDown);
                 break;
             case Status.playing:
+                music.UnPause();
 
                 if (!logging)
                 {
@@ -188,9 +199,12 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             case Status.end:
                 if (logging)
                 {
+                    musicFade.timeScaled = false;
+                    musicFade.Fade(DeltaTime[MuchLonger]);
                     user.visibility.locked = false;
                     StopLoggin();
                 }
+                music.volume = 1f - musicFade.LerpScale;
                 playStatus.text = endOfGameText[language];
                 statusScale.MoveTo(Vector3.one);
                 playStatus.color = YellowText;

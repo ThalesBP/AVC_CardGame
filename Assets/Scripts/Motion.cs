@@ -142,5 +142,20 @@ public class Motion : GameBase {
         delay = delayTime;
         return MoveTo(destiny, deltaTime) + delayTime;
     }
+
+    public float Fade (float deltaTime)
+    {
+        counter = 0f;
+        delta = deltaTime;
+        status = MotionStatus.moving;
+        lerpScale = (counter - delay) / delta;
+        return deltaTime;
+    }
+
+    public float Face (float deltaTime, float delayTime)
+    {
+        delay = delayTime;
+        return Fade(deltaTime) + delayTime;
+    }
     #endregion
 }

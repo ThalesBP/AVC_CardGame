@@ -20,6 +20,7 @@ Desvio padrão das informações
 Partidas para coleta de dados / análise de dificuldade
 
 Visual:
+URGENTE: Regular volume da música
 Save the last configuration
 Nota musical pra cada carta
 -----
