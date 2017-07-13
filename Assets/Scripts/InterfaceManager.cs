@@ -158,14 +158,29 @@ public class InterfaceManager : Singleton<InterfaceManager> {
 
                 if (mode >= 0)
                 {
+                    if (!mainButton.gameObject.activeSelf)
+                    {
+                        statusScale.MoveTo(highlightScale * Vector3.one);
+                        statusScale.MoveTo(Vector3.one, DeltaTime[Short]);
+                    }
+                    playStatus.color = SetAlpha(YellowText, statusScale.LerpScale);
+                    statusBoarder.effectColor = Color.Lerp(Color.black, playStatus.color, (1 - statusScale.LerpScale + 0.2f));
+
                     playStatus.text = explainingModesText[mode, language];
                     playStatus2.text = "";// ready2Text[language];
                     mainButton.SetActive(true);
                 }
                 else
                 {
-                    playStatus.text = "";
-                    playStatus2.text = "";
+                    if (mainButton.gameObject.activeSelf)
+                    {
+                        statusScale.MoveTo(Vector3.one);
+                        statusScale.MoveTo(highlightScale * Vector3.one, DeltaTime[Short]);
+                    }
+                    playStatus.color = SetAlpha(YellowText, 1f - statusScale.LerpScale);
+                    statusBoarder.effectColor = Color.Lerp(Color.black, playStatus.color, statusScale.LerpScale + 0.2f);
+//                    playStatus.text = "";
+  //                  playStatus2.text = "";
                     mainButton.SetActive(false);
                 }
 

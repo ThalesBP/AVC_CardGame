@@ -51,7 +51,8 @@ public class GameBase : MonoBehaviour {
             { "Find the card around that matches the center one", "Encontre a carta ao redor igual a do centro" },
             { "Memorize the central card before continue", "Memorize a carta central antes de continuar" },
             { "The number of suits just matches with card value", "O número de naipes apenas é igual ao valor da carta" },
-            { "Count the number of suits and find the card around", "Conte o número de naipes e ache a carta ao redor" }
+            { "Count the number of suits and find the card around", "Conte o número de naipes e ache a carta ao redor" },
+            { "Memorize this card", "Memorize essa carta"}
         };
 
     #endregion
@@ -72,10 +73,10 @@ public class GameBase : MonoBehaviour {
     #endregion
 
     #region Position, rotation and scale of cards on screen
-    static protected float backgndDist = 0.4f;      // Background distance
+    static protected float backgndDist = 0.8f;      // Background distance
     static protected float cardThick = 0.01f;       // Card's thickness
-    static protected float spreadRadius = 3.2f;       // The radius that cards are spread
-    static protected float highlightScale = 1.2f;   // How much it grows to hightlight somethings
+    static protected float spreadRadius = 3.3f;       // The radius that cards are spread
+    static protected float highlightScale = 1.1f;   // How much it grows to hightlight somethings
     #endregion
 
     #region Interface

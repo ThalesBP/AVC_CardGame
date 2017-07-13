@@ -13,6 +13,7 @@ public class Dealer : GameBase {
     public int totalScore, totalMathes, totalOrderCounter;
     public float totalGameTime, averageTimeToChoose, timeToRead;
     public float[] rangeTimeToChoose;
+    public bool firstInMode = true;
 
     [SerializeField]
     private Status gameStatus;      // interfaceManager.controls the game phases
@@ -131,11 +132,14 @@ public class Dealer : GameBase {
                         interfaceManager.mode = (int)mode;
                         gameStatus = Status.playerReading;
 
-                        if (ControlManager.Instance.Position.y < Screen.height * 0.35f )
+                        if (ControlManager.Instance.Position.y < Screen.height * 0.35f)
                             interfaceManager.mainButton.transform.localPosition = Vector3.left * Screen.height * 0.30f;
                         else
-                            interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f ;
+                            interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f;
+                        firstInMode = true;
                     }
+                    else
+                        firstInMode = false;
                 }
                 else
                 {
@@ -153,6 +157,7 @@ public class Dealer : GameBase {
                             interfaceManager.mainButton.transform.localPosition = Vector3.left * Screen.height * 0.30f;
                         else
                             interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f;
+                        firstInMode = true;
                     }
 
                     if (interfaceManager.control.totalGameTime > 0)
@@ -167,6 +172,7 @@ public class Dealer : GameBase {
                             {
                                 challengeNumber = 3;
                                 AutomaticMode++;
+                                firstInMode = true;
 
                                 interfaceManager.mode = AutomaticMode;
 
@@ -175,6 +181,8 @@ public class Dealer : GameBase {
                                 else
                                     interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f;
                             }
+                            else
+                                firstInMode = false;
 
                             interfaceManager.control.slider.value = challengeNumber;
                             interfaceManager.control.obsField.text = (((GameMode)mode).ToString() + " - " + challengeNumber.ToString());
@@ -183,7 +191,7 @@ public class Dealer : GameBase {
 
                             totalGameTime += interfaceManager.control.gameTime;
 
-               /*             interfaceManager.mainChallenge.Reset();
+                            /*             interfaceManager.mainChallenge.Reset();
                             foreach (ChallengeManager challenge in interfaceManager.subChallenges)
                                 challenge.Reset();
                   */          
@@ -272,7 +280,13 @@ public class Dealer : GameBase {
 
                                     timeToWait = ShowCard(objectiveCard, timeToWait);   // Also shows objective card
 
-                                    Wait(timeToWait, Status.playerPlay);
+                                    if (firstInMode)
+                                    {
+                                        interfaceManager.mode = numOfGameModes - 1;
+                                        Wait(timeToWait, Status.playerReading);
+                                    }
+                                    else
+                                        Wait(timeToWait, Status.playerPlay);
                                 }
                                 break;
                             case GameMode.Basic:
@@ -418,6 +432,15 @@ public class Dealer : GameBase {
                 break;
             case Status.endGame:    // Ends the game
                 interfaceManager.control.gameStatus = Status.endGame;
+
+                if (interfaceManager.control.gameMode.value == numOfGameModes - 1)
+                {
+                    Choice.totalMatches = totalMathes;
+                    Choice.AverageTimeToChoose = averageTimeToChoose;
+                    Choice.RangeTimeToChoose = rangeTimeToChoose;
+                    Choice.orderCounter = totalOrderCounter;
+                }
+
                 if (interfaceManager.control.status != Status.end)
                 {
                     Debug.Log("Not end");
