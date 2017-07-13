@@ -164,9 +164,10 @@ public class GameBase : MonoBehaviour {
         end,                // End of the game
         newTurn,            // Starting new turn
         playerPlay,         // Waiting player start
+        playerReading,      // Waiting player read
         playerChoice,       // Waiting player choose
         right,              // Player choose the right
-        wrong,               // Player choose the wrong
+        wrong,              // Player choose the wrong
         endTurn,            // Turn has ended
         destroy,            // Destroy objects
         waitingMotion,      // Waiting current motion
@@ -176,7 +177,7 @@ public class GameBase : MonoBehaviour {
         connected,          // Connected to robot
         disconnecting,      // Disconnecting to robot
         disconnected,       // Disconnected to robot
-        calibrating        // Calibrating movement
+        calibrating         // Calibrating movement
     };
 
     protected static readonly string[,] gameMessageTexts =
@@ -187,6 +188,7 @@ public class GameBase : MonoBehaviour {
             {"Game ended", "Jogo encerrado"},
             {"New turn", "Novo turno"},
             {"Waiting player starts", "Esperando jogador iniciar"},
+            {"Waiting player reads", "Esperando jogador ler"},
             {"Waiting player chooses", "Esperando jogador escolher"},
             {"Right choose", "Escolha certa"},
             {"Wrong choose", "Escolha errada"},

@@ -13,11 +13,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
   //  public Texture2D mouseDefault;
 
     public Text playStatus, playStatus2;
+    public GameObject mainButton;
     private Motion statusScale;
     private Outline statusBoarder;
 
+    private Text mainButtonText;
     private Text scorePoints;
-    private Text timeCounter;
+    public Text timeCounter;
 
     [SerializeField]
     private int countDownCounter;   // Counter for count down
@@ -34,11 +36,14 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     {
         countDownCounter = -1;
         mode = -1;
-        Time.timeScale = 0f;
+    //    Time.timeScale = 0f;
 
         #region General Interface Initialization
         playStatus = GameObject.Find("PlayStatus").GetComponentInChildren<Text>(true);
         playStatus2 = GameObject.Find("PlayStatus2").GetComponentInChildren<Text>(true);
+        mainButtonText = GameObject.Find("MainButtonText").GetComponentInChildren<Text>(true);
+        mainButton.SetActive(false);
+
         statusScale = playStatus.gameObject.AddComponent<Motion>();
         statusScale.MoveTo(Vector3.one);
         statusScale.timeScaled = false;
@@ -154,12 +159,14 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 if (mode >= 0)
                 {
                     playStatus.text = explainingModesText[mode, language];
-                    playStatus2.text = ready2Text[language];
+                    playStatus2.text = "";// ready2Text[language];
+                    mainButton.SetActive(true);
                 }
                 else
                 {
                     playStatus.text = "";
                     playStatus2.text = "";
+                    mainButton.SetActive(false);
                 }
 
                 break;
@@ -183,12 +190,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         if (control.visibility.showed)
         {
             timeCounter.color = SetAlpha(YellowText, control.visibility.slideTimeLerp);
-            timeCounter.text = timeText[language] + "\n" + control.gameTime.ToString("F1");
         }
         else
         {
             timeCounter.color = SetAlpha(YellowText, 1f - control.visibility.slideTimeLerp);
-            timeCounter.text = timeText[language] + "\n" + control.gameTime.ToString("F1");
         }
         #endregion
 

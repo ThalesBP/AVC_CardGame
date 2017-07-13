@@ -186,7 +186,7 @@ public class ControlPanel : GameBase {
 
         if (gameMode.value == numOfGameModes - 1)
         {
-            slider.value = 3f;
+    //        slider.value = 3f;
             slider.interactable = false;
         }
 

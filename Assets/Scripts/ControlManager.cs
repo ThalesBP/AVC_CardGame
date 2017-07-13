@@ -12,7 +12,7 @@ public class ControlManager : Singleton<ControlManager> {
 
     [SerializeField]
     private Vector2 position = Vector2.zero;
-    private Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
+    public Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
 
 
     [Range(-0.4f, 0.4f)]

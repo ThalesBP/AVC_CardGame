@@ -55,6 +55,7 @@ public class Dealer : GameBase {
     Choice currentChoice;
 
     private LayerMask cardMask;
+    private LayerMask buttonMask;
 
     [SerializeField]
     private AudioSource soundEffect;
@@ -66,7 +67,8 @@ public class Dealer : GameBase {
 
     void Start () 
     {
-        totalGameTime = averageTimeToChoose = timeToRead = 0f;
+        totalGameTime = averageTimeToChoose = 0f;
+        timeToRead = 0f;
         totalScore = totalOrderCounter = totalMathes = 0;
         rangeTimeToChoose = new float[2] {float.PositiveInfinity, float.NegativeInfinity};
 
@@ -75,6 +77,7 @@ public class Dealer : GameBase {
         gameStatus = Status.newTurn;
         nextStatus = Status.idle;
         cardMask = LayerMask.GetMask("Card");
+        buttonMask = LayerMask.GetMask("Button");
         challengeCards = new List<Card>();
         cardsInGame = new List<Card>();
         player = gameObject.AddComponent<ControlManager>();
@@ -126,12 +129,31 @@ public class Dealer : GameBase {
                     if (Choice.orderCounter == 0)
                     {
                         interfaceManager.mode = (int)mode;
+                        gameStatus = Status.playerReading;
+
+                        if (ControlManager.Instance.Position.y < Screen.height * 0.35f )
+                            interfaceManager.mainButton.transform.localPosition = Vector3.left * Screen.height * 0.30f;
+                        else
+                            interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f ;
                     }
                 }
                 else
                 {
-                    interfaceManager.control.obsField.text = (((GameMode)mode).ToString() + " - " + challengeNumber.ToString());
                     interfaceManager.control.obsField.interactable = false;
+
+                    if (interfaceManager.control.status == Status.begin)
+                    {
+                        AutomaticMode = 0;
+                        challengeNumber = 3;
+
+                        interfaceManager.mode = AutomaticMode;
+                        interfaceManager.control.slider.value = 3;
+
+                        if (ControlManager.Instance.Position.y < Screen.height * 0.35f)
+                            interfaceManager.mainButton.transform.localPosition = Vector3.left * Screen.height * 0.30f;
+                        else
+                            interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f;
+                    }
 
                     if (interfaceManager.control.totalGameTime > 0)
                     {
@@ -147,7 +169,15 @@ public class Dealer : GameBase {
                                 AutomaticMode++;
 
                                 interfaceManager.mode = AutomaticMode;
+
+                                if (ControlManager.Instance.Position.y < Screen.height * 0.35f)
+                                    interfaceManager.mainButton.transform.localPosition = Vector3.left * Screen.height * 0.30f;
+                                else
+                                    interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f;
                             }
+
+                            interfaceManager.control.slider.value = challengeNumber;
+                            interfaceManager.control.obsField.text = (((GameMode)mode).ToString() + " - " + challengeNumber.ToString());
 
                             interfaceManager.StopLoggin();
 
@@ -179,20 +209,34 @@ public class Dealer : GameBase {
                 challengeCards = CreateHardDeck(challengeNumber);   // Creates a pack of challenge card with n cards
                 objectiveCard = CreateCard(challengeCards[0]); // Chose one card from challenge cards to be the objective card
 
-                gameStatus = Status.playerPlay;
+                gameStatus = Status.playerReading;
+                break;
+            case Status.playerReading:
+                interfaceManager.control.gameStatus = Status.playerReading;
+
+                if (interfaceManager.control.status == Status.end)
+                    gameStatus = Status.endGame;
+
+                if ((MainButton()) && (player.Action))
+                {
+                    interfaceManager.mode = -1;
+                }
+
+                if (interfaceManager.mode == -1)
+                    gameStatus = Status.playerPlay;
+                else
+                    timeToRead += Time.unscaledDeltaTime;
                 break;
             case Status.playerPlay: // Waits Player to play
                 interfaceManager.control.gameStatus = Status.playerPlay;
 
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
-
+                
                 if (interfaceManager.CountDownCounter <= 0)
                 {
                     if ((FindCardPointed(cardsInGame) != null) && (player.Action))
                     {
-                        interfaceManager.mode = -1;
-
                         objectiveCard.status = Card.Highlight.free;
                         objectiveCard.timeToTwinkle = 0f;
 
@@ -266,13 +310,13 @@ public class Dealer : GameBase {
                         // Highlights the deck if player delays to play.
                         if (Time.timeScale != 0f)
                         {
-                            objectiveCard.HighlightTimer(LoadingTime[VeryLong], 1f);
+                            if (timeToRead > 0f)
+                                objectiveCard.HighlightTimer(0f, 1f);
+                            else
+                                objectiveCard.HighlightTimer(LoadingTime[VeryLong], 1f);
                             if (!objectiveCard.showed)
                             {
-                                if (interfaceManager.mode == -1)
-                                    timeToRead += Time.unscaledDeltaTime;
-                                else 
-                                    timeToPlay += Time.unscaledDeltaTime;
+                                timeToPlay += Time.unscaledDeltaTime;
                             }
                             else
                                 timeToMemorize += Time.unscaledDeltaTime;
@@ -381,7 +425,7 @@ public class Dealer : GameBase {
                 }
                 else
                 {
-                    Time.timeScale = 0f;
+                    // Time.timeScale = 0f;
                     Debug.Log("End?");
                 }
                 break;
@@ -396,7 +440,9 @@ public class Dealer : GameBase {
             interfaceManager.scoreValue = totalScore;
         else
             interfaceManager.scoreValue = Choice.totalPoints;
-        
+
+        interfaceManager.timeCounter.text = timeText[interfaceManager.language] + "\n" + (interfaceManager.control.gameTime + totalGameTime).ToString("F1");
+
         interfaceManager.control.metric1Value = 100f * Choice.suitCounter * orderCounter;
         interfaceManager.control.metric2Value = 100f * Choice.valueCounter * orderCounter;
         interfaceManager.control.metric3Value = 100f * Choice.colorCounter * orderCounter;
@@ -440,6 +486,22 @@ public class Dealer : GameBase {
             return hit.point;
         else
             return Vector3.zero;
+    }
+
+    /// <summary>
+    /// Check if is over main button.
+    /// </summary>
+    /// <returns><c>true</c>, if button was mained, <c>false</c> otherwise.</returns>
+    public bool MainButton()
+    {
+        if (Physics2D.Raycast(player.Position, Vector2.zero, float.PositiveInfinity, buttonMask))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     /// <summary>
@@ -599,6 +661,7 @@ public class Dealer : GameBase {
         {
             case Status.playerPlay:
             case Status.newTurn:
+            case Status.playerReading:
                 gameStatus = Status.destroy;
                 break;
             case Status.waitingMotion:

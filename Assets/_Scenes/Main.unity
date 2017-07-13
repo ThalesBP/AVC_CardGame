@@ -578,7 +578,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &1364491983
+--- !u!1001 &1404264803
 Prefab:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -708,7 +708,7 @@ Prefab:
     - target: {fileID: 224480837982674932, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}
       propertyPath: m_AnchorMax.y
-      value: 0.39406252
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 224539756983564346, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}
@@ -723,7 +723,7 @@ Prefab:
     - target: {fileID: 224603450149834756, guid: e435aa7d892158f48a2138903352a7a3,
         type: 2}
       propertyPath: m_AnchoredPosition.y
-      value: 160.00003
+      value: 97.13688
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e435aa7d892158f48a2138903352a7a3, type: 2}
@@ -732,7 +732,7 @@ Prefab:
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114201770635401606, guid: e435aa7d892158f48a2138903352a7a3,
     type: 2}
-  m_PrefabInternal: {fileID: 1364491983}
+  m_PrefabInternal: {fileID: 1404264803}
   m_Script: {fileID: 11500000, guid: 0f967e0ecb4fd2e478abbbf35f899337, type: 3}
 --- !u!1001 &2053445070
 Prefab:
