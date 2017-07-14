@@ -1,0 +1,104 @@
+﻿Time	Message
+0.01627185	Jogo executando - Esperando jogador ler
+0.04986797	Jogo executando - Esperando jogador iniciar
+2.955548	Jogo executando - Esperando jogador escolher
+4.626155	Jogo executando - Escolha certa
+5.626131	Jogo executando - Turno terminando
+6.990685	Jogo executando - Novo turno
+7.007251	Jogo executando - Esperando jogador ler
+7.027833	Jogo executando - Esperando jogador iniciar
+9.943292	Jogo executando - Esperando jogador escolher
+11.45506	Jogo executando - Escolha certa
+12.44501	Jogo executando - Turno terminando
+13.79103	Jogo executando - Novo turno
+13.80793	Jogo executando - Esperando jogador ler
+13.83378	Jogo executando - Esperando jogador iniciar
+16.45064	Jogo executando - Esperando jogador escolher
+19.26408	Jogo executando - Escolha certa
+20.32965	Jogo executando - Turno terminando
+21.7967	Jogo executando - Novo turno
+21.81363	Jogo executando - Esperando jogador ler
+21.84253	Jogo executando - Esperando jogador iniciar
+24.76328	Jogo executando - Esperando jogador escolher
+25.9435	Big Time Step
+25.9435	Jogo executando - Esperando jogador escolher
+26.67535	Big Time Step
+26.67535	Jogo executando - Esperando jogador escolher
+27.53509	Big Time Step
+27.53509	Jogo executando - Esperando jogador escolher
+28.35813	Big Time Step
+28.35813	Jogo executando - Esperando jogador escolher
+28.76711	Big Time Step
+28.76711	Jogo executando - Esperando jogador escolher
+29.21398	Big Time Step
+29.21398	Jogo executando - Esperando jogador escolher
+30.71634	Big Time Step
+30.71634	Jogo executando - Esperando jogador escolher
+31.50709	Big Time Step
+31.50709	Jogo executando - Esperando jogador escolher
+32.02069	Jogo executando - Escolha certa
+33.34272	Jogo executando - Turno terminando
+35.26142	Big Time Step
+35.26142	Jogo executando - Turno terminando
+35.2791	Jogo executando - Novo turno
+35.29567	Jogo executando - Esperando jogador ler
+35.3185	Jogo executando - Esperando jogador iniciar
+36.91246	Big Time Step
+36.91246	Jogo executando - Esperando jogador iniciar
+37.23083	Big Time Step
+37.23083	Jogo executando - Esperando jogador iniciar
+37.68979	Big Time Step
+37.68979	Jogo executando - Esperando jogador iniciar
+38.30792	Big Time Step
+38.30792	Jogo executando - Esperando jogador iniciar
+39.48214	Big Time Step
+39.48214	Jogo executando - Esperando jogador iniciar
+39.73618	Jogo executando - Esperando jogador escolher
+40.26894	Big Time Step
+40.26894	Jogo executando - Esperando jogador escolher
+41.45684	Big Time Step
+41.45684	Jogo executando - Esperando jogador escolher
+41.79658	Big Time Step
+41.79658	Jogo executando - Esperando jogador escolher
+42.76648	Big Time Step
+42.76648	Jogo executando - Esperando jogador escolher
+43.14765	Big Time Step
+43.14765	Jogo executando - Esperando jogador escolher
+43.719	Big Time Step
+43.719	Jogo executando - Esperando jogador escolher
+44.35811	Jogo executando - Escolha certa
+44.69028	Big Time Step
+44.69028	Jogo executando - Escolha certa
+44.98324	Big Time Step
+44.98324	Jogo executando - Escolha certa
+45.6586	Big Time Step
+45.6586	Jogo executando - Escolha certa
+46.08788	Big Time Step
+46.08788	Jogo executando - Escolha certa
+46.11119	Jogo executando - Turno terminando
+47.14261	Big Time Step
+47.14261	Jogo executando - Turno terminando
+47.72441	Big Time Step
+47.72441	Jogo executando - Turno terminando
+48.20131	Big Time Step
+48.20131	Jogo executando - Turno terminando
+48.36169	Jogo executando - Novo turno
+48.38229	Jogo executando - Esperando jogador ler
+48.40214	Jogo executando - Esperando jogador iniciar
+48.79982	Big Time Step
+48.79982	Jogo executando - Esperando jogador iniciar
+49.32471	Big Time Step
+49.32471	Jogo executando - Esperando jogador iniciar
+49.66088	Big Time Step
+49.66088	Jogo executando - Esperando jogador iniciar
+50.07614	Big Time Step
+50.07614	Jogo executando - Esperando jogador iniciar
+50.645	Big Time Step
+50.645	Jogo executando - Esperando jogador iniciar
+51.445	Big Time Step
+51.445	Jogo executando - Esperando jogador iniciar
+51.77437	Big Time Step
+51.77437	Jogo executando - Esperando jogador iniciar
+56.10844	Jogo executando - Esperando jogador escolher
+57.63218	Jogo executando - Escolha certa
+59.01159	Jogo executando - Turno terminando

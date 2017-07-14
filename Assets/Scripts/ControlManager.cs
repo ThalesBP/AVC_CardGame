@@ -129,7 +129,7 @@ public class ControlManager : Singleton<ControlManager> {
         if (actionCounting)
         {
             actionCounter += Time.deltaTime;
-            if (actionCounter < actionCheck + 0.2f * Time.timeScale)
+            if (actionCounter < actionCheck + 5f * Time.unscaledDeltaTime)
             {   
                 if (actionCounter > LoadingTime[Medium])
                     actionTrigger = true;

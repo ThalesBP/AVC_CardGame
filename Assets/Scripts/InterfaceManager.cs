@@ -118,6 +118,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 break;
             case Status.playing:
                 music.UnPause();
+                music.volume = 0.25f;
 
                 if (!logging)
                 {
@@ -162,7 +163,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     if (Time.unscaledDeltaTime > 0.2f)
                     {
                         Debug.Log("Big Time Step: " + Time.unscaledDeltaTime.ToString());
-                        log.Register(control.gameTime, "Big Time Step");
+                        log.Register(control.gameTime, "Big Time Step" + Time.unscaledDeltaTime.ToString());
                     }
                 }
                 playStatus.transform.localScale = statusScale;
@@ -204,7 +205,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     user.visibility.locked = false;
                     StopLoggin();
                 }
-                music.volume = 1f - musicFade.LerpScale;
+                music.volume = (1f - musicFade.LerpScale) * 0.25f;
                 playStatus.text = endOfGameText[language];
                 statusScale.MoveTo(Vector3.one);
                 playStatus.color = YellowText;

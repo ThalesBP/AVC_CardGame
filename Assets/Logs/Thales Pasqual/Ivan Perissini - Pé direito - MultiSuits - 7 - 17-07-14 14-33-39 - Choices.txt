@@ -1,0 +1,7 @@
+﻿	Game								Objective			Choice			Points				Time To			Objective Pos		Choice Pos	
+Choice	Time	Mode	Speed	N cards	Match	Turn Time	Precision	Choice changed	Value	Suit	Color	Value	Suit	Color	Value	Suit	Color	Total	Play	Memorize	Choose	Magnitude	Angle	Magnitude	Angle
+0	7.854232	MultiSuits	2.013159	7	1	7.854232	0	0	7	1	1	7	1	1	1	1	1	30	0.629003	0	5.382572	189.0761	167.1429	203.9838	164.3002
+1	20.27986	MultiSuits	1.513159	7	1	12.42562	30	0	8	2	0	8	2	0	1	1	1	34	2.01583	0	3.156159	189.0761	133.7143	181.8808	122.5676
+2	39.03159	MultiSuits	1.115317	7	1	18.75173	32	0	4	1	1	4	1	1	1	1	1	32	4.899574	0	4.221655	189.0761	115.7143	175.273	111.6419
+3	51.88315	MultiSuits	1.123269	7	1	12.85156	32	0	6	1	1	6	1	1	1	1	1	38	2.277964	0	1.491825	189.0761	-23.14286	188.9681	-28.2185
+4	61.62471	MultiSuits	1.468474	7	1	9.741562	33	0	7	2	0	7	2	0	1	1	1	38	0.8614737	0	1.400046	189.0761	149.1429	176.1857	149.3791

@@ -152,6 +152,7 @@ public class Dealer : GameBase {
 
                         interfaceManager.mode = AutomaticMode;
                         interfaceManager.control.slider.value = 3;
+                        interfaceManager.control.obsField.text = (((GameMode)AutomaticMode).ToString() + " - " + challengeNumber.ToString());
 
                         if (ControlManager.Instance.Position.y < Screen.height * 0.35f)
                             interfaceManager.mainButton.transform.localPosition = Vector3.left * Screen.height * 0.30f;
@@ -183,7 +184,7 @@ public class Dealer : GameBase {
                             }
 
                             interfaceManager.control.slider.value = challengeNumber;
-                            interfaceManager.control.obsField.text = (((GameMode)mode).ToString() + " - " + challengeNumber.ToString());
+                            interfaceManager.control.obsField.text = (((GameMode)AutomaticMode).ToString() + " - " + challengeNumber.ToString());
 
                             interfaceManager.StopLoggin();
 

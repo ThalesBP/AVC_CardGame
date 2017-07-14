@@ -1,9 +1,9 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\Dealer.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts\InterfaceManager.cs">
     <Files>
       <File FileName="Assets\Scripts\Dealer.cs" Line="319" Column="45" />
-      <File FileName="Assets\Scripts\InterfaceManager.cs" Line="202" Column="50" />
+      <File FileName="Assets\Scripts\InterfaceManager.cs" Line="121" Column="38" />
       <File FileName="Assets\Scripts\Card.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ControlPanel.cs" Line="1" Column="1" />
       <File FileName="Assets\Scripts\ControlManager.cs" Line="1" Column="1" />
