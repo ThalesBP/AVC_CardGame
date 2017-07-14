@@ -181,8 +181,6 @@ public class Dealer : GameBase {
                                 else
                                     interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f;
                             }
-                            else
-                                firstInMode = false;
 
                             interfaceManager.control.slider.value = challengeNumber;
                             interfaceManager.control.obsField.text = (((GameMode)mode).ToString() + " - " + challengeNumber.ToString());
@@ -318,6 +316,7 @@ public class Dealer : GameBase {
                                 Wait(timeToWait, Status.playerChoice);
                                 break;
                         }
+                        firstInMode = false;
                     }   // Waits player plays the game
                 else
                     {
