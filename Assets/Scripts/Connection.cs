@@ -34,6 +34,27 @@ public class Connection : MonoBehaviour {
 
 	private Thread connectingThread, communicateThread;
 
+    private float currentTime = 0f;
+    private float deltaTimeRead = 0f;
+    /// <summary>
+    /// Gets the delta time of last read transmittion
+    /// </summary>
+    /// <value>The delta time.</value>
+    public float DeltaTimeRead
+    {
+        get { return deltaTimeRead; }
+    }
+
+    private float deltaTimeSend = 0f;
+    /// <summary>
+    /// Gets the delta time of last read transmittion
+    /// </summary>
+    /// <value>The delta time.</value>
+    public float DeltaTimeSend
+    {
+        get { return deltaTimeSend; }
+    }
+
     private bool transmitting = false;
     public bool Transmitting 
     {
@@ -191,7 +212,18 @@ public class Connection : MonoBehaviour {
 	void Update()
 	{
         connected = clientHere.IsConnected();
+        currentTime = Time.unscaledTime;
 
+        Debug.Log("Time Send: " + DeltaTimeSend.ToString("F3") + " DT: " + Time.unscaledDeltaTime.ToString("F3"));
+        Debug.Log("Time Read: " + DeltaTimeRead.ToString("F3") + " DT: " + Time.unscaledDeltaTime.ToString("F3"));
+
+        if (deltaTimeSend == 0f)
+            deltaTimeSend = -Time.unscaledDeltaTime;
+
+        if (deltaTimeRead == 0f)
+            deltaTimeRead = -Time.unscaledDeltaTime;
+
+        transmitting = false;
 /*        if (timeCounter > stepTime)
         {
             connected = clientHere.IsConnected();
@@ -285,6 +317,8 @@ public class Connection : MonoBehaviour {
 	private void SendMsg ()
 	{
         transmitting = true;
+        float counter = currentTime;
+
         byte[] msg = new byte[sizeof(short) + (N_VAR * sizeof(float)) * N_DOF];
 		System.Buffer.BlockCopy (gameStatus, 0, msg, 0, sizeof(short));
         for (int i_dof = 0; i_dof < N_DOF; i_dof++) 
@@ -294,14 +328,17 @@ public class Connection : MonoBehaviour {
                 System.Buffer.BlockCopy (gameStade [i_dof][i_var], 0, msg, sizeof(short) + sizeof(float) * (i_var + N_VAR * i_dof), gameStade [i_dof][i_var].Length);
 			}
 		}
-		clientHere.SendByte (msg);
-        transmitting = false;
+        clientHere.SendByte (msg);
+
+        deltaTimeSend = currentTime - counter;
         return;
 	}
 
 	private void ReadMsg()
 	{
         transmitting = true;
+        float counter = currentTime;
+
         byte[] buffer = clientHere.ReceiveByte ();
 
 		// Check if message is different than zero
@@ -339,6 +376,8 @@ public class Connection : MonoBehaviour {
                 Debug.Log("Disconnected?");
             //			connectStatus = ConnectStatus.disconnected;
         }
+
+        deltaTimeRead = currentTime - counter;
         transmitting = false;
 		return;
 	}

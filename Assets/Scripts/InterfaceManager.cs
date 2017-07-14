@@ -160,11 +160,18 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     control.gameTime += Time.unscaledDeltaTime;
                     log.Register(control.gameTime, ControlManager.Instance.RawPosition);
 
-                    if (Time.unscaledDeltaTime > 0.2f)
+                    if (control.connection.DeltaTimeRead > Time.unscaledDeltaTime)
                     {
-                        Debug.Log("Big Time Step: " + Time.unscaledDeltaTime.ToString());
-                        log.Register(control.gameTime, "Big Time Step" + Time.unscaledDeltaTime.ToString());
+                        Debug.Log("Big Time Step Reading: " + control.connection.DeltaTimeRead.ToString());
+                        log.Register(control.gameTime, "Big Time Step Reading" + control.connection.DeltaTimeRead.ToString());
                     }
+
+                    if (control.connection.DeltaTimeSend > Time.unscaledDeltaTime)
+                    {
+                        Debug.Log("Big Time Step Sending: " + control.connection.DeltaTimeSend.ToString());
+                        log.Register(control.gameTime, "Big Time Step Sending" + control.connection.DeltaTimeSend.ToString());
+                    }
+
                 }
                 playStatus.transform.localScale = statusScale;
 
