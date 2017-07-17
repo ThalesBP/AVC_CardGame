@@ -325,9 +325,9 @@ public class Dealer : GameBase {
                         if (Time.timeScale != 0f)
                         {
                             if (timeToRead > 0f)
-                                objectiveCard.HighlightTimer(0f, 1f);
+                                objectiveCard.HighlightTimer(0f, 0.5f);
                             else
-                                objectiveCard.HighlightTimer(LoadingTime[VeryLong], 1f);
+                                objectiveCard.HighlightTimer(LoadingTime[Long], 0.5f);
                             if (!objectiveCard.showed)
                             {
                                 timeToPlay += Time.unscaledDeltaTime;

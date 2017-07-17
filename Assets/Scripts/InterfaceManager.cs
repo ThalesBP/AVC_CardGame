@@ -127,7 +127,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     StartLoggin();
                 }
                 else
+                {
                     log.Register(control.gameTime, gameMessageTexts[(int)control.status, language] + " - " + gameMessageTexts[(int)control.gameStatus, language]);
+                }
                 
                 if (countDownCounter >= 0)
                 {
@@ -160,16 +162,19 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     control.gameTime += Time.unscaledDeltaTime;
                     log.Register(control.gameTime, ControlManager.Instance.RawPosition);
 
-                    if (control.connection.DeltaTimeRead > Time.unscaledDeltaTime)
+                    if (control.connection != null)
                     {
-                        Debug.Log("Big Time Step Reading: " + control.connection.DeltaTimeRead.ToString());
-                        log.Register(control.gameTime, "Big Time Step Reading" + control.connection.DeltaTimeRead.ToString());
-                    }
+                        if (control.connection.DeltaTimeRead > Time.unscaledDeltaTime)
+                        {
+                            Debug.Log("Big Time Step Reading: " + control.connection.DeltaTimeRead.ToString());
+                            log.Register(control.gameTime, "Big Time Step Reading" + control.connection.DeltaTimeRead.ToString());
+                        }
 
-                    if (control.connection.DeltaTimeSend > Time.unscaledDeltaTime)
-                    {
-                        Debug.Log("Big Time Step Sending: " + control.connection.DeltaTimeSend.ToString());
-                        log.Register(control.gameTime, "Big Time Step Sending" + control.connection.DeltaTimeSend.ToString());
+                        if (control.connection.DeltaTimeSend > Time.unscaledDeltaTime)
+                        {
+                            Debug.Log("Big Time Step Sending: " + control.connection.DeltaTimeSend.ToString());
+                            log.Register(control.gameTime, "Big Time Step Sending" + control.connection.DeltaTimeSend.ToString());
+                        }
                     }
 
                 }
@@ -209,9 +214,9 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 {
                     musicFade.timeScaled = false;
                     musicFade.Fade(DeltaTime[MuchLonger]);
-                    user.visibility.locked = false;
                     StopLoggin();
                 }
+                user.visibility.locked = false;
                 music.volume = (1f - musicFade.LerpScale) * 0.25f;
                 playStatus.text = endOfGameText[language];
                 statusScale.MoveTo(Vector3.one);
