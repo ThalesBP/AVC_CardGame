@@ -42,7 +42,7 @@ public class AnkleMovement : MonoBehaviour {
 
     void Calibration(Vector2 position)
     {
-        if (max.y < position.y)
+  /*      if (max.y < position.y)
             max.y = position.y;
         if (max.x < position.x)
             max.x = position.x;
@@ -52,6 +52,62 @@ public class AnkleMovement : MonoBehaviour {
             min.x = position.x;
         bases = elipseScale * (max - min) / 2;
         origin = (max + min) / 2;
+*/
+
+        float range;
+        float cosAng, sinAng;
+
+        // ATAN2(((X-OX)*BY);((Y-OY)*BX))
+        float ang = GameBase.Atan2 ((position.y - origin.y) * bases.x, (position.x - origin.x) * bases.y);
+        float rangeLin;
+
+        cosAng = Mathf.Cos(ang);
+        sinAng = Mathf.Sin(ang);
+
+        float basesLinX, basesLinY;
+        float cosAngLin, sinAngLin;
+        Vector2 originLin;
+
+        Vector2 opposite = origin - new Vector2(bases.x * cosAng, bases.y * sinAng);
+
+        if (Mathf.Abs(cosAng) < Mathf.Abs(sinAng))
+        {
+            // (Y - OY)/SIN(T)/BY
+            range = ((position.y - origin.y) / sinAng / bases.y);
+            rangeLin = (position.y - opposite.y) / Mathf.Pow(sinAng, 3) - 2f * bases.y / Mathf.Pow(sinAng, 2);
+
+   /*         basesLinX = rangeLin * cosAng * cosAng / 2f + bases.x;
+            cosAngLin = (position.x - opposite.x) / (2 * basesLinX);
+            sinAngLin = Mathf.Sqrt(1f - cosAngLin * cosAngLin);
+            basesLinY = (position.y - opposite.y) / (2 * sinAng);*/
+            originLin = (position + opposite) / 2f;
+
+            basesLinX = bases.x * (2f * (range - 1) * cosAng + 1);
+            basesLinY = Mathf.Abs((position.y - originLin.y) * basesLinX / Mathf.Sqrt(basesLinX * basesLinX - Mathf.Pow(position.x - originLin.x, 2f)));
+        }
+        else
+        {
+            // (X - OX)/COS(T)/BX
+            range = ((position.x - origin.x) / cosAng / bases.x);
+            rangeLin = (position.x - opposite.x) / Mathf.Pow(cosAng, 3) - 2f * bases.x / Mathf.Pow(cosAng, 2);
+
+      /*      basesLinY = rangeLin * sinAng * sinAng / 2f + bases.y;
+            sinAngLin = (position.y - opposite.y) / (2 * basesLinY);
+            cosAngLin = Mathf.Sqrt(1f - sinAngLin * sinAngLin);
+            basesLinX = (position.x - opposite.x) / (2 * cosAng);*/
+            originLin = (position + opposite) / 2f;
+
+            basesLinY = bases.y * (2f * (range - 1) * sinAng + 1);
+            basesLinX = Mathf.Abs((position.x - originLin.x) * basesLinY / Mathf.Sqrt(basesLinY * basesLinY - Mathf.Pow(position.y - originLin.y, 2f)));
+        }
+
+        if (range > 1f)
+        {
+            origin = (position + opposite) / 2f;
+
+//            bases = new Vector2(rangeLin * cosAng * cosAng / 2f + bases.x, rangeLin * sinAng * sinAng / 2f + bases.y);
+            bases = new Vector2(basesLinX, basesLinY);
+        }
     }
 
     public void SetRadius(float radius)

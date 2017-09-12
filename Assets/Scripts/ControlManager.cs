@@ -47,7 +47,8 @@ public class ControlManager : Singleton<ControlManager> {
                 case ControlMode.Connection:
                     return connection.Position;
                 case ControlMode.ForceConnection:
-                    return ankle.CircleToElipse((Position - center).normalized * Mathf.Clamp((Position - center).magnitude, 0f, Screen.height * 0.45f), Screen.height * 0.45f);
+                    //return ankle.CircleToElipse((Position - center).normalized * Mathf.Clamp((Position - center).magnitude, 0f, Screen.height * 0.45f), Screen.height * 0.45f);
+                    return ankle.CircleToElipse(Position - center, Screen.height * 0.45f);
                 case ControlMode.Joystick:
                     return Position;
                 case ControlMode.Mouse:
@@ -107,7 +108,8 @@ public class ControlManager : Singleton<ControlManager> {
                 break;
             case ControlMode.ForceConnection:
                 float mag = ((Vector2)Input.mousePosition - center).magnitude;
-                position = ((Vector2)Input.mousePosition - center).normalized * Mathf.Clamp(mag, 0f, Screen.height * 0.45f) + center;
+                //position = ((Vector2)Input.mousePosition - center).normalized * Mathf.Clamp(mag, 0f, Screen.height * 0.45f) + center;
+                position = scale * ankle.ElipseToCircle(new Vector2(simulateRobotX, simulateRobotY)) + center;;
 
                 if (mag > Screen.height * 0.45f)
                     Cursor.visible = true;

@@ -1,0 +1,13 @@
+﻿Time	Message
+0.02000623	Game running - Waiting player reads
+0.1155076	Game running - Waiting player starts
+2.073735	Game running - Waiting player chooses
+4.311092	Game running - Wrong choose
+5.313625	Game running - Right choose
+6.904832	Game running - Turn ended
+8.489415	Game running - New turn
+8.505985	Game running - Waiting player reads
+8.539595	Game running - Waiting player starts
+10.85517	Game running - Waiting player chooses
+12.51805	Game running - Right choose
+14.7957	Game running - Turn ended

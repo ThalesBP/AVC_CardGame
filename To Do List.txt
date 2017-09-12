@@ -1,4 +1,5 @@
 Jogo:
+Movimentar o pé para capturar os movimentos máximos
 Maior/Menor divisor comum (número de iterações do challenge manager)
 Usar Challenge Manager nas cartas?
 Game Manager?

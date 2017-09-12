@@ -1,0 +1,3 @@
+﻿Thales Pasqual	Mauricio Zani	Game Results							Time to Play			Time to Memorize			Time to Choose			Card Matches			Movements Amplitude				Movements Plan				Movements Done				
+Date	Obs	Member	Score	Win Rate	Matches	Turns	Game Time	Time to Read	Average Time	Fastest Time	Slowest Time	Average Time	Fastest Time	Slowest Time	Average Time	Fastest Time	Slowest Time	Suit Matches	Value Matches	Color Mathes	Plantar flexion	Dorsiflexion	Inversion	Eversion	Plantar flexion	Dorsiflexion	Inversion	Eversion	Plantar flexion	Dorsiflexion	Inversion	Eversion	
+17-08-05 22-26-27		Right foot	75	100	2	2	21.81084	0	0.3685339	0.03365304	0.7034147	0	0	0	1.638203	1.346145	1.930261	100	100	100	28.64789	-28.64789	-28.64789	28.64789	25	25	25	25	0	0	0	100
