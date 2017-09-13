@@ -79,8 +79,10 @@ public class MiniMap : MonoBehaviour {
 
         // Green Lines for helper
         GL.Color(new Color(0.0f, 0.4f, 0.0f, 1.0f));
-        point = origin + Vector2.Scale (ControlManager.Instance.simulateRobot * scale, size);
+        point = origin + Vector2.Scale (ControlManager.Instance.centerSpring, size);
         ElipseForm (point, Vector2.Scale (ControlManager.Instance.freeSpace * scale, size), 18);
+        CrossForm (point, Vector2.Scale (ControlManager.Instance.freeSpace * scale, size));
+        ElipseForm (point, Vector2.Scale (ControlManager.Instance.outFreeSpace * scale, size), 18);
 
         // Green Dot for choices
         for (int i = 0; i < choices.Count; i++)

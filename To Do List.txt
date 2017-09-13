@@ -1,4 +1,5 @@
 Jogo:
+Adicionar [Header("Teste")] e [Space(10)] em todo o código
 Movimentar o pé para capturar os movimentos máximos
 Maior/Menor divisor comum (número de iterações do challenge manager)
 Usar Challenge Manager nas cartas?
@@ -24,11 +25,13 @@ Visual:
 Regular volume da música
 Save the last configuration
 Nota musical pra cada carta
+Bug design do mouse
 -----
 Mouse rotacionar com o pé (corrigir centro do mouse)
 
 Robô:
 Verificar controle do robô
+Ajustar variáveis
 -----
 Calibration
 

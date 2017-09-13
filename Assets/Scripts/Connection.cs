@@ -15,11 +15,12 @@ using System.Linq;
 
 public class Connection : MonoBehaviour {
 
-    public enum GameStatus {Paused, Starting, Playing, Stopped, Restarting};
+    public enum GameStatus {Paused, Starting, Playing, Stopped, Restarting, GoIn, GoOut};
     enum ConnectStatus {waiting, connecting, connected, disconnected};
-    enum RobotIndex {centerspring, freespace, stiff, damp};
+    enum RobotIndex {centerspring, freespace, impedance, outFreeSpace};
     enum GameIndex {position, velocity, acc, force};
     enum Axis {vertical, horizontal};
+    enum Control {stiffness, damping};
 
 	private const int N_VAR = 4; 		// Numero de variaveis envolvidas
 	private const int  N_DOF = 2;        // Degrees of freedon
@@ -157,30 +158,30 @@ public class Connection : MonoBehaviour {
         }
     }
 
-    public Vector2 Stiffness
+    public Vector2 Impedance
     {
         get
         { 
-            return new Vector2(BitConverter.ToSingle(gameStade[(int)Axis.horizontal][(int)RobotIndex.stiff], 0), BitConverter.ToSingle(gameStade[(int)Axis.vertical][(int)RobotIndex.stiff], 0));
+            return new Vector2(BitConverter.ToSingle(gameStade[(int)Control.stiffness][(int)RobotIndex.impedance], 0), BitConverter.ToSingle(gameStade[(int)Control.damping][(int)RobotIndex.impedance], 0));
         }
         set 
         {
-            SetStatus((int)Axis.horizontal, (int)RobotIndex.stiff, value.x);
-            SetStatus((int)Axis.vertical, (int)RobotIndex.stiff, value.y);
+            SetStatus((int)Control.stiffness, (int)RobotIndex.impedance, value.x);
+            SetStatus((int)Control.damping, (int)RobotIndex.impedance, value.y);
         }
 
     }
 
-    public Vector2 Damping
+    public Vector2 OutFreeSpace
     {
         get
         { 
-            return new Vector2(BitConverter.ToSingle(gameStade[(int)Axis.horizontal][(int)RobotIndex.damp], 0), BitConverter.ToSingle(gameStade[(int)Axis.vertical][(int)RobotIndex.damp], 0));
+            return new Vector2(BitConverter.ToSingle(gameStade[(int)Axis.horizontal][(int)RobotIndex.outFreeSpace], 0), BitConverter.ToSingle(gameStade[(int)Axis.vertical][(int)RobotIndex.outFreeSpace], 0));
         }
         set 
         {
-            SetStatus((int)Axis.horizontal, (int)RobotIndex.damp, value.x);
-            SetStatus((int)Axis.vertical, (int)RobotIndex.damp, value.y);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.impedance, value.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.impedance, value.y);
         }
 
     }

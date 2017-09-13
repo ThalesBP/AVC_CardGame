@@ -8,7 +8,9 @@ using UnityEngine;
 public class ControlManager : Singleton<ControlManager> {
 
     public enum ControlMode {Mouse, Joystick, Connection, ForceConnection};
+    public enum HelperMode {GoIn, GoOut};
     public ControlMode mode;
+    public HelperMode helper;
 
     [SerializeField]
     private Vector2 position = Vector2.zero;
@@ -21,9 +23,19 @@ public class ControlManager : Singleton<ControlManager> {
     public float simulateRobotY = 0.0f;
     [HideInInspector]
     public Vector2 simulateRobot;
+
+
+    public Vector2 centerSpring;
     public Vector2 freeSpace;
-    public Vector2 simulateMouse;
-    public float stiff = 0f, damp = 0f;
+    /// <summary>
+    /// X = Stiffness / Y = Damping
+    /// </summary>
+    public Vector2 impedance = Vector2.zero;
+    public Vector2 outFreeSpace;
+    [Range(0.01f, 1.00f)]
+    public float freeSpaceRadius = 0.05f;
+    [Range(0.01f, 1.00f)]
+    public float outFreeSpaceRadius = 0.80f;
 
     [SerializeField]
     private float scale = 0.45f * Screen.height;
@@ -86,8 +98,7 @@ public class ControlManager : Singleton<ControlManager> {
         actionCounting = actionTrigger = false;
 
         simulateRobot = Vector2.zero;
-        freeSpace = Vector2.zero;
-        simulateMouse = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        freeSpace = outFreeSpace = Vector2.zero;
 
         ankle = gameObject.AddComponent<AnkleMovement>();
 	}
@@ -96,7 +107,7 @@ public class ControlManager : Singleton<ControlManager> {
 	void Update () 
     {
         center = new Vector2(Screen.width / 2f, Screen.height / 2f);
- //       simulateRobot = new Vector2(simulateRobotX, simulateRobotY);
+        simulateRobot = new Vector2(simulateRobotX, simulateRobotY);
         scale = 0.45f * Screen.height;
 
         if (connection != null)
@@ -108,6 +119,20 @@ public class ControlManager : Singleton<ControlManager> {
         else
             mode = ControlMode.Mouse;
 
+        switch (helper)
+        {
+            case HelperMode.GoIn:
+                centerSpring = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
+                freeSpace = freeSpaceRadius * ankle.bases;
+                outFreeSpace = outFreeSpaceRadius * ankle.bases;
+                break;
+            case HelperMode.GoOut:
+                centerSpring = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
+                freeSpace = freeSpaceRadius * ankle.bases;
+                outFreeSpace = outFreeSpaceRadius * ankle.bases;
+                break;
+        }
+
         switch (mode)
         {
             case ControlMode.Connection:
@@ -117,14 +142,15 @@ public class ControlManager : Singleton<ControlManager> {
                     //ankle.Reset();
                 position = scale * ankle.ElipseToCircle(connection.Position) + center;
 
-                simulateRobot = ankle.CircleToElipse(simulateMouse - center, Screen.height * 0.45f);
-                freeSpace = ankle.CircleToElipse(simulateMouse - center + Vector2.one * Screen.height * 0.05f, Screen.height * 0.45f) - simulateRobot;
+                if (helper == HelperMode.GoIn)
+                    connection.Status = Connection.GameStatus.GoIn;
+                else
+                    connection.Status = Connection.GameStatus.GoOut;
 
-                connection.CenterSpring = simulateRobot;
+                connection.CenterSpring = centerSpring;
                 connection.FreeSpace = freeSpace;
-                connection.Stiffness = new Vector2(0f , stiff);
-                connection.Damping = new Vector2(0f , damp);
-
+                connection.Impedance = impedance;
+                connection.OutFreeSpace = outFreeSpace;
                 break;
             case ControlMode.ForceConnection:
                 float mag = ((Vector2)Input.mousePosition - center).magnitude;
@@ -135,11 +161,19 @@ public class ControlManager : Singleton<ControlManager> {
                     Cursor.visible = false;
                 */
 
-                simulateRobot = new Vector2(simulateRobotX, simulateRobotY);
+                Cursor.visible = true;
                 position = scale * ankle.ElipseToCircle(simulateRobot) + center;
 
-                simulateRobot = ankle.CircleToElipse((Vector2)Input.mousePosition - center, Screen.height * 0.45f);
-                freeSpace = ankle.CircleToElipse((Vector2)Input.mousePosition - center + Vector2.one * Screen.height * 0.05f, Screen.height * 0.45f) - simulateRobot;
+          //      simulateRobot = ankle.CircleToElipse((Vector2)Input.mousePosition - center, Screen.height * 0.45f);
+          //      freeSpace = ankle.CircleToElipse(Vector2.one * Screen.height * 0.05f, Screen.height * 0.45f);
+         
+                //simulateRobot = ankle.CircleToElipse(simulateMouse - center, Screen.height * 0.45f);
+                //freeSpace = ankle.CircleToElipse(simulateMouse - center + Vector2.one * Screen.height * 0.05f, Screen.height * 0.45f) - simulateRobot;
+                //outFreeSpace = ankle.CircleToElipse(simulateMouse - center + Vector2.one * Screen.height * 0.40f, Screen.height * 0.45f) - simulateRobot;
+
+                simulateRobot = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
+                freeSpace = 0.10f * ankle.bases;
+                outFreeSpace = 0.80f * ankle.bases;
                 break;
             case ControlMode.Joystick:
                 Cursor.visible = true;
