@@ -186,12 +186,21 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     {
                         statusScale.MoveTo(highlightScale * Vector3.one);
                         statusScale.MoveTo(Vector3.one, DeltaTime[Short]);
+                    
+                        if (ControlManager.Instance.Position.y < Screen.height * 0.40f)
+                        if (LimbSide((Limbs)InterfaceManager.Instance.user.memberDropdown.value) == Side.right)
+                            mainButton.transform.localPosition = Vector3.left * Screen.height * 0.20f;
+                        else
+                            mainButton.transform.localPosition = Vector3.right * Screen.height * 0.20f;
+                        else
+                            mainButton.transform.localPosition = Vector3.down * Screen.height * 0.20f;
                     }
                     playStatus.color = SetAlpha(YellowText, statusScale.LerpScale);
                     statusBoarder.effectColor = Color.Lerp(Color.black, playStatus.color, (1 - statusScale.LerpScale + 0.2f));
 
                     playStatus.text = explainingModesText[mode, language];
                     playStatus2.text = "";// ready2Text[language];
+
                     mainButton.SetActive(true);
                 }
                 else

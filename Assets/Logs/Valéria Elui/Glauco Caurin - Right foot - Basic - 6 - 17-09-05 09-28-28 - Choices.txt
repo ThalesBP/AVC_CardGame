@@ -1,4 +1,0 @@
-﻿	Game								Objective			Choice			Points				Time To			Objective Pos		Choice Pos	
-Choice	Time	Mode	Speed	N cards	Match	Turn Time	Precision	Choice changed	Value	Suit	Color	Value	Suit	Color	Value	Suit	Color	Total	Play	Memorize	Choose	Magnitude	Angle	Magnitude	Angle
-0	3.200072	Basic	2.486283	6	1	3.200072	0	0	4	1	1	4	1	1	1	1	1	37	0.2588671	0	1.533328	189.0761	-77.99999	171.2302	-74.80252
-1	8.543531	Basic	2.483336	6	1	5.343459	37	0	2	3	1	2	3	1	1	1	1	38	0.2723772	0	1.421429	189.0761	84	194.4559	82.37258

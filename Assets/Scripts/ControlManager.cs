@@ -24,7 +24,6 @@ public class ControlManager : Singleton<ControlManager> {
     [HideInInspector]
     public Vector2 simulateRobot;
 
-
     public Vector2 centerSpring;
     public Vector2 freeSpace;
     /// <summary>
@@ -32,8 +31,10 @@ public class ControlManager : Singleton<ControlManager> {
     /// </summary>
     public Vector2 impedance = Vector2.zero;
     public Vector2 outFreeSpace;
+
+    public Vector2 objective;
     [Range(0.01f, 1.00f)]
-    public float freeSpaceRadius = 0.05f;
+    public float freeSpaceRadius = 0.10f;
     [Range(0.01f, 1.00f)]
     public float outFreeSpaceRadius = 0.80f;
 
@@ -123,11 +124,17 @@ public class ControlManager : Singleton<ControlManager> {
         {
             case HelperMode.GoIn:
                 centerSpring = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
+
+                freeSpaceRadius = 0.10f;
+                outFreeSpaceRadius = 0.95f;
                 freeSpace = freeSpaceRadius * ankle.bases;
                 outFreeSpace = outFreeSpaceRadius * ankle.bases;
                 break;
             case HelperMode.GoOut:
                 centerSpring = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
+
+                freeSpaceRadius = 0.05f;
+                outFreeSpaceRadius = 0.80f;
                 freeSpace = freeSpaceRadius * ankle.bases;
                 outFreeSpace = outFreeSpaceRadius * ankle.bases;
                 break;

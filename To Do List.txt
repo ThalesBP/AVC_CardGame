@@ -1,5 +1,4 @@
 Jogo:
-Adicionar [Header("Teste")] e [Space(10)] em todo o código
 Movimentar o pé para capturar os movimentos máximos
 Maior/Menor divisor comum (número de iterações do challenge manager)
 Usar Challenge Manager nas cartas?
@@ -17,6 +16,7 @@ Calcular proporcional a tela todo o tempo
 Mini mapa por cima do mouse
 
 Log:
+Verificar log do Memorize
 -----
 Desvio padrão das informações
 Partidas para coleta de dados / análise de dificuldade
@@ -37,6 +37,11 @@ Calibration
 
 Graficos:
 Visualizar tendencia num triângulo nipe / valor / cor por apaciente
+Diagrama de estados do jogo
+
+Programação:
+Adicionar [Header("Teste")] e [Space(10)] em todo o código
+Organizar LoadingTime e DeltaTime numa variável só
 
 =============
 =============

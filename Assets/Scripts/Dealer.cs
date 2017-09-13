@@ -114,12 +114,14 @@ public class Dealer : GameBase {
 
         switch (gameStatus)
         {
+            /////////////////////////////////////////////////////////////////
             case Status.newTurn:    // Create the Deck and waits count down
-                interfaceManager.control.gameStatus = Status.newTurn;
+                interfaceManager.control.gameStatus = Status.newTurn; // Set Game Status for Control Panel
 
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
 
+                // Check if is set any game mode
                 if (interfaceManager.control.gameMode.value != numOfGameModes - 1)
                 {
                     interfaceManager.control.obsField.interactable = true;
@@ -127,6 +129,7 @@ public class Dealer : GameBase {
                     mode = (GameMode)interfaceManager.control.gameMode.value;
                     challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
 
+                    /// Check if is first time in mode
                     if (Choice.orderCounter == 0)
                     {
                         interfaceManager.mode = (int)mode;
@@ -141,6 +144,7 @@ public class Dealer : GameBase {
                     else
                         firstInMode = false;
                 }
+                // Else swipes among modes
                 else
                 {
                     interfaceManager.control.obsField.interactable = false;
@@ -153,11 +157,6 @@ public class Dealer : GameBase {
                         interfaceManager.mode = AutomaticMode;
                         interfaceManager.control.slider.value = 3;
                         interfaceManager.control.obsField.text = (((GameMode)AutomaticMode).ToString() + " - " + challengeNumber.ToString());
-
-                        if (ControlManager.Instance.Position.y < Screen.height * 0.35f)
-                            interfaceManager.mainButton.transform.localPosition = Vector3.left * Screen.height * 0.30f;
-                        else
-                            interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f;
                         firstInMode = true;
                     }
 
@@ -176,11 +175,6 @@ public class Dealer : GameBase {
                                 firstInMode = true;
 
                                 interfaceManager.mode = AutomaticMode;
-
-                                if (ControlManager.Instance.Position.y < Screen.height * 0.35f)
-                                    interfaceManager.mainButton.transform.localPosition = Vector3.left * Screen.height * 0.30f;
-                                else
-                                    interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f;
                             }
 
                             interfaceManager.control.slider.value = challengeNumber;
@@ -218,8 +212,9 @@ public class Dealer : GameBase {
 
                 gameStatus = Status.playerReading;
                 break;
+            /////////////////////////////////////////////////////////////////
             case Status.playerReading:
-                interfaceManager.control.gameStatus = Status.playerReading;
+                interfaceManager.control.gameStatus = Status.playerReading; // Set Game Status for Control Panel
 
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
@@ -230,12 +225,20 @@ public class Dealer : GameBase {
                 }
 
                 if (interfaceManager.mode == -1)
-                    gameStatus = Status.playerPlay;
+                {
+                    if (nextStatus == Status.idle)
+                    {
+                        gameStatus = Status.playerPlay;
+                    }
+                    else
+                        gameStatus = nextStatus;
+                }
                 else
                     timeToRead += Time.unscaledDeltaTime;
                 break;
+            /////////////////////////////////////////////////////////////////
             case Status.playerPlay: // Waits Player to play
-                interfaceManager.control.gameStatus = Status.playerPlay;
+                interfaceManager.control.gameStatus = Status.playerPlay; // Set Game Status for Control Panel
 
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
@@ -282,10 +285,13 @@ public class Dealer : GameBase {
                                     if (firstInMode)
                                     {
                                         interfaceManager.mode = numOfGameModes - 1;
-                                        Wait(timeToWait, Status.playerReading);
+                          //              Wait(timeToWait, Status.playerReading);
                                     }
                                     else
-                                        Wait(timeToWait, Status.playerPlay);
+                            //            Wait(timeToWait, Status.playerPlay);
+                                        interfaceManager.mode = numOfGameModes;
+
+                                    Wait(timeToWait, Status.playerReading);
                                 }
                                 break;
                             case GameMode.Basic:
@@ -329,17 +335,16 @@ public class Dealer : GameBase {
                             else
                                 objectiveCard.HighlightTimer(LoadingTime[Long], 0.5f);
                             if (!objectiveCard.showed)
-                            {
                                 timeToPlay += Time.unscaledDeltaTime;
-                            }
                             else
                                 timeToMemorize += Time.unscaledDeltaTime;
                         }
                     }
                 }
                 break;
+            /////////////////////////////////////////////////////////////////
             case Status.playerChoice:   // Waits player to make his/her choice
-                interfaceManager.control.gameStatus = Status.playerChoice;
+                interfaceManager.control.gameStatus = Status.playerChoice; // Set Game Status for Control Panel
 
                 if (interfaceManager.control.status == Status.end)
                     goto case Status.endTurn;
@@ -352,14 +357,16 @@ public class Dealer : GameBase {
                 }
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
+            /////////////////////////////////////////////////////////////////
             case Status.wrong:  // If player is wrong
-                interfaceManager.control.gameStatus = Status.wrong;
+                interfaceManager.control.gameStatus = Status.wrong; // Set Game Status for Control Panel
 
                 aimedCard.status = Card.Highlight.wrong;   // If chosen card is wrong, highlight it first
                 Wait(1.5f, Status.right);   // Waits x seconds before shows right cards
                 break;
+            /////////////////////////////////////////////////////////////////
             case Status.right:  // If player is right
-                interfaceManager.control.gameStatus = Status.right;
+                interfaceManager.control.gameStatus = Status.right; // Set Game Status for Control Panel
 
                 if (interfaceManager.control.status == Status.end)
                     goto case Status.endTurn;
@@ -382,8 +389,9 @@ public class Dealer : GameBase {
 
                 Wait(2.5f, Status.endTurn);
                 break;
+            /////////////////////////////////////////////////////////////////
             case Status.endTurn:     // Ends the turn
-                interfaceManager.control.gameStatus = Status.endTurn;
+                interfaceManager.control.gameStatus = Status.endTurn; // Set Game Status for Control Panel
 
                 aimedCard = null;
                 foreach (Card card in cardsInGame)
@@ -405,8 +413,9 @@ public class Dealer : GameBase {
                     Wait(timeToWait, Status.destroy);
                 }
                 break;
+            /////////////////////////////////////////////////////////////////
             case Status.destroy:    // Destroy the deck
-                interfaceManager.control.gameStatus = Status.destroy;
+                interfaceManager.control.gameStatus = Status.destroy; // Set Game Status for Control Panel
 
                 DestroyDeck(challengeCards);
                 DestroyCard(objectiveCard);
@@ -415,10 +424,11 @@ public class Dealer : GameBase {
 
                 gameStatus = Status.newTurn;
                 goto case Status.newTurn;
+            /////////////////////////////////////////////////////////////////
             case Status.waitingMotion:  // Waits current motion
                 if (interfaceManager.control.status == Status.end)
                 {
-                    interfaceManager.control.gameStatus = Status.waitingMotion;
+                    interfaceManager.control.gameStatus = Status.waitingMotion; // Set Game Status for Control Panel
                 }
                 
                 if (waitCounter < timeToWait)
@@ -430,8 +440,9 @@ public class Dealer : GameBase {
                     nextStatus = Status.idle;
                 }
                 break;
+            /////////////////////////////////////////////////////////////////
             case Status.endGame:    // Ends the game
-                interfaceManager.control.gameStatus = Status.endGame;
+                interfaceManager.control.gameStatus = Status.endGame; // Set Game Status for Control Panel
 
                 if (interfaceManager.control.gameMode.value == numOfGameModes - 1)
                 {

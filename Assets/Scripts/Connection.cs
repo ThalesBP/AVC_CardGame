@@ -31,7 +31,7 @@ public class Connection : MonoBehaviour {
 	private short robotStatus;
 
     private const float stepTime = 0.02f;
-	private float timeCounter = 0;
+//	private float timeCounter = 0;
 
 	private Thread connectingThread, communicateThread;
 

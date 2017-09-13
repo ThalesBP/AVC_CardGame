@@ -52,7 +52,8 @@ public class GameBase : MonoBehaviour {
             { "Memorize the central card before continue", "Memorize a carta central antes de continuar" },
             { "The number of suits just matches with card value", "O número de naipes apenas é igual ao valor da carta" },
             { "Count the number of suits and find the card around", "Conte o número de naipes e ache a carta ao redor" },
-            { "Memorize this card", "Memorize essa carta"}
+            { "Memorize this card", "Memorize essa carta"},
+            { "Memorize!", "Memorize!" }
         };
 
     #endregion
@@ -149,7 +150,24 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] changeText = { "Change", "Mudar" };
 
     protected static readonly int numOfMembers = 2; // The N first member in the list
-    public enum Limbs { rightHand, leftHand, rightFoot, leftFoot };
+    public enum Limbs { leftFoot, rightFoot, lefthand, rightHand };
+    public enum Side { left, right, other};
+
+    public Side LimbSide(Limbs limb)
+    {
+        switch (limb)
+        {
+            case Limbs.leftFoot:
+            case Limbs.lefthand:
+                return Side.left;
+            case Limbs.rightFoot:
+            case Limbs.rightHand:
+                return Side.right;
+            default:
+                return Side.other;
+        }
+    }
+
     protected static readonly string[,] limbTexts = 
         {
             {"Left foot", "Pé esquerdo" },
