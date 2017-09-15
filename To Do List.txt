@@ -18,9 +18,9 @@ Calcular proporcional a tela todo o tempo
 Mini mapa por cima do mouse
 
 Log:
-Forças
 Verificar log do Memorize
 -----
+Forças
 Desvio padrão das informações
 Partidas para coleta de dados / análise de dificuldade
 

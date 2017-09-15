@@ -160,7 +160,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 else
                 {
                     control.gameTime += Time.unscaledDeltaTime;
-                    log.Register(control.gameTime, ControlManager.Instance.RawPosition);
+                    log.Register(control.gameTime, ControlManager.Instance.RawPosition, control.connection.Force);
 
                     if (control.connection != null)
                     {

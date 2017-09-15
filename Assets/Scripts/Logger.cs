@@ -52,6 +52,7 @@ public class Logger : MonoBehaviour {
             "Pos X\tPos Y\t" +
             "Vel X\tVel Y\t" +
             "Acc X\tAcc Y" +
+            "Force X\tForce Y" +
             Environment.NewLine, Encoding.UTF8);
         
         chooseFile = Application.dataPath + "\\Logs\\" + manager + "\\"  + player + " - " + member + " - " + observation + " - " + logTime + " - Choices.txt";
@@ -172,7 +173,7 @@ public class Logger : MonoBehaviour {
     /// </summary>
     /// <param name="time">Current time.</param>
     /// <param name="position">Current position.</param>
-    public void Register(float time, Vector2 position) 
+    public void Register(float time, Vector2 position, Vector2 force) 
     {
         if (!started)
             return;
@@ -192,7 +193,9 @@ public class Logger : MonoBehaviour {
             + vel.x + "\t"
             + vel.y + "\t"
             + acc.x + "\t"
-            + acc.y
+            + acc.y + "\t"
+            + force.x + "\t"
+            + force.y
             , Encoding.UTF8);
 
         File.AppendAllText(movementFile, Environment.NewLine, Encoding.UTF8);
