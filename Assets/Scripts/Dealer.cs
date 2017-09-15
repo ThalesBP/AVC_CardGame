@@ -95,7 +95,7 @@ public class Dealer : GameBase {
         gameSlice = 100f;
         packCounter = 0;
         soundEffect = gameObject.GetComponent<AudioSource>();
-        interfaceManager.control.slider.onValueChanged.AddListener(delegate 
+        interfaceManager.control.nCardsSlider.onValueChanged.AddListener(delegate 
             {
                 EndTurn();
             } );
@@ -127,7 +127,7 @@ public class Dealer : GameBase {
                     interfaceManager.control.obsField.interactable = true;
 
                     mode = (GameMode)interfaceManager.control.gameMode.value;
-                    challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
+                    challengeNumber = Mathf.FloorToInt(interfaceManager.control.nCardsSlider.value);
 
                     /// Check if is first time in mode
                     if (Choice.orderCounter == 0)
@@ -155,7 +155,7 @@ public class Dealer : GameBase {
                         challengeNumber = 3;
 
                         interfaceManager.mode = AutomaticMode;
-                        interfaceManager.control.slider.value = 3;
+                        interfaceManager.control.nCardsSlider.value = 3;
                         interfaceManager.control.obsField.text = (((GameMode)AutomaticMode).ToString() + " - " + challengeNumber.ToString());
                         firstInMode = true;
                     }
@@ -177,7 +177,7 @@ public class Dealer : GameBase {
                                 interfaceManager.mode = AutomaticMode;
                             }
 
-                            interfaceManager.control.slider.value = challengeNumber;
+                            interfaceManager.control.nCardsSlider.value = challengeNumber;
                             interfaceManager.control.obsField.text = (((GameMode)AutomaticMode).ToString() + " - " + challengeNumber.ToString());
 
                             interfaceManager.StopLoggin();
@@ -681,6 +681,7 @@ public class Dealer : GameBase {
                 if (aimedCard == objectiveCard)
                 {
                     interfaceManager.control.gameStatus = Status.right;
+                    soundEffect.volume = interfaceManager.control.soundSlider.value;
                     soundEffect.clip = successSound;
                     soundEffect.Play();
                     return Status.right;
@@ -688,6 +689,7 @@ public class Dealer : GameBase {
                 else
                 {
                     interfaceManager.control.gameStatus = Status.wrong;
+                    soundEffect.volume = interfaceManager.control.soundSlider.value;
                     soundEffect.clip = failSound;
                     soundEffect.Play();
                     return Status.wrong;
@@ -726,7 +728,7 @@ public class Dealer : GameBase {
     /// </summary>
     private void EndTurn()
     {
-        challengeNumber = Mathf.FloorToInt(interfaceManager.control.slider.value);
+        challengeNumber = Mathf.FloorToInt(interfaceManager.control.nCardsSlider.value);
         switch(gameStatus)
         {
             case Status.playerPlay:

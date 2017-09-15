@@ -49,7 +49,9 @@ public class ControlPanel : GameBase {
     public Button connectButton, calibrateButton, startButton, stopButton;
     public InputField playTimeField, obsField;
     public Dropdown gameMode;
-    public Slider slider;
+    public Slider nCardsSlider;
+    public Slider soundSlider;
+    public Slider musicSlider;
     public Toggle helpToggle;
 
     public Connection connection;
@@ -71,7 +73,7 @@ public class ControlPanel : GameBase {
         obs = GameObject.Find("ObsPlaceholder").GetComponentInChildren<Text>(true);
         obsInput = GameObject.Find("Obs").GetComponentInChildren<Text>(true);
         modeText = GameObject.Find("GameModeText").GetComponentInChildren<Text>(true);
-        sliderText = GameObject.Find("SliderText").GetComponentInChildren<Text>(true);
+        sliderText = GameObject.Find("NCardsText").GetComponentInChildren<Text>(true);
         help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>(true);
 
         metric1 = GameObject.Find("Metric1").GetComponentInChildren<Text>(true);
@@ -130,7 +132,7 @@ public class ControlPanel : GameBase {
 
         stop.text = stopText[language];
         help.text = helpText[language];
-        sliderText.text = slider.value.ToString("F0") + " " + cardsText[language];
+        sliderText.text = nCardsSlider.value.ToString("F0") + " " + cardsText[language];
 
         gameMessages.text = gameMessageTexts[(int)status, language] + "\n" + gameMessageTexts[(int)gameStatus, language];
 
@@ -143,7 +145,7 @@ public class ControlPanel : GameBase {
 
                 calibrateButton.interactable = connected;
 
-                slider.interactable = true;
+                nCardsSlider.interactable = true;
 
                 map.Reset();
                 break;
@@ -173,7 +175,7 @@ public class ControlPanel : GameBase {
             case Status.end:
                 start.text = restartText[language];
                 playTime.text = infTimeText[language];
-                slider.interactable = false;
+                nCardsSlider.interactable = false;
                 break;
         }
 
@@ -187,7 +189,7 @@ public class ControlPanel : GameBase {
         if (gameMode.value == numOfGameModes - 1)
         {
     //        slider.value = 3f;
-            slider.interactable = false;
+            nCardsSlider.interactable = false;
         }
 
         obs.text = obsText[language];

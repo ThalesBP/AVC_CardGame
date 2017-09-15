@@ -118,7 +118,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 break;
             case Status.playing:
                 music.UnPause();
-                music.volume = 0.25f;
+                music.volume = control.musicSlider.value;
 
                 if (!logging)
                 {
@@ -160,7 +160,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 else
                 {
                     control.gameTime += Time.unscaledDeltaTime;
-                    log.Register(control.gameTime, ControlManager.Instance.RawPosition, control.connection.Force);
+                    if (control.connection != null)
+                        log.Register(control.gameTime, ControlManager.Instance.RawPosition, control.connection.Force);
+                    else
+                        log.Register(control.gameTime, ControlManager.Instance.RawPosition, Vector2.zero);
 
                     if (control.connection != null)
                     {
@@ -226,7 +229,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                     StopLoggin();
                 }
                 user.visibility.locked = false;
-                music.volume = (1f - musicFade.LerpScale) * 0.25f;
+                music.volume = (music.volume = control.musicSlider.value - musicFade.LerpScale);
                 playStatus.text = endOfGameText[language];
                 statusScale.MoveTo(Vector3.one);
                 playStatus.color = YellowText;
