@@ -4,10 +4,12 @@ Maior/Menor divisor comum (número de iterações do challenge manager)
 Usar Challenge Manager nas cartas?
 Game Manager?
 Selecionar se varia modo ou numero de cartas
-Criptografar a senha / Senha master pra recuperar
+Criptografar a senha
 Procurar por comentários "obs" ou "to check" entre outros
 Solução pra "pé frouxo"
 -----
+Manager pode dar OK com o mouse para as instruções
+Senha master pra recuperar
 Ajuste de dificuldade
 Challenge Manager para os Card Challenge?
 Nao usar TimeToWait global ?
@@ -16,6 +18,7 @@ Calcular proporcional a tela todo o tempo
 Mini mapa por cima do mouse
 
 Log:
+Forças
 Verificar log do Memorize
 -----
 Desvio padrão das informações
@@ -25,15 +28,15 @@ Visual:
 Regular volume da música
 Save the last configuration
 Nota musical pra cada carta
-Bug design do mouse
 -----
 Mouse rotacionar com o pé (corrigir centro do mouse)
 
 Robô:
 Verificar controle do robô
-Ajustar variáveis
------
 Calibration
+-----
+Ajustar variáveis
+Zona de segurança
 
 Graficos:
 Visualizar tendencia num triângulo nipe / valor / cor por apaciente

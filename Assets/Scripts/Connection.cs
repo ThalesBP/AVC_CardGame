@@ -15,7 +15,7 @@ using System.Linq;
 
 public class Connection : MonoBehaviour {
 
-    public enum GameStatus {Paused, Starting, Playing, Stopped, Restarting, GoIn, GoOut};
+    public enum ControlStatus {offline, noHelper, helperIn, helperOut};
     enum ConnectStatus {waiting, connecting, connected, disconnected};
     enum RobotIndex {centerspring, freespace, impedance, outFreeSpace};
     enum GameIndex {position, velocity, acc, force};
@@ -120,11 +120,11 @@ public class Connection : MonoBehaviour {
         }
     }
 
-    public GameStatus Status
+    public ControlStatus Status
     {
         get
         { 
-            return (GameStatus)BitConverter.ToInt16(gameStatus, 0);
+            return (ControlStatus)BitConverter.ToInt16(gameStatus, 0);
         }
         set 
         {
@@ -180,8 +180,8 @@ public class Connection : MonoBehaviour {
         }
         set 
         {
-            SetStatus((int)Axis.horizontal, (int)RobotIndex.impedance, value.x);
-            SetStatus((int)Axis.vertical, (int)RobotIndex.impedance, value.y);
+            SetStatus((int)Axis.horizontal, (int)RobotIndex.outFreeSpace, value.x);
+            SetStatus((int)Axis.vertical, (int)RobotIndex.outFreeSpace, value.y);
         }
 
     }
@@ -215,8 +215,8 @@ public class Connection : MonoBehaviour {
         connected = clientHere.IsConnected();
         currentTime = Time.unscaledTime;
 
-        Debug.Log("Time Send: " + DeltaTimeSend.ToString("F3") + " DT: " + Time.unscaledDeltaTime.ToString("F3"));
-        Debug.Log("Time Read: " + DeltaTimeRead.ToString("F3") + " DT: " + Time.unscaledDeltaTime.ToString("F3"));
+//        Debug.Log("Time Send: " + DeltaTimeSend.ToString("F3") + " DT: " + Time.unscaledDeltaTime.ToString("F3"));
+  //      Debug.Log("Time Read: " + DeltaTimeRead.ToString("F3") + " DT: " + Time.unscaledDeltaTime.ToString("F3"));
 
         if (deltaTimeSend == 0f)
             deltaTimeSend = -Time.unscaledDeltaTime;

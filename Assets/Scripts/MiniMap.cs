@@ -64,7 +64,7 @@ public class MiniMap : MonoBehaviour {
 
         // Blue Elipse for package
         GL.Color(Color.blue);
-        point = origin + Vector2.Scale (ControlManager.Instance.ankle.origin, size);
+        point = origin + Vector2.Scale (ControlManager.Instance.ankle.origin * scale, size);
         ElipseForm (point, Vector2.Scale(ControlManager.Instance.ankle.bases * scale, size), 180);
         ElipseForm (point, Vector2.Scale(ControlManager.Instance.ankle.bases * scale, size)/ControlManager.Instance.ankle.elipseScale, 180);
         CrossForm (point, 0.1f*size);
@@ -79,7 +79,7 @@ public class MiniMap : MonoBehaviour {
 
         // Green Lines for helper
         GL.Color(new Color(0.0f, 0.4f, 0.0f, 1.0f));
-        point = origin + Vector2.Scale (ControlManager.Instance.centerSpring, size);
+        point = origin + Vector2.Scale (ControlManager.Instance.centerSpring * scale, size);
         ElipseForm (point, Vector2.Scale (ControlManager.Instance.freeSpace * scale, size), 18);
         CrossForm (point, Vector2.Scale (ControlManager.Instance.freeSpace * scale, size));
         ElipseForm (point, Vector2.Scale (ControlManager.Instance.outFreeSpace * scale, size), 18);
@@ -88,11 +88,11 @@ public class MiniMap : MonoBehaviour {
         for (int i = 0; i < choices.Count; i++)
         {
             GL.Color(Color.green);
-            ElipseForm(origin + Vector2.Scale(choices[i] * scale, size), 0.01f * size, 12);
-            CrossForm(origin + Vector2.Scale(choices[i] * scale, size), 0.01f * size);
+            ElipseForm(origin + Vector2.Scale(choices[i] * scale, size) * scale, 0.01f * size, 12);
+            CrossForm(origin + Vector2.Scale(choices[i] * scale, size) * scale, 0.01f * size);
 
-            Line(origin + Vector2.Scale(choices[i] * scale, size),
-                origin + Vector2.Scale(challenges[i] * scale, size));
+            Line(origin + Vector2.Scale(choices[i] * scale, size) * scale,
+                origin + Vector2.Scale(challenges[i] * scale, size) * scale);
         }
 
         // Red Dot for challenges

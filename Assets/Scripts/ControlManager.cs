@@ -8,14 +8,14 @@ using UnityEngine;
 public class ControlManager : Singleton<ControlManager> {
 
     public enum ControlMode {Mouse, Joystick, Connection, ForceConnection};
-    public enum HelperMode {GoIn, GoOut};
+    public enum HelperMode {None, GoIn, GoOut};
+
     public ControlMode mode;
-    public HelperMode helper;
+    public HelperMode helper = HelperMode.None;
 
     [SerializeField]
     private Vector2 position = Vector2.zero;
     public Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
-
 
     [Range(-0.4f, 0.4f)]
     public float simulateRobotX = 0.0f;
@@ -24,13 +24,17 @@ public class ControlManager : Singleton<ControlManager> {
     [HideInInspector]
     public Vector2 simulateRobot;
 
+    public int statusRobo = 1;
     public Vector2 centerSpring;
     public Vector2 freeSpace;
     /// <summary>
     /// X = Stiffness / Y = Damping
     /// </summary>
-    public Vector2 impedance = Vector2.zero;
+    public Vector2 impedance;
     public Vector2 outFreeSpace;
+
+    public Vector2 helperPosition = Vector2.zero;
+    public float helperLerp;
 
     public Vector2 objective;
     [Range(0.01f, 1.00f)]
@@ -122,23 +126,25 @@ public class ControlManager : Singleton<ControlManager> {
 
         switch (helper)
         {
+            case HelperMode.None:
+                impedance = Vector2.Lerp(impedance, Vector2.zero, helperLerp);
+                freeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.10f, helperLerp);
+                outFreeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.15f, helperLerp);
+                break;
             case HelperMode.GoIn:
-                centerSpring = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
-
-                freeSpaceRadius = 0.10f;
+                centerSpring = ankle.CircleToElipse(helperPosition, Screen.height * 0.45f);
+                freeSpaceRadius = Mathf.Lerp(1.50f, 0.10f, helperLerp);
                 outFreeSpaceRadius = 0.95f;
-                freeSpace = freeSpaceRadius * ankle.bases;
-                outFreeSpace = outFreeSpaceRadius * ankle.bases;
                 break;
             case HelperMode.GoOut:
                 centerSpring = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
-
                 freeSpaceRadius = 0.05f;
                 outFreeSpaceRadius = 0.80f;
-                freeSpace = freeSpaceRadius * ankle.bases;
-                outFreeSpace = outFreeSpaceRadius * ankle.bases;
                 break;
         }
+
+        freeSpace = freeSpaceRadius * ankle.bases;
+        outFreeSpace = outFreeSpaceRadius * ankle.bases;
 
         switch (mode)
         {
@@ -148,11 +154,6 @@ public class ControlManager : Singleton<ControlManager> {
                     Debug.Log("Lost of connection");
                     //ankle.Reset();
                 position = scale * ankle.ElipseToCircle(connection.Position) + center;
-
-                if (helper == HelperMode.GoIn)
-                    connection.Status = Connection.GameStatus.GoIn;
-                else
-                    connection.Status = Connection.GameStatus.GoOut;
 
                 connection.CenterSpring = centerSpring;
                 connection.FreeSpace = freeSpace;

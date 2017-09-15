@@ -219,7 +219,7 @@ public class Dealer : GameBase {
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
 
-                if ((MainButton()) && (player.Action))
+                if ((MainButton(player.Position)) && (player.Action || Input.GetMouseButton(0)))
                 {
                     interfaceManager.mode = -1;
                 }
@@ -335,7 +335,15 @@ public class Dealer : GameBase {
                             else
                                 objectiveCard.HighlightTimer(LoadingTime[Long], 0.5f);
                             if (!objectiveCard.showed)
+                            {
                                 timeToPlay += Time.unscaledDeltaTime;
+                                if (timeToPlay > LoadingTime[VeryLong])
+                                {
+                                    player.helper = ControlManager.HelperMode.GoIn;
+                                    player.helperPosition = Vector2.zero;
+                                    player.helperLerp = Mathf.Clamp((timeToPlay - LoadingTime[VeryLong]) / LoadingTime[Long], 0f, 1f);
+                                }
+                            }
                             else
                                 timeToMemorize += Time.unscaledDeltaTime;
                         }
@@ -352,8 +360,27 @@ public class Dealer : GameBase {
                 if (Time.timeScale != 0f)
                 {
                     timeToChoose += Time.unscaledDeltaTime;
+
                     if (interfaceManager.control.helpToggle.isOn)
-                        challengeCards[0].HighlightTimer(LoadingTime[MostLonger], 0.75f);
+                        challengeCards[0].HighlightTimer(LoadingTime[MuchLonger], 0.75f);
+
+                    if (timeToChoose > LoadingTime[Medium])
+                    {
+                        if (timeToChoose > LoadingTime[MostLonger])
+                        {
+                            player.helper = ControlManager.HelperMode.GoIn;
+                            player.helperPosition = Camera.main.WorldToScreenPoint(challengeCards[0].position.Value)
+                                - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+                            player.helperLerp = Mathf.Clamp((timeToChoose - LoadingTime[MostLonger]) / LoadingTime[VeryLong], 0f, 1f);
+
+                        }
+                        else
+                        {
+                            player.helper = ControlManager.HelperMode.GoOut;
+                            player.helperPosition = Vector2.zero;
+         //                   player.helperLerp = Mathf.Clamp((timeToChoose - LoadingTime[VeryLong]) / LoadingTime[Long], 0f, 1f);
+                        }
+                    }
                 }
                 gameStatus = WaitCardChoice();  // Waits player's choice
                 break;
@@ -432,7 +459,16 @@ public class Dealer : GameBase {
                 }
                 
                 if (waitCounter < timeToWait)
+                {
                     waitCounter += Time.deltaTime;
+                    if (player.helperLerp > 0f)
+                        player.helperLerp -= waitCounter;
+                    else
+                    {
+                        player.helperLerp = 0f;
+                        player.helper = ControlManager.HelperMode.None;
+                    }
+                }
                 else
                 {
                     waitCounter = timeToWait = 0f;
@@ -526,9 +562,9 @@ public class Dealer : GameBase {
     /// Check if is over main button.
     /// </summary>
     /// <returns><c>true</c>, if button was mained, <c>false</c> otherwise.</returns>
-    public bool MainButton()
+    public bool MainButton(Vector2 pos)
     {
-        if (Physics2D.Raycast(player.Position, Vector2.zero, float.PositiveInfinity, buttonMask))
+        if (Physics2D.Raycast(pos, Vector2.zero, float.PositiveInfinity, buttonMask))
         {
             return true;
         }

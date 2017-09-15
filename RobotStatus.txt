@@ -1,0 +1,12 @@
+0 - Desconectado
+1 - Pausado
+2 - Começando
+3 - Jogando
+4 - Pausado
+5 - Recomeçando
+6 - Go In
+7 - Go Out
+
+Enviar comando de reset da calibração
+Dois controladores
+Sem controlador
