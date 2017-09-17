@@ -7,19 +7,31 @@ using UnityEngine;
 /// </summary>
 public class Dealer : GameBase {
 
+    [Header("Game Modes")]
     [SerializeField]
-    public GameMode mode = GameMode.Basic;
-    public int AutomaticMode = 0;
-    public int totalScore, totalMathes, totalOrderCounter;
-    public float totalGameTime, averageTimeToChoose, timeToRead;
-    public float[] rangeTimeToChoose;
-    public bool firstInMode = true;
+    public GameMode mode = GameMode.Basic;  // Current game mode
+    public int AutomaticMode = 0;           // Auxiliar variable for automatic change game mode
+    public bool firstInMode = true;         // First time in a mode
+    [SerializeField]
+    private float gameSlice;        // Slice of game time for each game mode
 
+    [Space(5)]
+    [Header("Scores and Counters")]
+    public int totalScore;
+    public int totalMathes, totalOrderCounter;
+    public float averageTimeToChoose, timeToRead;
+    public float[] rangeTimeToChoose;
+
+    [Space(5)]
+    [Header("Status")]
     [SerializeField]
     private Status gameStatus;      // interfaceManager.controls the game phases
     [SerializeField]
     private Status nextStatus;      // Save the next status after wait moves
 
+    [Space(5)]
+    [Header("Times")]
+    public float totalGameTime;
     private float waitCounter;      // Counter for waiting function
     private float timeToWait;       // Aux variable for sums time to wait
     [SerializeField]
@@ -27,24 +39,10 @@ public class Dealer : GameBase {
     private float timeToMemorize;   // Time player takes to memorize
     private float timeToChoose;     // Time player takes to choose
     private float turnTime;         // Time the turn takes to complete
-    [SerializeField]
-    private float gameSlice;        // Slice of game time for each game mode
-    private int packCounter;        // Counter for positioning cards in a pack
-    private int challengeNumber;    // Number of card in challange - It may be useless
-    private bool onCard;            // Checks if mouse is on a card
-    [SerializeField]
-    private float choiceChanged;     // Verifies if player changed his/her choice
 
+    [Space(5)]
+    [Header("Cards")]
     public GameObject cardPrefab;   // Card prefab to be instantiated
-    public ControlManager player;   // Reads player's position
-    [SerializeField]
-    private Card aimedCard;
-    /// <summary>
-    /// Class to acess interface components.
-    /// </summary>
-    [SerializeField]
-    private InterfaceManager interfaceManager;
-
     // Cards in the game    
     [SerializeField]
     private List<Card> cardsInGame;     // All card in the game
@@ -52,12 +50,34 @@ public class Dealer : GameBase {
     private List<Card> challengeCards;  // Challenge cards in the game
     [SerializeField]
     private Card objectiveCard;         // Objective card
-//    private List<Choice> choices;       // Saves player's choices
-    Choice currentChoice;
+    [SerializeField]
+    private Card aimedCard;
+    private int packCounter;        // Counter for positioning cards in a pack
+    private int challengeNumber;    // Number of card in challange - It may be useless
+    private bool onCard;            // Checks if mouse is on a card
+
+    [Space(5)]
+    [Header("Player and Choices")]
+    public ControlManager player;   // Reads player's position
+    // Choices
+    private Choice currentChoice;
+    [SerializeField]
+    private float choiceChanged;     // Verifies if player changed his/her choice
+
+
+    [Space(5)]
+    [Header("Interface")]
+    /// <summary>
+    /// Class to acess interface components.
+    /// </summary>
+    [SerializeField]
+    private InterfaceManager interfaceManager;
 
     private LayerMask cardMask;
     private LayerMask buttonMask;
 
+    [Space(5)]
+    [Header("Audios")]
     [SerializeField]
     private AudioSource soundEffect;
     public AudioClip successSound, failSound;

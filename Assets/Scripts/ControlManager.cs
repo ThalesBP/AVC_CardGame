@@ -10,13 +10,24 @@ public class ControlManager : Singleton<ControlManager> {
     public enum ControlMode {Mouse, Joystick, Connection, ForceConnection};
     public enum HelperMode {None, GoIn, GoOut};
 
+
+    [Space(5)]
+    [Header("Modes")]
     public ControlMode mode;
     public HelperMode helper = HelperMode.None;
+    public bool joystick = false;
 
+    [Space(5)]
+    [Header("Spatial Infos")]
     [SerializeField]
     private Vector2 position = Vector2.zero;
     public Vector2 center = new Vector2(Screen.width / 2f, Screen.height / 2f);
+    [SerializeField]
+    private float scale = 0.45f * Screen.height;
 
+    [Space(5)]
+    [Header("Simulator")]
+    public bool forceConnection = false;
     [Range(-0.4f, 0.4f)]
     public float simulateRobotX = 0.0f;
     [Range(-0.6f, 0.6f)]
@@ -24,6 +35,8 @@ public class ControlManager : Singleton<ControlManager> {
     [HideInInspector]
     public Vector2 simulateRobot;
 
+    [Space(5)]
+    [Header("Robot")]
     public int statusRobo = 1;
     public Vector2 centerSpring;
     public Vector2 freeSpace;
@@ -33,6 +46,8 @@ public class ControlManager : Singleton<ControlManager> {
     public Vector2 impedance;
     public Vector2 outFreeSpace;
 
+    [Space(5)]
+    [Header("Helper")]
     public Vector2 helperPosition = Vector2.zero;
     public float helperLerp;
 
@@ -42,16 +57,17 @@ public class ControlManager : Singleton<ControlManager> {
     [Range(0.01f, 1.00f)]
     public float outFreeSpaceRadius = 0.80f;
 
-    [SerializeField]
-    private float scale = 0.45f * Screen.height;
 
+    [Space(5)]
+    [Header("Trigger")]
     [SerializeField]
-    private float actionCounter, actionCheck;
+    private float actionCounter;
+    private float actionCheck;
     [SerializeField]
     private bool actionCounting, actionTrigger;
 
-    public bool forceConnection = false;
-    public bool joystick = false;
+    [Space(5)]
+    [Header("Others")]
     public Connection connection;
     public AnkleMovement ankle;
 

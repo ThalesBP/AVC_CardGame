@@ -575,7 +575,7 @@ GameObject:
   - component: {fileID: 222946193564423136}
   - component: {fileID: 114655445973709194}
   m_Layer: 9
-  m_Name: VolumeIcon
+  m_Name: SoundIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -985,7 +985,7 @@ GameObject:
   - component: {fileID: 224219159624180232}
   - component: {fileID: 114950551442648590}
   m_Layer: 9
-  m_Name: VolumeSlider
+  m_Name: SoundSlider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3687,7 +3687,7 @@ GameObject:
   - component: {fileID: 224763034920957896}
   - component: {fileID: 114859870405000952}
   m_Layer: 9
-  m_Name: VolumeControl
+  m_Name: SoundControl
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5756,6 +5756,7 @@ MonoBehaviour:
   control: {fileID: 114206150266398672}
   user: {fileID: 114776350726222770}
   log: {fileID: 0}
+  logging: 0
   playStatus: {fileID: 0}
   playStatus2: {fileID: 0}
   mainButton: {fileID: 1450348773011846}
@@ -5763,7 +5764,6 @@ MonoBehaviour:
   countDownCounter: 0
   scoreValue: 0
   mode: 0
-  logging: 0
 --- !u!114 &114201828627396616
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -5801,8 +5801,6 @@ MonoBehaviour:
   metric1Value: 0
   metric2Value: 0
   metric3Value: 0
-  visibility: {fileID: 114130055930393904}
-  results: {fileID: 114039917757097428}
   connectButton: {fileID: 114065188029545602}
   calibrateButton: {fileID: 114764887715194584}
   startButton: {fileID: 114214517985916792}
@@ -5816,6 +5814,8 @@ MonoBehaviour:
   helpToggle: {fileID: 114913183249333032}
   connection: {fileID: 0}
   calibrating: 0
+  visibility: {fileID: 114130055930393904}
+  results: {fileID: 114039917757097428}
 --- !u!114 &114206293166171150
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -10691,7 +10691,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fontSizeAdjust_S: 60
   fontSizeAdjust_M: 100
-  visibility: {fileID: 0}
   managerDropdown: {fileID: 114736963793432320}
   playerDropdown: {fileID: 114671189677807310}
   memberDropdown: {fileID: 114493179211995340}
@@ -10714,6 +10713,7 @@ MonoBehaviour:
   deleteTexture: {fileID: 2800000, guid: d2f8ace7165043a4da20e704150e4db3, type: 3}
   cancelTexture: {fileID: 2800000, guid: 3300691ea0be19b418db55d16e99e2c8, type: 3}
   playerDescription: {fileID: 114300122876230314}
+  visibility: {fileID: 0}
   locked: 0
 --- !u!114 &114776699145180644
 MonoBehaviour:
@@ -11006,9 +11006,9 @@ MonoBehaviour:
   m_HandleRect: {fileID: 224665205713005378}
   m_Direction: 0
   m_MinValue: 0
-  m_MaxValue: 1
+  m_MaxValue: 0.25
   m_WholeNumbers: 0
-  m_Value: 1
+  m_Value: 0.25
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

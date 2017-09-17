@@ -5,11 +5,17 @@ using UnityEngine.UI;
 
 public class ControlPanel : GameBase {
 
+    [Space(5)]
+    [Header("Language")]
     private int language;
 
+    [Space(5)]
+    [Header("Status")]
     public Status status = Status.begin;
     public Status gameStatus = Status.newTurn;
 
+    [Space(5)]
+    [Header("Texts")]
     private Text panel;
 
     private Text connect;
@@ -31,10 +37,14 @@ public class ControlPanel : GameBase {
 
     private Text gameMessages;
 
+    [Space(5)]
+    [Header("Map")]
     public MiniMap map;
     //[HideInInspector]
     public Material miniMaptMat; //  Materials for minimap
 
+    [Space(5)]
+    [Header("Game Info")]
     [Range(0.1f, 3.0f)]
     public float gameSpeed = 1f;
     public float gameTime;
@@ -44,19 +54,32 @@ public class ControlPanel : GameBase {
     public float metric2Value;
     public float metric3Value;
 
-    public HideShow visibility;
-    public ResultsPanel results;
-    public Button connectButton, calibrateButton, startButton, stopButton;
-    public InputField playTimeField, obsField;
+    [Space(5)]
+    [Header("Robot Manager")]
+    public Button connectButton;
+    public Button calibrateButton, startButton, stopButton;
+
+    [Space(5)]
+    [Header("Game Manager")]
+    public InputField playTimeField;
+    public InputField obsField;
     public Dropdown gameMode;
     public Slider nCardsSlider;
     public Slider soundSlider;
     public Slider musicSlider;
     public Toggle helpToggle;
 
+    [Space(5)]
+    [Header("Connection")]
     public Connection connection;
     public bool calibrating;
     private bool connected;
+
+    [Space(5)]
+    [Header("Others")]
+    public HideShow visibility;
+    public ResultsPanel results;
+
 
     void Start () 
     {

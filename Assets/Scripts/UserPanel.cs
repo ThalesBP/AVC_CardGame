@@ -6,12 +6,16 @@ using UnityEngine.EventSystems;
 
 public class UserPanel : GameBase {
 
+    [Space(5)]
+    [Header("Language")]
     private int language;
 
     private enum UserStatus {unlocked, locked, newUser, creating, editing}
     private UserStatus managerStatus = UserStatus.unlocked;
     private UserStatus playerStatus = UserStatus.unlocked;
 
+    [Space(5)]
+    [Header("Texts")]
     private Text userTab;
     private Text managerLogin;
     private Text managerUser;
@@ -27,17 +31,30 @@ public class UserPanel : GameBase {
     private Text right;
     private Text descriptionEdit;
 
-    private UserManager users;
-    public HideShow visibility;
-    public Dropdown managerDropdown, playerDropdown, memberDropdown, languageDropdown;
+
+    [Space(5)]
+    [Header("Interface")]
+    public Dropdown managerDropdown;
+    public Dropdown playerDropdown, memberDropdown, languageDropdown;
     public InputField managerField, playerField, passwordField, playerInfoField, leftField, topField, bottonField, rightField;
     public Button managerButton, managerEditButton, playerButton, playerEditButton;
-    public RawImage managerEditImage, playerEditImage;
+
+    [Space(5)]
+    [Header("Design")]
+    public RawImage managerEditImage;
+    public RawImage playerEditImage;
     public Texture editTexture, deleteTexture, cancelTexture;
     public Text playerDescription;
-    private bool passwordWrong = false, userWrong = false;
 
-    public bool locked = false;
+    [Space(5)]
+    [Header("Others")]
+    public HideShow visibility;
+    private UserManager users;
+    /// <summary>
+    /// Verifies if it's logged
+    /// </summary>
+    public bool locked = false;     // Verifies if it's logged
+    private bool passwordWrong = false, userWrong = false;
 
     public float[] Plan
     {

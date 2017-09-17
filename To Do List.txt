@@ -1,9 +1,9 @@
 Jogo:
+Selecionar se varia modo ou numero de cartas
 Movimentar o pé para capturar os movimentos máximos
 Maior/Menor divisor comum (número de iterações do challenge manager)
 Usar Challenge Manager nas cartas?
 Game Manager?
-Selecionar se varia modo ou numero de cartas
 Criptografar a senha
 Procurar por comentários "obs" ou "to check" entre outros
 Solução pra "pé frouxo"
@@ -25,10 +25,10 @@ Desvio padrão das informações
 Partidas para coleta de dados / análise de dificuldade
 
 Visual:
-Regular volume da música
 Save the last configuration
 Nota musical pra cada carta
 -----
+Regular volume da música
 Mouse rotacionar com o pé (corrigir centro do mouse)
 
 Robô:

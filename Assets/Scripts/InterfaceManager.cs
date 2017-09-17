@@ -5,30 +5,43 @@ using UnityEngine.UI;
 
 public class InterfaceManager : Singleton<InterfaceManager> {
 
+    [Space(5)]
+    [Header("Language")]
     public int language;
 
+    [Space(5)]
+    [Header("Panels")]
     public ControlPanel control;
     public UserPanel user;
+
+    [Space(5)]
+    [Header("Log")]
     public Logger log;
   //  public Texture2D mouseDefault;
+    public bool logging = false;
 
-    public Text playStatus, playStatus2;
-    public GameObject mainButton;
-    private Motion statusScale;
-    private Outline statusBoarder;
+    [Space(5)]
+    [Header("Texts")]
+    public Text playStatus;         // Central Text Above
+    public Text playStatus2;        // Central Text Below
+    public GameObject mainButton;   // Central Button
+    private Motion statusScale;     // Central Text Scale
+    private Outline statusBoarder;  // Central Text's outlind
 
     private Text mainButtonText;
     private Text scorePoints;
     public Text timeCounter;
 
+    [Space(5)]
+    [Header("Counters")]
     [SerializeField]
     private int countDownCounter;   // Counter for count down
     public int CountDownCounter {get {return countDownCounter;}}
     public int scoreValue;
     public int mode;
 
-    public bool logging = false;
-
+    [Space(5)]
+    [Header("Challenges")]
     public ChallengeManager mainChallenge;
     public List<ChallengeManager> subChallenges;
 

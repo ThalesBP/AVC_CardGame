@@ -13,19 +13,28 @@ public class Card : GameBase {
     public enum  Highlight {free, right, wrong, contrast};
     public enum SuitType {noSuit, miniSuit, singleSuit, multiSuit, complete};
     public enum ValueType {noValue, doubleValue, bigValue};
+
+    [Space(5)]
+    [Header("Setup")]
     public Highlight status;   // Highlight status
     public SuitType suitType;
     public ValueType valueType;
 
+    [Space(5)]
+    [Header("Infos")]
     #region Card Infos
-    public string suitName, suitSymbol, valueName, colorName;   // This card textes and symbols
+    public string suitName;
+    public string suitSymbol, valueName, colorName;   // This card textes and symbols
     public int suit, value, color;  // This card ìndexes
     public Color colorRGB;  // Color of this card
     public bool showed;
     #endregion
 
+    [Space(5)]
+    [Header("Design")]
     #region Design Infos
-    public List<TextMesh> valueTexts, suitTexts;    // Text in 3D cards
+    public List<TextMesh> valueTexts;
+    public List<TextMesh> suitTexts;    // Text in 3D cards
     [HideInInspector]
     public GameObject highlight;    // Object that highlights the card as right or wrong
     [HideInInspector]
@@ -33,8 +42,11 @@ public class Card : GameBase {
     private MeshRenderer cardMeshRender;    // Mesh render of highlight object
     #endregion
 
+    [Space(5)]
+    [Header("Motion")]
     #region Motion's variables
-    public Motion position, rotation, scale;
+    public Motion position;
+    public Motion rotation, scale;
     public float timeToTwinkle;       // Timer counter before player plays
     #endregion
 
