@@ -300,7 +300,7 @@ public class Connection : MonoBehaviour {
 	public void SetStatus(short status)
 	{
         while (transmitting);
-        gameStatus = BitConverter.GetBytes((short)(status + 1));
+        gameStatus = BitConverter.GetBytes((short)(status + 5));
 	}
 
 	public float ReadStatus(int dof, int variable)

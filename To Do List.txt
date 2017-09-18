@@ -43,8 +43,9 @@ Visualizar tendencia num triângulo nipe / valor / cor por apaciente
 Diagrama de estados do jogo
 
 Programação:
-Adicionar [Header("Teste")] e [Space(10)] em todo o código
 Organizar LoadingTime e DeltaTime numa variável só
+------
+Adicionar [Header("Teste")] e [Space(10)] em todo o código
 
 =============
 =============

@@ -12,9 +12,8 @@ public class ControlManager : Singleton<ControlManager> {
 
 
     [Space(5)]
-    [Header("Modes")]
+    [Header("Input Mode")]
     public ControlMode mode;
-    public HelperMode helper = HelperMode.None;
     public bool joystick = false;
 
     [Space(5)]
@@ -48,7 +47,9 @@ public class ControlManager : Singleton<ControlManager> {
 
     [Space(5)]
     [Header("Helper")]
+    public HelperMode helper = HelperMode.None;
     public Vector2 helperPosition = Vector2.zero;
+    [Range(0f, 1f)]
     public float helperLerp;
 
     public Vector2 objective;
@@ -146,16 +147,22 @@ public class ControlManager : Singleton<ControlManager> {
                 impedance = Vector2.Lerp(impedance, Vector2.zero, helperLerp);
                 freeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.10f, helperLerp);
                 outFreeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.15f, helperLerp);
+                if (connection != null)
+                    connection.Status = Connection.ControlStatus.noHelper;
                 break;
             case HelperMode.GoIn:
                 centerSpring = ankle.CircleToElipse(helperPosition, Screen.height * 0.45f);
                 freeSpaceRadius = Mathf.Lerp(1.50f, 0.10f, helperLerp);
                 outFreeSpaceRadius = 0.95f;
+                if (connection != null)
+                    connection.Status = Connection.ControlStatus.helperIn;
                 break;
             case HelperMode.GoOut:
                 centerSpring = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
-                freeSpaceRadius = 0.05f;
-                outFreeSpaceRadius = 0.80f;
+                freeSpaceRadius = 0.25f;
+                outFreeSpaceRadius = 0.75f;
+                if (connection != null)
+                    connection.Status = Connection.ControlStatus.helperOut;
                 break;
         }
 
