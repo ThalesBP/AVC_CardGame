@@ -79,10 +79,22 @@ public class MiniMap : MonoBehaviour {
 
         // Green Lines for helper
         GL.Color(new Color(0.0f, 0.4f, 0.0f, 1.0f));
-        point = origin + Vector2.Scale (ControlManager.Instance.centerSpring * scale, size);
-        ElipseForm (point, Vector2.Scale (ControlManager.Instance.freeSpace * scale, size), 18);
-        CrossForm (point, Vector2.Scale (ControlManager.Instance.freeSpace * scale, size));
-        ElipseForm (point, Vector2.Scale (ControlManager.Instance.outFreeSpace * scale, size), 18);
+        if (ControlManager.Instance.helper == ControlManager.HelperMode.GoIn)
+        {
+            point = origin + Vector2.Scale(ControlManager.Instance.centerSpring * scale, size);
+            ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace * scale, size), 18);
+            CrossForm(point, Vector2.Scale(ControlManager.Instance.freeSpace * scale, size));
+            ElipseForm(point, Vector2.Scale(ControlManager.Instance.outFreeSpace * scale, size), 18);
+        }
+        else
+        {
+            point = origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f) * scale, size);
+            ElipseForm(point, Vector2.Scale(ControlManager.Instance.centerSpring.x * ControlManager.Instance.ankle.bases * scale, size), 18);
+            ElipseForm(point, Vector2.Scale(ControlManager.Instance.centerSpring.y * ControlManager.Instance.ankle.bases * scale, size), 18);
+            ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace.x * ControlManager.Instance.ankle.bases * scale, size), 18);
+            ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace.y * ControlManager.Instance.ankle.bases * scale, size), 18);
+            CrossForm(point, Vector2.Scale(ControlManager.Instance.centerSpring.x * ControlManager.Instance.ankle.bases  * scale, size));
+        }
 
         // Green Dot for choices
         for (int i = 0; i < choices.Count; i++)

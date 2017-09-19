@@ -145,8 +145,8 @@ public class ControlManager : Singleton<ControlManager> {
         {
             case HelperMode.None:
                 impedance = Vector2.Lerp(impedance, Vector2.zero, helperLerp);
-                freeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.10f, helperLerp);
-                outFreeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.15f, helperLerp);
+              //  freeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.10f, helperLerp);
+              //  outFreeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.15f, helperLerp);
                 if (connection != null)
                     connection.Status = Connection.ControlStatus.noHelper;
                 break;
@@ -154,20 +154,31 @@ public class ControlManager : Singleton<ControlManager> {
                 centerSpring = ankle.CircleToElipse(helperPosition, Screen.height * 0.45f);
                 freeSpaceRadius = Mathf.Lerp(1.50f, 0.10f, helperLerp);
                 outFreeSpaceRadius = 0.95f;
+
+                freeSpace = freeSpaceRadius * ankle.bases;
+                outFreeSpace = outFreeSpaceRadius * ankle.bases;
+
                 if (connection != null)
                     connection.Status = Connection.ControlStatus.helperIn;
                 break;
             case HelperMode.GoOut:
-                centerSpring = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
-                freeSpaceRadius = 0.25f;
-                outFreeSpaceRadius = 0.75f;
+
+                centerSpring = new Vector2(freeSpaceRadius, freeSpaceRadius + 0.1f);
+                freeSpace = new Vector2(outFreeSpaceRadius, outFreeSpaceRadius + 0.1f);
+
+             //   centerSpring = ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f);
+             //   freeSpace = freeSpaceRadius * ankle.bases;
+                outFreeSpace = outFreeSpaceRadius * ankle.bases;
+
                 if (connection != null)
                     connection.Status = Connection.ControlStatus.helperOut;
+                else
+                {
+                    freeSpaceRadius = 0.25f;
+                    outFreeSpaceRadius = 0.75f;
+                }
                 break;
         }
-
-        freeSpace = freeSpaceRadius * ankle.bases;
-        outFreeSpace = outFreeSpaceRadius * ankle.bases;
 
         switch (mode)
         {

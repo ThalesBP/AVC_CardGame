@@ -33,7 +33,7 @@ Mouse rotacionar com o pé (corrigir centro do mouse)
 
 Robô:
 Verificar controle do robô
-Calibration
+Calibration VERIFICAR
 -----
 Ajustar variáveis
 Zona de segurança
