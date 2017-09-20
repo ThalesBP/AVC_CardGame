@@ -357,13 +357,15 @@ public class Dealer : GameBase {
                             if (!objectiveCard.showed)
                             {
                                 timeToPlay += Time.unscaledDeltaTime;
-                                if (timeToPlay > LoadingTime[VeryLong])
-                                {
-                                    player.SetHelper(ControlManager.HelperMode.GoIn, Vector2.zero);
-                                    //player.helper = ControlManager.HelperMode.GoIn;
-                                    //player.helperPosition = Vector2.zero;
-                                    player.helperLerp = Mathf.Clamp((timeToPlay - LoadingTime[VeryLong]) / LoadingTime[Long], 0f, 1f);
-                                }
+
+                                if (interfaceManager.control.forceToggle.isOn)
+                                    if (timeToPlay > LoadingTime[VeryLong])
+                                    {
+                                        player.SetHelper(ControlManager.HelperMode.GoIn, Vector2.zero);
+                                        //player.helper = ControlManager.HelperMode.GoIn;
+                                        //player.helperPosition = Vector2.zero;
+                                        player.helperLerp = Mathf.Clamp((timeToPlay - LoadingTime[VeryLong]) / LoadingTime[Long], 0f, 1f);
+                                    }
                             }
                             else
                                 timeToMemorize += Time.unscaledDeltaTime;
@@ -387,24 +389,25 @@ public class Dealer : GameBase {
 
                     if (timeToChoose > LoadingTime[Medium])
                     {
-                        if (timeToChoose > LoadingTime[MostLonger])
-                        {
-                            player.SetHelper(ControlManager.HelperMode.GoIn, Camera.main.WorldToScreenPoint(challengeCards[0].position.Value)
-                                - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
+                        if (interfaceManager.control.forceToggle.isOn)
+                            if (timeToChoose > LoadingTime[MostLonger])
+                            {
+                                player.SetHelper(ControlManager.HelperMode.GoIn, Camera.main.WorldToScreenPoint(challengeCards[0].position.Value)
+                                    - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
 
-//                            player.helper = ControlManager.HelperMode.GoIn;
-  //                          player.helperPosition = Camera.main.WorldToScreenPoint(challengeCards[0].position.Value)
-    //                            - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
-                            player.helperLerp = Mathf.Clamp((timeToChoose - LoadingTime[MostLonger]) / LoadingTime[VeryLong], 0f, 1f);
+    //                            player.helper = ControlManager.HelperMode.GoIn;
+      //                          player.helperPosition = Camera.main.WorldToScreenPoint(challengeCards[0].position.Value)
+        //                            - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+                                player.helperLerp = Mathf.Clamp((timeToChoose - LoadingTime[MostLonger]) / LoadingTime[VeryLong], 0f, 1f);
 
-                        }
-                        else
-                        {
-                            player.SetHelper(ControlManager.HelperMode.GoOut, Vector2.zero);
-//                            player.helper = ControlManager.HelperMode.GoOut;
-  //                          player.helperPosition = Vector2.zero;
-         //                   player.helperLerp = Mathf.Clamp((timeToChoose - LoadingTime[VeryLong]) / LoadingTime[Long], 0f, 1f);
-                        }
+                            }
+                            else
+                            {
+                                player.SetHelper(ControlManager.HelperMode.GoOut, Vector2.zero);
+    //                            player.helper = ControlManager.HelperMode.GoOut;
+      //                          player.helperPosition = Vector2.zero;
+             //                   player.helperLerp = Mathf.Clamp((timeToChoose - LoadingTime[VeryLong]) / LoadingTime[Long], 0f, 1f);
+                            }
                     }
                 }
                 gameStatus = WaitCardChoice();  // Waits player's choice
