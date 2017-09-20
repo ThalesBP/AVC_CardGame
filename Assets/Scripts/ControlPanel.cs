@@ -27,8 +27,11 @@ public class ControlPanel : GameBase {
     private Text obs;
     private Text obsInput;
     private Text modeText;
-    private Text sliderText;
+    private Text nCardsText;
+    private Text kStiffText;
+    private Text cFrictionText;
     private Text help;
+    private Text force;
 
     private Text gameMessages;
 
@@ -55,10 +58,13 @@ public class ControlPanel : GameBase {
     public InputField playTimeField;
     public InputField obsField;
     public Dropdown gameMode;
-    public Slider nCardsSlider;
     public Slider soundSlider;
     public Slider musicSlider;
+    public Slider nCardsSlider;
+    public Slider kStiffSlider;
+    public Slider cFrictionSlider;
     public Toggle helpToggle;
+    public Toggle forceToggle;
 
     [Space(5)]
     [Header("Connection")]
@@ -87,8 +93,11 @@ public class ControlPanel : GameBase {
         obs = GameObject.Find("ObsPlaceholder").GetComponentInChildren<Text>(true);
         obsInput = GameObject.Find("Obs").GetComponentInChildren<Text>(true);
         modeText = GameObject.Find("GameModeText").GetComponentInChildren<Text>(true);
-        sliderText = GameObject.Find("NCardsText").GetComponentInChildren<Text>(true);
+        nCardsText = GameObject.Find("NCardsText").GetComponentInChildren<Text>(true);
+        kStiffText = GameObject.Find("StiffnessText").GetComponentInChildren<Text>(true);
+        cFrictionText = GameObject.Find("FrictionText").GetComponentInChildren<Text>(true);
         help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>(true);
+        help = GameObject.Find("ForceHelp").GetComponentInChildren<Text>(true);
 
         gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>(true);
 
@@ -138,7 +147,9 @@ public class ControlPanel : GameBase {
 
         stop.text = stopText[language];
         help.text = helpText[language];
-        sliderText.text = nCardsSlider.value.ToString("F0") + " " + cardsText[language];
+        nCardsText.text = nCardsSlider.value.ToString("F0") + " " + cardsText[language];
+        kStiffText.text = stiffnessText[language] + ": " + (MaxStiffness * kStiffSlider.value / kStiffSlider.maxValue).ToString("F1");
+        cFrictionText.text = frictionText[language] + ": " + (MaxAntiFriction * cFrictionSlider.value / cFrictionSlider.maxValue).ToString("F1");
 
         gameMessages.text = gameMessageTexts[(int)status, language] + "\n" + gameMessageTexts[(int)gameStatus, language];
 

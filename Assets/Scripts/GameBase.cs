@@ -91,6 +91,11 @@ public class GameBase : MonoBehaviour {
     protected static readonly Color Nude3 = new Color(111f/255f, 86f/255f, 84f/255f, 1f);
     #endregion
 
+    #region Force
+    protected static readonly float MaxStiffness = 40f;
+    protected static readonly float MaxAntiFriction = 2.2f;
+    #endregion
+
     #region Texts
     public enum Languages {English, Portuguese};
     public static Languages chosenLanguage = Languages.English;
@@ -132,6 +137,8 @@ public class GameBase : MonoBehaviour {
     protected static readonly string[] obsText = { "Obs. for this match", "Obs. para a partida" };
     protected static readonly string[] helpText = { "Visual Help", "Ajuda Visual" };
     protected static readonly string[] cardsText = { "Cards", "Cartas" };
+    protected static readonly string[] stiffnessText = { "Stiffness", "Rigidez" };
+    protected static readonly string[] frictionText = { "Anti Friction", "Anti Atrito" };
     // User panel
     protected static readonly string[] userPanelText = { "User", "Usuário" };
     protected static readonly string[] insertUserText = { "Insert user", "Insira usuário" };
