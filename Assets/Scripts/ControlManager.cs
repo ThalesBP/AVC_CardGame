@@ -146,7 +146,7 @@ public class ControlManager : Singleton<ControlManager> {
             case HelperMode.None:
                 impedance = Vector2.Lerp(impedance, Vector2.zero, helperLerp);
               //  freeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.10f, helperLerp);
-              //  outFreeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.15f, helperLerp);
+              //   outFreeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.15f, helperLerp);
                 if (connection != null)
                     connection.Status = Connection.ControlStatus.noHelper;
                 break;

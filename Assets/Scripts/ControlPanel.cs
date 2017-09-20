@@ -30,11 +30,6 @@ public class ControlPanel : GameBase {
     private Text sliderText;
     private Text help;
 
-    // Transform in list later
-    private Text metric1;
-    private Text metric2;
-    private Text metric3;
-
     private Text gameMessages;
 
     [Space(5)]
@@ -49,10 +44,6 @@ public class ControlPanel : GameBase {
     public float gameSpeed = 1f;
     public float gameTime;
     public float totalGameTime;
-
-    public float metric1Value;
-    public float metric2Value;
-    public float metric3Value;
 
     [Space(5)]
     [Header("Robot Manager")]
@@ -99,10 +90,6 @@ public class ControlPanel : GameBase {
         sliderText = GameObject.Find("NCardsText").GetComponentInChildren<Text>(true);
         help = GameObject.Find("VisualHelp").GetComponentInChildren<Text>(true);
 
-        metric1 = GameObject.Find("Metric1").GetComponentInChildren<Text>(true);
-        metric2 = GameObject.Find("Metric2").GetComponentInChildren<Text>(true);
-        metric3 = GameObject.Find("Metric3").GetComponentInChildren<Text>(true);
-
         gameMessages = GameObject.Find("GameMessage").GetComponentInChildren<Text>(true);
 
         map = gameObject.AddComponent<MiniMap>();
@@ -125,10 +112,6 @@ public class ControlPanel : GameBase {
         language = (int)chosenLanguage;
 
         panel.text = controlPanelText[language];
-
-        metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0") + "%";
-        metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0") + "%";
-        metric3.text = metric3Text[language] + "\n" + metric3Value.ToString("F0") + "%";
 
         if (connection == null)
         {

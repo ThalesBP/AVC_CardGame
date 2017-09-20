@@ -533,9 +533,9 @@ public class Dealer : GameBase {
 
         interfaceManager.timeCounter.text = timeText[interfaceManager.language] + "\n" + (interfaceManager.control.gameTime + totalGameTime).ToString("F1");
 
-        interfaceManager.control.metric1Value = 100f * Choice.suitCounter * orderCounter;
-        interfaceManager.control.metric2Value = 100f * Choice.valueCounter * orderCounter;
-        interfaceManager.control.metric3Value = 100f * Choice.colorCounter * orderCounter;
+        interfaceManager.metric1Value = 100f * Choice.suitCounter * orderCounter;
+        interfaceManager.metric2Value = 100f * Choice.valueCounter * orderCounter;
+        interfaceManager.metric3Value = 100f * Choice.colorCounter * orderCounter;
     }
 
     #region Generic functions

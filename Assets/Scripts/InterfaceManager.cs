@@ -31,6 +31,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     private Text mainButtonText;
     private Text scorePoints;
     public Text timeCounter;
+    // Transform in list later
+    private Text metric1;
+    private Text metric2;
+    private Text metric3;
 
     [Space(5)]
     [Header("Counters")]
@@ -39,6 +43,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public int CountDownCounter {get {return countDownCounter;}}
     public int scoreValue;
     public int mode;
+
+    public float metric1Value;
+    public float metric2Value;
+    public float metric3Value;
 
     [Space(5)]
     [Header("Challenges")]
@@ -71,6 +79,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         scorePoints = GameObject.Find("ScorePoints").GetComponentInChildren<Text>(true);
         timeCounter = GameObject.Find("TimeCounter").GetComponentInChildren<Text>(true);
 
+        metric1 = GameObject.Find("Metric1").GetComponentInChildren<Text>(true);
+        metric2 = GameObject.Find("Metric2").GetComponentInChildren<Text>(true);
+        metric3 = GameObject.Find("Metric3").GetComponentInChildren<Text>(true);
+
         log = gameObject.AddComponent<Logger>();
 
         user.playerButton.onClick.AddListener(delegate { mainChallenge.Plan = user.Plan; });
@@ -98,6 +110,10 @@ public class InterfaceManager : Singleton<InterfaceManager> {
             control.startButton.interactable = false;
 
         language = (int)chosenLanguage;
+
+        metric1.text = metric1Text[language] + "\n" + metric1Value.ToString("F0") + "%";
+        metric2.text = metric2Text[language] + "\n" + metric2Value.ToString("F0") + "%";
+        metric3.text = metric3Text[language] + "\n" + metric3Value.ToString("F0") + "%";
 		
         #region Checks current game status
         switch (control.status)
@@ -257,10 +273,17 @@ public class InterfaceManager : Singleton<InterfaceManager> {
         if (control.visibility.showed)
         {
             timeCounter.color = SetAlpha(YellowText, control.visibility.slideTimeLerp);
+            metric1.color = SetAlpha(YellowText, control.visibility.slideTimeLerp);
+            metric2.color = SetAlpha(YellowText, control.visibility.slideTimeLerp);
+            metric3.color = SetAlpha(YellowText, control.visibility.slideTimeLerp);
+
         }
         else
         {
             timeCounter.color = SetAlpha(YellowText, 1f - control.visibility.slideTimeLerp);
+            metric1.color = SetAlpha(YellowText, 1f - control.visibility.slideTimeLerp);
+            metric2.color = SetAlpha(YellowText, 1f - control.visibility.slideTimeLerp);
+            metric3.color = SetAlpha(YellowText, 1f - control.visibility.slideTimeLerp);
         }
         #endregion
 
