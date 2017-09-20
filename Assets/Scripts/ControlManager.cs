@@ -45,12 +45,16 @@ public class ControlManager : Singleton<ControlManager> {
     public Vector2 impedance;
     public Vector2 outFreeSpace;
 
+    public float stiffness = 0f;
+    public float antiFriction = 0f;
+
     [Space(5)]
     [Header("Helper")]
     public HelperMode helper = HelperMode.None;
-    public Vector2 helperPosition = Vector2.zero;
+    public Motion helperPosition;
     [Range(0f, 1f)]
     public float helperLerp;
+    public float forceLerp;
 
     public Vector2 objective;
     [Range(0.01f, 1.00f)]
@@ -123,6 +127,9 @@ public class ControlManager : Singleton<ControlManager> {
         freeSpace = outFreeSpace = Vector2.zero;
 
         ankle = gameObject.AddComponent<AnkleMovement>();
+
+        helperPosition = gameObject.AddComponent<Motion>();
+        helperPosition.timeScaled = false;
 	}
 	
 	// Update is called once per frame
@@ -141,17 +148,19 @@ public class ControlManager : Singleton<ControlManager> {
         else
             mode = ControlMode.Mouse;
 
+        forceLerp = Mathf.Clamp(forceLerp + Time.deltaTime, 0f, 1f);
         switch (helper)
         {
             case HelperMode.None:
-                impedance = Vector2.Lerp(impedance, Vector2.zero, helperLerp);
-              //  freeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.10f, helperLerp);
-              //   outFreeSpaceRadius = Mathf.Lerp(freeSpaceRadius, 1.15f, helperLerp);
+                impedance = Vector2.Lerp(impedance, Vector2.zero, forceLerp);
+                centerSpring = ankle.CircleToElipse(helperPosition.Value, Screen.height * 0.45f);
+
                 if (connection != null)
                     connection.Status = Connection.ControlStatus.noHelper;
                 break;
             case HelperMode.GoIn:
-                centerSpring = ankle.CircleToElipse(helperPosition, Screen.height * 0.45f);
+                impedance = Vector2.Lerp(impedance, new Vector2(stiffness, 0f), forceLerp);
+                centerSpring = ankle.CircleToElipse(helperPosition.Value, Screen.height * 0.45f);
                 freeSpaceRadius = Mathf.Lerp(1.50f, 0.10f, helperLerp);
                 outFreeSpaceRadius = 0.95f;
 
@@ -162,6 +171,10 @@ public class ControlManager : Singleton<ControlManager> {
                     connection.Status = Connection.ControlStatus.helperIn;
                 break;
             case HelperMode.GoOut:
+                impedance = Vector2.Lerp(impedance, new Vector2(antiFriction, 0f), forceLerp);;
+
+                freeSpaceRadius = 0.10f;
+                outFreeSpaceRadius = 0.80f;
 
                 centerSpring = new Vector2(freeSpaceRadius, freeSpaceRadius + 0.1f);
                 freeSpace = new Vector2(outFreeSpaceRadius, outFreeSpaceRadius + 0.1f);
@@ -172,11 +185,6 @@ public class ControlManager : Singleton<ControlManager> {
 
                 if (connection != null)
                     connection.Status = Connection.ControlStatus.helperOut;
-                else
-                {
-                    freeSpaceRadius = 0.25f;
-                    outFreeSpaceRadius = 0.75f;
-                }
                 break;
         }
 
@@ -268,6 +276,16 @@ public class ControlManager : Singleton<ControlManager> {
                     actionCheck = actionCounter;
                     return false;
                 }
+        }
+    }
+
+    public void SetHelper(HelperMode mode, Vector2 center)
+    {
+        if (helper != mode)
+        {
+            helperPosition.MoveTo((Vector3)center, 1f);
+            helper = mode;
+            forceLerp = 0f;
         }
     }
 }

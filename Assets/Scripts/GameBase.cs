@@ -92,8 +92,8 @@ public class GameBase : MonoBehaviour {
     #endregion
 
     #region Force
-    protected static readonly float MaxStiffness = 40f;
-    protected static readonly float MaxAntiFriction = 2.2f;
+    public static readonly float MaxStiffness = 40f;
+    public static readonly float MaxAntiFriction = 2.2f;
     #endregion
 
     #region Texts

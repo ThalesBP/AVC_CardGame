@@ -150,6 +150,8 @@ public class ControlPanel : GameBase {
         nCardsText.text = nCardsSlider.value.ToString("F0") + " " + cardsText[language];
         kStiffText.text = stiffnessText[language] + ": " + (MaxStiffness * kStiffSlider.value / kStiffSlider.maxValue).ToString("F1");
         cFrictionText.text = frictionText[language] + ": " + (MaxAntiFriction * cFrictionSlider.value / cFrictionSlider.maxValue).ToString("F1");
+        ControlManager.Instance.stiffness = MaxStiffness * kStiffSlider.value / kStiffSlider.maxValue;
+        ControlManager.Instance.antiFriction = MaxAntiFriction * cFrictionSlider.value / cFrictionSlider.maxValue;
 
         gameMessages.text = gameMessageTexts[(int)status, language] + "\n" + gameMessageTexts[(int)gameStatus, language];
 

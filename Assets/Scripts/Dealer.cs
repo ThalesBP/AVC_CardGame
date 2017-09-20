@@ -359,8 +359,9 @@ public class Dealer : GameBase {
                                 timeToPlay += Time.unscaledDeltaTime;
                                 if (timeToPlay > LoadingTime[VeryLong])
                                 {
-                                    player.helper = ControlManager.HelperMode.GoIn;
-                                    player.helperPosition = Vector2.zero;
+                                    player.SetHelper(ControlManager.HelperMode.GoIn, Vector2.zero);
+                                    //player.helper = ControlManager.HelperMode.GoIn;
+                                    //player.helperPosition = Vector2.zero;
                                     player.helperLerp = Mathf.Clamp((timeToPlay - LoadingTime[VeryLong]) / LoadingTime[Long], 0f, 1f);
                                 }
                             }
@@ -388,16 +389,20 @@ public class Dealer : GameBase {
                     {
                         if (timeToChoose > LoadingTime[MostLonger])
                         {
-                            player.helper = ControlManager.HelperMode.GoIn;
-                            player.helperPosition = Camera.main.WorldToScreenPoint(challengeCards[0].position.Value)
-                                - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
+                            player.SetHelper(ControlManager.HelperMode.GoIn, Camera.main.WorldToScreenPoint(challengeCards[0].position.Value)
+                                - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
+
+//                            player.helper = ControlManager.HelperMode.GoIn;
+  //                          player.helperPosition = Camera.main.WorldToScreenPoint(challengeCards[0].position.Value)
+    //                            - new Vector3(Screen.width / 2f, Screen.height / 2f, 0f);
                             player.helperLerp = Mathf.Clamp((timeToChoose - LoadingTime[MostLonger]) / LoadingTime[VeryLong], 0f, 1f);
 
                         }
                         else
                         {
-                            player.helper = ControlManager.HelperMode.GoOut;
-                            player.helperPosition = Vector2.zero;
+                            player.SetHelper(ControlManager.HelperMode.GoOut, Vector2.zero);
+//                            player.helper = ControlManager.HelperMode.GoOut;
+  //                          player.helperPosition = Vector2.zero;
          //                   player.helperLerp = Mathf.Clamp((timeToChoose - LoadingTime[VeryLong]) / LoadingTime[Long], 0f, 1f);
                         }
                     }
@@ -477,17 +482,13 @@ public class Dealer : GameBase {
                 {
                     interfaceManager.control.gameStatus = Status.waitingMotion; // Set Game Status for Control Panel
                 }
+
+                player.SetHelper(ControlManager.HelperMode.None, Vector2.zero);
+                //player.helper = ControlManager.HelperMode.None;
                 
                 if (waitCounter < timeToWait)
                 {
                     waitCounter += Time.deltaTime;
-                    if (player.helperLerp > 0f)
-                        player.helperLerp -= waitCounter;
-                    else
-                    {
-                        player.helperLerp = 0f;
-                        player.helper = ControlManager.HelperMode.None;
-                    }
                 }
                 else
                 {

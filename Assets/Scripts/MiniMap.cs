@@ -17,7 +17,7 @@ public class MiniMap : MonoBehaviour {
 //    private float recStep;
 //    private float recTime;
 
-    private float colorRate, colorAlpha;
+    private float colorRate, colorAlpha, auxAlpha = 1f;
 
     void Start() 
     {
@@ -79,21 +79,33 @@ public class MiniMap : MonoBehaviour {
 
         // Green Lines for helper
         GL.Color(new Color(0.0f, 0.4f, 0.0f, 1.0f));
-        if (ControlManager.Instance.helper == ControlManager.HelperMode.GoIn)
+        switch (ControlManager.Instance.helper)
         {
-            point = origin + Vector2.Scale(ControlManager.Instance.centerSpring * scale, size);
-            ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace * scale, size), 18);
-            CrossForm(point, Vector2.Scale(ControlManager.Instance.freeSpace * scale, size));
-            ElipseForm(point, Vector2.Scale(ControlManager.Instance.outFreeSpace * scale, size), 18);
-        }
-        else
-        {
-            point = origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f) * scale, size);
-            ElipseForm(point, Vector2.Scale(ControlManager.Instance.centerSpring.x * ControlManager.Instance.ankle.bases * scale, size), 18);
-            ElipseForm(point, Vector2.Scale(ControlManager.Instance.centerSpring.y * ControlManager.Instance.ankle.bases * scale, size), 18);
-            ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace.x * ControlManager.Instance.ankle.bases * scale, size), 18);
-            ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace.y * ControlManager.Instance.ankle.bases * scale, size), 18);
-            CrossForm(point, Vector2.Scale(ControlManager.Instance.centerSpring.x * ControlManager.Instance.ankle.bases  * scale, size));
+            case ControlManager.HelperMode.GoIn:
+                auxAlpha = GameBase.MaxStiffness;
+                GL.Color(new Color(0.0f, 0.4f, 0.0f, ControlManager.Instance.impedance.x / auxAlpha));
+                point = origin + Vector2.Scale(ControlManager.Instance.centerSpring * scale, size);
+                ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace * scale, size), 18);
+                CrossForm(point, Vector2.Scale(ControlManager.Instance.freeSpace * scale, size));
+                ElipseForm(point, Vector2.Scale(ControlManager.Instance.outFreeSpace * scale, size), 18);
+                break;
+            case ControlManager.HelperMode.GoOut:
+                auxAlpha = GameBase.MaxAntiFriction;
+                GL.Color(new Color(0.0f, 0.4f, 0.0f, ControlManager.Instance.impedance.x / auxAlpha));
+                point = origin + Vector2.Scale(ControlManager.Instance.ankle.CircleToElipse(Vector2.zero, Screen.height * 0.45f) * scale, size);
+                ElipseForm(point, Vector2.Scale(ControlManager.Instance.centerSpring.x * ControlManager.Instance.ankle.bases * scale, size), 18);
+                ElipseForm(point, Vector2.Scale(ControlManager.Instance.centerSpring.y * ControlManager.Instance.ankle.bases * scale, size), 18);
+                ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace.x * ControlManager.Instance.ankle.bases * scale, size), 18);
+                ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace.y * ControlManager.Instance.ankle.bases * scale, size), 18);
+                CrossForm(point, Vector2.Scale(ControlManager.Instance.centerSpring.x * ControlManager.Instance.ankle.bases * scale, size));
+                break;
+            case ControlManager.HelperMode.None:
+                GL.Color(new Color(0.0f, 0.4f, 0.0f, ControlManager.Instance.impedance.x / auxAlpha));
+                point = origin + Vector2.Scale(ControlManager.Instance.centerSpring * scale, size);
+                ElipseForm(point, Vector2.Scale(ControlManager.Instance.freeSpace * scale, size), 18);
+                CrossForm(point, Vector2.Scale(ControlManager.Instance.freeSpace * scale, size));
+                ElipseForm(point, Vector2.Scale(ControlManager.Instance.outFreeSpace * scale, size), 18);
+                break;
         }
 
         // Green Dot for choices
