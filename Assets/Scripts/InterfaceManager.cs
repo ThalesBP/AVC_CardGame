@@ -19,6 +19,7 @@ public class InterfaceManager : Singleton<InterfaceManager> {
     public Logger log;
   //  public Texture2D mouseDefault;
     public bool logging = false;
+    private float readTime = 0f;
 
     [Space(5)]
     [Header("Texts")]
@@ -190,7 +191,13 @@ public class InterfaceManager : Singleton<InterfaceManager> {
                 {
                     control.gameTime += Time.unscaledDeltaTime;
                     if (control.connection != null)
-                        log.Register(control.gameTime, ControlManager.Instance.RawPosition, control.connection.Force);
+                    {
+                        if (control.connection.ReadTime != readTime)
+                        {
+                            log.Register(control.gameTime, ControlManager.Instance.RawPosition, control.connection.Force);
+                            readTime = control.connection.ReadTime;
+                        }
+                    }
                     else
                         log.Register(control.gameTime, ControlManager.Instance.RawPosition, Vector2.zero);
 

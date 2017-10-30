@@ -14,6 +14,7 @@ public class NetworkClientTCP : NetworkClient {
 		try 
 		{
 			client = new Socket( AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp );
+            //client.Blocking = false;
 			client.ReceiveTimeout = 1000;
 			notConnectedMsg = 1f;
 		}

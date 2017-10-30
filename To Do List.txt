@@ -32,9 +32,9 @@ Regular volume da música
 Mouse rotacionar com o pé (corrigir centro do mouse)
 
 Robô:
-Verificar controle do robô
-Calibration VERIFICAR
 -----
+Verificar controle do robô
+Calibration
 Ajustar variáveis
 Zona de segurança
 

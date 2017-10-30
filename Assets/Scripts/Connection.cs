@@ -62,6 +62,12 @@ public class Connection : MonoBehaviour {
         get { return transmitting; }
     }
 
+    private float readTime = 0f;
+    public float ReadTime
+    {
+        get { return readTime; } 
+    }
+
 	//public bool connected;
 	ConnectStatus connectStatus;
 
@@ -202,6 +208,7 @@ public class Connection : MonoBehaviour {
         robotStatus = -1;
         connectingThread = new Thread (Connect);
         communicateThread = new Thread(Communicate);
+        
 		connectingThread.Start ();
 		if (clientHere.IsConnected ())
 			connectStatus = ConnectStatus.connected;
@@ -292,26 +299,26 @@ public class Connection : MonoBehaviour {
     /// <param name="mag">Mag.</param>
     public void SetStatus(int dof, int variable, float mag)
 	{
-        while (transmitting);
+ //       while (transmitting);
         gameStade [dof] [variable] = BitConverter.GetBytes (mag);
 		return;
 	}
 
 	public void SetStatus(short status)
 	{
-        while (transmitting);
+//        while (transmitting);
         gameStatus = BitConverter.GetBytes((short)(status + 5));
 	}
 
 	public float ReadStatus(int dof, int variable)
 	{
-        while (transmitting);
+//        while (transmitting);
         return robotStade [dof] [variable];
 	}
 
 	public short ReadStatus()
 	{
-        while (transmitting);
+ //       while (transmitting);
         return robotStatus;
 	}
 
@@ -378,6 +385,7 @@ public class Connection : MonoBehaviour {
             //			connectStatus = ConnectStatus.disconnected;
         }
 
+        readTime = currentTime;
         deltaTimeRead = currentTime - counter;
         transmitting = false;
 		return;
@@ -388,7 +396,7 @@ public class Connection : MonoBehaviour {
     /// </summary>
 	private void InitializeVariables()
 	{
-        while (transmitting);
+    //    while (transmitting);
         gameStatus = new byte[sizeof(short)];
         gameStade = new byte[N_DOF][][];
         robotStatus = 0;

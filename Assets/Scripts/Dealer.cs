@@ -151,6 +151,9 @@ public class Dealer : GameBase {
 
                     /// Check if is first time in mode
                     if (Choice.orderCounter == 0)
+                        firstInMode = true;
+
+                    if (firstInMode)
                     {
                         interfaceManager.mode = (int)mode;
                         gameStatus = Status.playerReading;
@@ -159,10 +162,7 @@ public class Dealer : GameBase {
                             interfaceManager.mainButton.transform.localPosition = Vector3.left * Screen.height * 0.30f;
                         else
                             interfaceManager.mainButton.transform.localPosition = Vector3.down * Screen.height * 0.30f;
-                        firstInMode = true;
                     }
-                    else
-                        firstInMode = false;
                 }
                 // Else swipes among modes
                 else
@@ -235,6 +235,7 @@ public class Dealer : GameBase {
             /////////////////////////////////////////////////////////////////
             case Status.playerReading:
                 interfaceManager.control.gameStatus = Status.playerReading; // Set Game Status for Control Panel
+                firstInMode = false;
 
                 if (interfaceManager.control.status == Status.end)
                     gameStatus = Status.endGame;
@@ -343,7 +344,6 @@ public class Dealer : GameBase {
                                 Wait(timeToWait, Status.playerChoice);
                                 break;
                         }
-                        firstInMode = false;
                     }   // Waits player plays the game
                 else
                     {

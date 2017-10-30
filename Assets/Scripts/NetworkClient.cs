@@ -107,17 +107,19 @@ public abstract class NetworkClient
 	{
 		if( client.Connected ) 
 		{
-			try 
+            try 
 			{
 				Array.Clear( outputBuffer, 0, outputBuffer.Length );
 				Encoding.ASCII.GetBytes( message, 0, message.Length, outputBuffer, 0 );
+                
 				client.BeginSend( outputBuffer, 0, outputBuffer.Length, 
 				                 SocketFlags.None, new AsyncCallback( writeCallback ), client );
+                
 			}
-			catch( Exception e ) 
-			{
-				Debug.Log("Error Sending: " + e.ToString() );
-			}	
+			catch( Exception e )
+            {
+                Debug.Log("Error Sending: " + e.ToString());
+            }
 		}
 	}
 
