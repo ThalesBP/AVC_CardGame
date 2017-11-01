@@ -18,7 +18,7 @@ public class Dealer : GameBase {
     [Space(5)]
     [Header("Scores and Counters")]
     public int totalScore;
-    public int totalMathes, totalOrderCounter;
+    public int totalMatches, totalOrderCounter;
     public float averageTimeToChoose, timeToRead;
     public float[] rangeTimeToChoose;
 
@@ -90,7 +90,7 @@ public class Dealer : GameBase {
     {
         totalGameTime = averageTimeToChoose = 0f;
         timeToRead = 0f;
-        totalScore = totalOrderCounter = totalMathes = 0;
+        totalScore = totalOrderCounter = totalMatches = 0;
         rangeTimeToChoose = new float[2] {float.PositiveInfinity, float.NegativeInfinity};
 
 //        choices = new List<Choice>();
@@ -178,6 +178,11 @@ public class Dealer : GameBase {
                         interfaceManager.control.nCardsSlider.value = 3;
                         interfaceManager.control.obsField.text = (((GameMode)AutomaticMode).ToString() + " - " + challengeNumber.ToString());
                         firstInMode = true;
+
+                        totalMatches = 0;
+                        totalGameTime = 0f;
+                        totalOrderCounter = 0;
+                        totalScore = 0;
                     }
 
                     if (interfaceManager.control.totalGameTime > 0)
@@ -212,7 +217,7 @@ public class Dealer : GameBase {
 
                             if (AutomaticMode == numOfGameModes - 1)
                             {
-                                Choice.totalMatches = totalMathes;
+                                Choice.totalMatches = totalMatches;
                                 Choice.AverageTimeToChoose = averageTimeToChoose;
                                 Choice.RangeTimeToChoose = rangeTimeToChoose;
                                 Choice.orderCounter = totalOrderCounter;
@@ -506,7 +511,7 @@ public class Dealer : GameBase {
 
                 if (interfaceManager.control.gameMode.value == numOfGameModes - 1)
                 {
-                    Choice.totalMatches = totalMathes;
+                    Choice.totalMatches = totalMatches;
                     Choice.AverageTimeToChoose = averageTimeToChoose;
                     Choice.RangeTimeToChoose = rangeTimeToChoose;
                     Choice.orderCounter = totalOrderCounter;
@@ -535,7 +540,7 @@ public class Dealer : GameBase {
         else
             interfaceManager.scoreValue = Choice.totalPoints;
 
-        interfaceManager.timeCounter.text = timeText[interfaceManager.language] + "\n" + (interfaceManager.control.gameTime + totalGameTime).ToString("F1");
+        interfaceManager.timeCounter.text = timeText[interfaceManager.language] + "\n" + ((interfaceManager.control.gameTime + totalGameTime)/60f).ToString("F1");
 
         interfaceManager.metric1Value = 100f * Choice.suitCounter * orderCounter;
         interfaceManager.metric2Value = 100f * Choice.valueCounter * orderCounter;
@@ -638,7 +643,7 @@ public class Dealer : GameBase {
                 currentChoice = new Choice(aimedCard, objectiveCard, challengeNumber, timeToChoose, timeToPlay, timeToMemorize);
 
                 totalScore += currentChoice.pointMatch;
-                totalMathes += (currentChoice.match ? 1 : 0);
+                totalMatches += (currentChoice.match ? 1 : 0);
                 averageTimeToChoose = Average(averageTimeToChoose, currentChoice.TimeToChoose, totalOrderCounter);
                 totalOrderCounter++;
                 rangeTimeToChoose = CheckExtremes(currentChoice.TimeToChoose, rangeTimeToChoose);
@@ -686,7 +691,7 @@ public class Dealer : GameBase {
 //                float gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.averageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
                 float gameSpeed_aux;
                 if (AutomaticMode == numOfGameModes -1)
-                    gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.AverageTimeToChoose) * totalMathes / totalOrderCounter;
+                    gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.AverageTimeToChoose) * totalMatches / totalOrderCounter;
                 else
                     gameSpeed_aux = LI(TimeChoiceLimits[0], GameSpeedLimits[1], TimeChoiceLimits[1], GameSpeedLimits[0], Choice.AverageTimeToChoose) * Choice.totalMatches / Choice.orderCounter;
 

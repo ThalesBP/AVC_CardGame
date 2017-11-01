@@ -37,8 +37,8 @@ public class ResultsPanel : GameBase {
 
             hitRate[1].text = (100f * Choice.totalMatches / Choice.orderCounter).ToString("F0") + "%";
             timeRate[1].text = Choice.AverageTimeToChoose.ToString("F1");
-            info1[1].text = ControlManager.Instance.ankle.Bases.y.ToString("F1") + "%";
-            info2[1].text = ControlManager.Instance.ankle.Bases.x.ToString("F1") + "%";
+            info1[1].text = ControlManager.Instance.ankle.Bases.y.ToString("F1") + "°";
+            info2[1].text = ControlManager.Instance.ankle.Bases.x.ToString("F1") + "°";
 
             hitRate[2].text = Choice.totalMatches.ToString("F0") + ofText[language] + Choice.orderCounter.ToString("F0");
             timeRate[2].text = fromText[language] + Choice.RangeTimeToChoose[0].ToString("F1") + toText[language] + Choice.RangeTimeToChoose[1].ToString("F1");
